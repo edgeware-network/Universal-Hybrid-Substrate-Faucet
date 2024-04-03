@@ -1,12 +1,13 @@
 {
   "name": "universal-faucet",
   "version": "0.1.0",
+  "license": "MIT",
   "private": true,
   "scripts": {
-    "dev": "yarn dev",
-    "build": "yarn build",
-    "start": "yarn start",
-    "lint": "yarn lint"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
     "dotenv": "^16.4.5",
