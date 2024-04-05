@@ -1,4 +1,5 @@
 "use client";
+import { useFaucetContext } from '@/context';
 import { KeyboardEvent, MouseEvent, useState } from 'react';
 import { LuChevronsUpDown } from 'react-icons/lu';
 
@@ -9,12 +10,16 @@ export interface IUser {
 };
 
 export default function Home() {
-
+  const { state } = useFaucetContext();
   const [user, setUser] = useState<IUser>({
     chain: "",
     address: "",
     amount: "",
   });
+
+  const _address = state.ethereumConnected ? state.selectedEthereumAccount : state.polkadotConnected ? state.selectedPolkadotAccount : user.address;
+  const address = (_address === undefined) ? "" : _address;
+
 
   const checkForNumbers = (event: KeyboardEvent<HTMLInputElement>) => {
 		const neededChars = ["Backspace", "Tab", "Enter", ",", "."];
@@ -58,8 +63,8 @@ export default function Home() {
             <div className="flex items-center justify-between w-full">
               <input 
                 type="text" 
-                className="w-2/3 h-10 text-3xl bg-inherit outline-none placeholder:text-[#5d5d5d]" 
-                value={user.address} 
+                className="w-full h-10 text-3xl bg-inherit outline-none placeholder:text-[#5d5d5d]" 
+                value={address} 
                 onChange={(e) => setUser({ ...user, address: e.target.value })}
                 placeholder="0x" />
             </div>
