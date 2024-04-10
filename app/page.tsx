@@ -1,5 +1,8 @@
 "use client";
+import { chains } from '@/constants/config';
 import { useFaucetContext } from '@/context';
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { KeyboardEvent, MouseEvent, useState } from 'react';
 import { LuChevronsUpDown } from 'react-icons/lu';
 
@@ -10,16 +13,22 @@ export interface IUser {
 };
 
 export default function Home() {
-  const { state } = useFaucetContext();
+  const { state, ethereumAccounts } = useFaucetContext();
   const [user, setUser] = useState<IUser>({
     chain: "",
     address: "",
     amount: "",
   });
+  const searchParams = useSearchParams();
+  const chainUrl = searchParams.get('chain');
+  const switchChain = chains.find((chain) => chain.url === chainUrl);
 
-  const _address = state.ethereumConnected ? state.selectedEthereumAccount : state.polkadotConnected ? state.selectedPolkadotAccount : user.address;
-  const address = (_address === undefined) ? "" : _address;
+  const selectedAccount = ethereumAccounts.find((account) => account.address === state.selectedEthereumAccount)
+  const initialChain = chains.find((chain) => chain.chainId === String((selectedAccount?.chainId)))
 
+  const selectedAddress = state.ethereumConnected ? state.selectedEthereumAccount : state.polkadotConnected ? state.selectedPolkadotAccount : user.address;
+  const address = selectedAddress === undefined ? "" : selectedAddress;
+  const chain = switchChain === undefined ? initialChain?.name === undefined ? "" : initialChain?.name: switchChain.name;
 
   const checkForNumbers = (event: KeyboardEvent<HTMLInputElement>) => {
 		const neededChars = ["Backspace", "Tab", "Enter", ",", "."];
@@ -48,15 +57,19 @@ export default function Home() {
               <input 
                 type="text" 
                 className="w-2/3 h-10 text-3xl bg-inherit outline-none placeholder:text-[#5d5d5d]" 
-                value={user.chain} 
+                value={chain} 
                 onChange={(e) => setUser({ ...user, chain: e.target.value })}
-                placeholder="Ethereum" />
-              <button className="w-[120px] h-full p-2 flex gap-2 items-center justify-center bg-[#311C31] text-sm text-[#FC72FF] font-medium rounded-md outline-none">
-                <p>Switch</p>
-                <LuChevronsUpDown className='h-5 w-5' />
-              </button>
+                placeholder="Polkadot" />
+              <Link href="?switch=true">
+                <button className="w-[120px] h-full p-2 flex gap-2 items-center justify-center bg-[#311C31] text-sm text-[#FC72FF] font-medium rounded-md outline-none">
+                  <p>Switch</p>
+                  <LuChevronsUpDown className='h-5 w-5' />
+                </button>
+              </Link>
             </div>
-            <div className="text-[#9b9b9b] text-xs">You are on Ethereum</div>
+            <span className="h-3 w-full text-[#9b9b9b] text-xs">
+              {chain === "" ? "" : `You are on ${chain}`}
+            </span>
           </div>
           <div className="max-w-[568px] w-[100vw] bg-[#1b1b1b] flex flex-col space-y-[3px] items-start justify-center p-4 rounded-[12px] border-2 border-[#202020] focus-within:border-[#404040]">
             <span className="text-xs text-[#9b9b9b]">Address</span>
@@ -68,7 +81,9 @@ export default function Home() {
                 onChange={(e) => setUser({ ...user, address: e.target.value })}
                 placeholder="0x" />
             </div>
-            <div className="text-[#9b9b9b] text-xs">Your Ethereum wallet address</div>
+            <span className="h-3 w-full text-[#9b9b9b] text-xs">
+              {chain === "" ? "" : `Your ${chain} wallet address`}
+            </span>
           </div>
           <div className="max-w-[568px] w-[100vw] bg-[#1b1b1b] flex flex-col space-y-[3px] items-start justify-center p-4 rounded-[12px] border-2 border-[#202020] focus-within:border-[#404040]">
             <span className="text-xs text-[#9b9b9b]">Amount</span>
@@ -83,7 +98,7 @@ export default function Home() {
                 placeholder="0" />
               <button onClick={getMaxAmount} className="w-1/2 h-full p-2 flex gap-2 items-center justify-center bg-[rgba(0,102,255,0.1)] text-base text-[#0066FF] font-medium rounded-[8px] outline-none">Max</button>
             </div>
-            <div className="text-[#9b9b9b] text-xs">You can request up to 10 tokens.</div>
+            <span className="text-[#9b9b9b] text-xs h-3 w-full">You can request up to 10 tokens.</span>
           </div>
         </div>
         <button type="submit" className="bg-[#311C31] text-[#FC72FF] w-full h-14 text-lg font-medium rounded-[10px]">Request tokens</button>

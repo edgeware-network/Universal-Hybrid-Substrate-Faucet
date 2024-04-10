@@ -1,13 +1,15 @@
 "use client";
 import React, { useEffect } from'react';
-import { BN, formatBalance } from '@polkadot/util';
-import  Web3  from 'web3';
+import { formatBalance } from '@polkadot/util';
+import  Web3, { FMT_BYTES, FMT_NUMBER }  from 'web3';
 import { initPolkadotAPI } from '@/lib/polkadot';
 import { AccountInfo } from '@polkadot/types/interfaces';
+import { Chain } from '@/constants/config';
 
 export type Account = {
   address: string;
   balance: number;
+  chainId?: number;
 };
 
 type State = {
@@ -53,6 +55,7 @@ type FaucetContextType = {
   polkadotAccounts: Account[];
   setSelectedPolkadotAccount: (account: string) => void;
   setSelectedEthereumAccount: (account: string) => void;
+  switchEthereumChain: (chain: Chain) => void;
 }
 
 const FaucetContext = React.createContext<FaucetContextType | null>(null);
@@ -125,9 +128,11 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
         console.log("ethereum accounts", accounts);
         const balances = await Promise.all(accounts.map(async (account) => {
           const balance = await web3.eth.getBalance(account);
+          const chainId = await web3.eth.getChainId({number: FMT_NUMBER.NUMBER, bytes: FMT_BYTES.HEX});
           return {
             address: account,
-            balance: Number(Web3.utils.fromWei(balance, 'ether'))
+            balance: Number(Web3.utils.fromWei(balance, 'ether')),
+            chainId: chainId
           };
         }));
         setEthereumAccounts(balances);
@@ -184,6 +189,23 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const switchEthereumChain = async(chain: Chain) => {
+    console.log("Switching to desired chain");
+    try {
+      await (window as any).ethereum.request({
+        method: "wallet_switchEthereumChain",
+        params: [{ chainId: chain.chainId }],
+      })
+    } catch (err) {
+      if ((err as any).code === 4902) {
+        await (window as any).ethereum.request({
+          method: "wallet_addEthereumChain",
+          params: [{ chainId: chain.chainId, chainName: chain.name, rpcUrls: [chain.rpcUrl], nativeCurrency: chain.nativeCurrency }],
+        })
+      }
+    }
+  };
+
   const handleConnect = (type: 'polkadot' | 'ethereum') => {
     if ((type === 'polkadot' && state.polkadotConnected) || (type === 'ethereum' && state.ethereumConnected)) {
       return;
@@ -203,7 +225,7 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
       }
     }
     connect();
-  }
+  };
 
   const handleDisconnect = (type: 'polkadot' | 'ethereum') => {
     const isConnected = type === 'polkadot' ? state.polkadotConnected : state.ethereumConnected;
@@ -223,7 +245,7 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
     }
     disconnect();
 
-  }
+  };
 
   useEffect(() => {
     if (state.polkadotConnected && polkadotAccounts && polkadotAccounts.length > 0) {
@@ -248,6 +270,7 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
       polkadotAccounts,
       setSelectedEthereumAccount,
       setSelectedPolkadotAccount,
+      switchEthereumChain,
     }}>
       {children}
     </FaucetContext.Provider>

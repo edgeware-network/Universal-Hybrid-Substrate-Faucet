@@ -4,10 +4,10 @@ import {useSearchParams, usePathname} from "next/navigation";
 import { PiCaretDoubleRightBold } from "react-icons/pi";
 import Link from 'next/link';
 import { RxCross2 } from 'react-icons/rx';
-import { WalletWidget } from './WalletWidget';
 import { useFaucetContext } from '@/context';
+import { WalletWidget } from '../WalletWidget';
 
-const Modal= (): React.JSX.Element  => {
+const Connect = (): React.JSX.Element  => {
   const { state, handleConnect, handleDisconnect, ethereumAccounts, polkadotAccounts, setSelectedEthereumAccount, setSelectedPolkadotAccount } = useFaucetContext();
   const searchParams = useSearchParams();
   const modal = searchParams.get('connect');
@@ -61,4 +61,4 @@ const Modal= (): React.JSX.Element  => {
   );
 };
 
-export default Modal;
+export default Connect;
