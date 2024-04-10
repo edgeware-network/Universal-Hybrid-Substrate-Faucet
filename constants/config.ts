@@ -57,7 +57,7 @@ export const chains: Chain[] = [
   {
     name: 'Beresheet',
     url: 'beresheet',
-    chainId: '2022',
+    chainId: '',
     rpcUrl: 'wss://beresheet.jelliedowl.net',
     nativeCurrency: {
       name: 'tEDG',
@@ -83,7 +83,7 @@ export const chains: Chain[] = [
   {
     name: 'Beresheet BereEVM',
     url: 'beresheet-bereevm',
-    chainId: '0x7e6',
+    chainId: '2022',
     rpcUrl: 'https://beresheet-evm.jelliedowl.net',
     nativeCurrency: {
       name: 'tEDG',
@@ -95,7 +95,7 @@ export const chains: Chain[] = [
   {
     name: 'Moonbase Alpha',
     url: 'moonbase-alpha',
-    chainId: '0x507',
+    chainId: '1287',
     rpcUrl: 'https://rpc.testnet.moonbeam.network',
     nativeCurrency: {
       name: 'DEV',
@@ -107,8 +107,8 @@ export const chains: Chain[] = [
   {
     name: 'Tangle',
     url: 'tangle',
-    chainId: '',
-    rpcUrl: 'wss://testnet-rpc.tangle.tools',
+    chainId: '3799',
+    rpcUrl: 'https://testnet-rpc.tangle.tools',
     nativeCurrency: {
       name: 'tTNT',
       symbol: 'tTNT',
@@ -119,7 +119,7 @@ export const chains: Chain[] = [
   {
     name: 'Bifrost',
     url: 'bifrost',
-    chainId: '',
+    chainId: '49088',
     rpcUrl: 'https://public-01.testnet.bifrostnetwork.com/rpc',
     nativeCurrency: {
       name: 'BFC',

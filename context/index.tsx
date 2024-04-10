@@ -194,13 +194,13 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       await (window as any).ethereum.request({
         method: "wallet_switchEthereumChain",
-        params: [{ chainId: chain.chainId }],
+        params: [{ chainId: `0x${Number(chain.chainId).toString(16)}` }],
       })
     } catch (err) {
       if ((err as any).code === 4902) {
         await (window as any).ethereum.request({
           method: "wallet_addEthereumChain",
-          params: [{ chainId: chain.chainId, chainName: chain.name, rpcUrls: [chain.rpcUrl], nativeCurrency: chain.nativeCurrency }],
+          params: [{ chainId: `0x${Number(chain.chainId).toString(16)}`, chainName: chain.name, rpcUrls: [chain.rpcUrl], nativeCurrency: chain.nativeCurrency }],
         })
       }
     }
