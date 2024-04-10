@@ -159,7 +159,20 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
   const connectToEthereum = async() => {
     console.log("Attempting to connect to Ethereum");
     try {
-      if ('ethereum' in window) {;
+      if ('ethereum' in window) {
+        try {
+          await (window as any).ethereum.request({
+            method: "wallet_switchEthereumChain",
+            params: [{ chainId: "0x7e6" }],
+          })
+        } catch (err) {
+          if ((err as any).code === 4902) {
+            await (window as any).ethereum.request({
+              method: "wallet_addEthereumChain",
+              params: [{ chainId: "0x7e6", chainName: "Beresheet BereEVM", rpcUrls: "https://beresheet-evm.jelliedowl.net", nativeCurrency: { name: "tEDG", symbol: "tEDG", decimals: 18} }],
+            })
+          }
+        }
         await updateEthereumBalances();
         return true;
       } else {
