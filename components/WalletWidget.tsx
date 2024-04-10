@@ -35,7 +35,7 @@ export const WalletWidget = ({
         className="flex w-full active:scale-95 bg-[#1b1b1b] hover:bg-[#2b2b2b] flex-row items-center rounded-[12px] text-white p-4"
         onClick={handleConnect}
       >
-        <Image src={`${type === 'polkadot' ? '/polkadot.svg' : '/metamask.svg'}`} alt="logo" width={100} height={100} className="h-12 w-12" />
+        <Image priority={true} src={`${type === 'polkadot' ? '/polkadot.svg' : '/metamask.svg'}`} alt="logo" width={100} height={100} className="h-12 w-12" />
         <span className="mr-1 h-2 w-2 rounded-full bg-grey-500"></span>
         Connect {type === 'polkadot' ? 'Substrate' : 'EVM'} Wallet
       </button>
