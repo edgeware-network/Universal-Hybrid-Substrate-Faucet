@@ -31,7 +31,9 @@ export default function RootLayout({
           <Suspense fallback={<div className="w-[100vw] min-h-screen text-white bg-[#131313] flex items-center justify-center z-40">Loading...</div>}>
             <Switch />
           </Suspense>
-          {children}
+          <Suspense fallback={<div className="w-[100vw] min-h-screen text-white bg-[#131313] flex items-center justify-center z-40">Loading...</div>}>
+            {children}
+          </Suspense>
           <Footer />
         </FaucetProvider>
       </body>
