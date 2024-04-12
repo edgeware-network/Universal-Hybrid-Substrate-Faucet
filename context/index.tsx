@@ -4,9 +4,10 @@ import { formatBalance } from '@polkadot/util';
 import  Web3, { FMT_BYTES, FMT_NUMBER }  from 'web3';
 import { initPolkadotAPI } from '@/lib/polkadot';
 import { AccountInfo } from '@polkadot/types/interfaces';
-import { Chain } from '@/constants/config';
+import { Chain, chains } from '@/constants/config';
 import { decodeAddress, encodeAddress } from '@polkadot/util-crypto';
 import { useRouter } from 'next/navigation';
+import { chain } from '@polkadot/types/interfaces/definitions';
 
 export type Account = {
   address: string;
@@ -166,19 +167,23 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
     console.log("Attempting to connect to Ethereum");
     try {
       if ('ethereum' in window) {
-        try {
-          await (window as any).ethereum.request({
-            method: "wallet_switchEthereumChain",
-            params: [{ chainId: "0x7e6" }],
-          })
-        } catch (err) {
-          if ((err as any).code === 4902) {
-            await (window as any).ethereum.request({
-              method: "wallet_addEthereumChain",
-              params: [{ chainId: "0x7e6", chainName: "Beresheet BereEVM", rpcUrls: "https://beresheet-evm.jelliedowl.net", nativeCurrency: { name: "tEDG", symbol: "tEDG", decimals: 18} }],
-            })
-          }
-        }
+        const chainId = await (window as any).ethereum.request({ method: 'eth_chainId', params: [] });
+        const availableChain = chains.find(chain => `0x${Number(chain.chainId).toString(16)}` === chainId);
+          try {
+            if (!availableChain) {
+              await (window as any).ethereum.request({
+                method: "wallet_switchEthereumChain",
+                params: [{ chainId: "0x7e6" }],
+              })
+            };
+          } catch (err) {
+            if ((err as any).code === 4902) {
+              await (window as any).ethereum.request({
+                method: "wallet_addEthereumChain",
+                params: [{ chainId: "0x7e6", chainName: "Beresheet BereEVM", rpcUrls: "https://beresheet-evm.jelliedowl.net", nativeCurrency: { name: "tEDG", symbol: "tEDG", decimals: 18} }],
+              })
+            };
+        };
         await updateEthereumBalances();
         return true;
       } else {
@@ -280,7 +285,15 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
         const res = await connectToEthereum();
         if (res) {
           setEthereumConnected(true);
-          router.push('/?chain=beresheet-bereevm')
+          if ('ethereum' in window) {
+            const chainId = await (window as any).ethereum.request({ method: 'eth_chainId' });
+            const availableChain = chains.find(chain => `0x${Number(chain.chainId).toString(16)}` === chainId);
+            if (!availableChain) {
+              router.push('/?chain=beresheet-bereevm')
+            } else {
+              router.push(`/?chain=${availableChain.url}`)
+            }
+          }
         }
       }
     }
