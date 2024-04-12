@@ -6,6 +6,7 @@ import { initPolkadotAPI } from '@/lib/polkadot';
 import { AccountInfo } from '@polkadot/types/interfaces';
 import { Chain } from '@/constants/config';
 import { decodeAddress, encodeAddress } from '@polkadot/util-crypto';
+import { useRouter } from 'next/navigation';
 
 export type Account = {
   address: string;
@@ -67,6 +68,7 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
   const [state, dispatch] = React.useReducer(reducer, initialState);
   const [polkadotAccounts, setPolkadotAccounts] = React.useState<Account[]>([]);
   const [ethereumAccounts, setEthereumAccounts] = React.useState<Account[]>([]);
+  const router = useRouter();
 
   const setPolkadotConnected = (connected: boolean) => {
     dispatch({ type: 'SET_POLKADOT_CONNECTED', payload: connected });
@@ -266,16 +268,19 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
       return;
     }
     async function connect(){
+      router.push('/');
       if(type === 'polkadot'){
         const res = await connectToPolkadot();
         if (res) {
           setPolkadotConnected(true);
+          router.push('/?chain=beresheet')
         }
       }
       else {
         const res = await connectToEthereum();
         if (res) {
           setEthereumConnected(true);
+          router.push('/?chain=beresheet-bereevm')
         }
       }
     }
@@ -299,7 +304,7 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
       }
     }
     disconnect();
-
+    router.push("/");
   };
 
   useEffect(() => {

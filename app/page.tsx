@@ -37,7 +37,7 @@ export default function Home() {
 
   const selectedAddress = state.ethereumConnected ? state.selectedEthereumAccount : state.polkadotConnected ? state.selectedPolkadotAccount : user.address;
   const address = selectedAddress === undefined ? "" : selectedAddress;
-  const chain = switchChain === undefined ? initialChainName?.name === undefined ? "" : initialChainName?.name: switchChain.name;
+  const chain = initialChainName?.name === undefined ? switchChain?.name === undefined ? user.chain : switchChain.name : initialChainName.name;
 
   const checkForNumbers = (event: KeyboardEvent<HTMLInputElement>) => {
 		const neededChars = ["Backspace", "Tab", "Enter", ",", "."];
