@@ -7,13 +7,13 @@ import { AccountInfo } from '@polkadot/types/interfaces';
 import { Chain, chains } from '@/constants/config';
 import { decodeAddress, encodeAddress } from '@polkadot/util-crypto';
 import { useRouter } from 'next/navigation';
-import { chain } from '@polkadot/types/interfaces/definitions';
 
 export type Account = {
   address: string;
   balance: number;
   chain?: string;
   chainId?: number;
+  symbol: string;
 };
 
 type State = {
@@ -109,7 +109,8 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
           return {
             address: api.createType('Address', account.address).toString(),
             chain: (await api.rpc.system.chain()).toHuman(),
-            balance: Number(formatBalance(amount))
+            balance: Number(formatBalance(amount)),
+            symbol: "tEDG"
           };
         }));
         console.log("polkadot accounts", balances);
@@ -136,10 +137,12 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
         const balances = await Promise.all(accounts.map(async (account) => {
           const balance = await web3.eth.getBalance(account);
           const chainId = await web3.eth.getChainId({number: FMT_NUMBER.NUMBER, bytes: FMT_BYTES.HEX});
+          const symbol = chains.find((chain) => chain.chainId === String(chainId))?.nativeCurrency.symbol ?? "";
           return {
             address: account,
             balance: Number(Web3.utils.fromWei(balance, 'ether')),
-            chainId: chainId
+            chainId: chainId,
+            symbol: symbol
           };
         }));
         setEthereumAccounts(balances);
@@ -256,7 +259,8 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
           return {
             address: encodeAddress(decodeAddress(account.address), chain.prefix),
             chain: (await api.rpc.system.chain()).toHuman(),
-            balance: Number(formatBalance(amount))
+            balance: Number(formatBalance(amount)),
+            symbol: chain.nativeCurrency.symbol,
           };
         }));
         console.log("polkadot accounts", balances);

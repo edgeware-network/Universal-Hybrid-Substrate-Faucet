@@ -2,6 +2,7 @@ import React from 'react';
 import type { Account } from '@/context';
 import { RiArrowDownSLine } from "react-icons/ri";
 import { IoExitOutline } from "react-icons/io5";
+import { FaPowerOff } from "react-icons/fa6";
 import { Listbox } from '@headlessui/react';
 import Image from 'next/image';
 
@@ -74,15 +75,16 @@ export const WalletWidget = ({
         <Listbox value={selectedAccount} onChange={setSelectedAccount}>
           <Listbox.Button className="flex w-full items-center">
             <span className="mr-4 h-2 w-2 shrink-0 rounded-full bg-green-500" />
-            <span className="block grow text-left">
-              <span className="block w-full truncate">
-                {fullSelectedAccount.balance && (
-                  <span className="ml-2 text-xs text-grey-500">
-                    {fullSelectedAccount.balance}
-                  </span>
-                )}
-              </span>
-              <span className="block w-full truncate text-sm text-[#9b9b9b]">
+              <span className="block grow text-left">
+                <span className="flex items-center gap-1 w-full truncate">
+                  {fullSelectedAccount.balance && (
+                    <span className="ml-2 text-xs text-grey-500">
+                      {fullSelectedAccount.balance}
+                    </span>
+                  )}
+                  <span className="block w-full truncate text-sm text-[#9b9b9b]">{fullSelectedAccount.symbol}</span>
+                </span>
+              <span className="block w-full truncate text-sm text-[#5d4f4f]">
                 {truncate(fullSelectedAccount.address)}
               </span>
             </span>
@@ -112,7 +114,7 @@ export const WalletWidget = ({
         </Listbox>
       </div>
       <button onClick={handleDisconnect}>
-        <IoExitOutline className={`ml-2 text-red-500 h-6 w-6 shrink-0 fill-grey-600 cursor-pointer active:scale-9`} />
+        <FaPowerOff className={`ml-2 text-red-500 h-6 w-6 shrink-0 fill-grey-600 cursor-pointer active:scale-9`} />
       </button>
     </div>
   );
