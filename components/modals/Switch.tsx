@@ -6,14 +6,23 @@ import { RxCross2 } from 'react-icons/rx';
 import { FiSearch } from "react-icons/fi";
 
 import { useFaucetContext } from '@/context';
-import { chains } from '@/constants/config';
+import { Chain, chains } from '@/constants/config';
 
 const Switch = (): React.JSX.Element => {
-  const { state, switchEthereumChain } = useFaucetContext();
+  const { state, switchEthereumChain, switchPolkadotChain } = useFaucetContext();
   const searchParams = useSearchParams();
   const modal = searchParams.get('switch');
   const pathname = usePathname();
   const [queryChain, setQueryChain] = useState("");
+
+  const handleSwitch = (chain: Chain) => {
+    if (state.ethereumConnected && chain.type === "evm") {
+      switchEthereumChain(chain);
+    }
+    if (state.polkadotConnected && chain.type === "substrate") {
+      switchPolkadotChain(chain);
+    }
+  }
 
   const queryChains = chains.filter((chain) => {
     if (state.ethereumConnected && chain.type === "evm") {
@@ -67,7 +76,7 @@ const Switch = (): React.JSX.Element => {
                 </div>
                 <Link href={`/?chain=${chain.url}`} className="w-full">
                   {state.ethereumConnected || state.polkadotConnected 
-                    ? <div onClick={() => switchEthereumChain(chain)} className="flex flex-col items-start text-sm text-[#eaeaea]">
+                    ? <div onClick={() => handleSwitch(chain)} className="flex flex-col items-start text-sm text-[#eaeaea]">
                         <span className="ml-2">{chain.name}</span>
                         <span className="ml-2">{chain.nativeCurrency.symbol}</span>
                       </div>

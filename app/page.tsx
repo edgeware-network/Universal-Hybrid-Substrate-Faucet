@@ -2,8 +2,8 @@
 import { chains } from '@/constants/config';
 import { useFaucetContext } from '@/context';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
-import { KeyboardEvent, MouseEvent, useState } from 'react';
+import { usePathname, useSearchParams } from 'next/navigation';
+import { KeyboardEvent, MouseEvent, useCallback, useState } from 'react';
 import { LuChevronsUpDown } from 'react-icons/lu';
 
 export interface IUser {
@@ -13,7 +13,7 @@ export interface IUser {
 };
 
 export default function Home() {
-  const { state, ethereumAccounts } = useFaucetContext();
+  const { state, ethereumAccounts, polkadotAccounts } = useFaucetContext();
   const [user, setUser] = useState<IUser>({
     chain: "",
     address: "",
@@ -23,12 +23,21 @@ export default function Home() {
   const chainUrl = searchParams.get('chain');
   const switchChain = chains.find((chain) => chain.url === chainUrl);
 
-  const selectedAccount = ethereumAccounts.find((account) => account.address === state.selectedEthereumAccount)
-  const initialChain = chains.find((chain) => chain.chainId === String((selectedAccount?.chainId)))
+  const initialChain = () => {
+    if(state.ethereumConnected) {
+    const selectedAccount = ethereumAccounts.find((account) => account.address === state.selectedEthereumAccount)
+    return chains.find((chain) => chain.chainId === String((selectedAccount?.chainId)))
+    }
+    if(state.polkadotConnected) {
+      const selectedAccount = polkadotAccounts.find((account) => account.address === state.selectedPolkadotAccount)
+      return chains.find((chain) => chain.name === selectedAccount?.chain)
+    }
+  };
+  const initialChainName = initialChain();
 
   const selectedAddress = state.ethereumConnected ? state.selectedEthereumAccount : state.polkadotConnected ? state.selectedPolkadotAccount : user.address;
   const address = selectedAddress === undefined ? "" : selectedAddress;
-  const chain = switchChain === undefined ? initialChain?.name === undefined ? "" : initialChain?.name: switchChain.name;
+  const chain = switchChain === undefined ? initialChainName?.name === undefined ? "" : initialChainName?.name: switchChain.name;
 
   const checkForNumbers = (event: KeyboardEvent<HTMLInputElement>) => {
 		const neededChars = ["Backspace", "Tab", "Enter", ",", "."];
@@ -40,7 +49,17 @@ export default function Home() {
 		if(event.currentTarget.value.split(".").length === 2 && (event.key === "." || event.key === ",")) {
 			event.preventDefault();
 		}
-	}
+	};
+
+  const createQueryString = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams.toString())
+      params.set(name, value)
+ 
+      return params.toString()
+    },
+    [searchParams]
+  );
 
   const getMaxAmount = (event: MouseEvent<HTMLButtonElement>) => {
     setUser({...user, amount: "10"});
@@ -60,7 +79,7 @@ export default function Home() {
                 value={chain} 
                 onChange={(e) => setUser({ ...user, chain: e.target.value })}
                 placeholder="Polkadot" />
-              <Link href="?switch=true">
+              <Link href={usePathname() + '?' + createQueryString('switch', 'true')}>
                 <button className="w-[120px] h-full p-2 flex gap-2 items-center justify-center bg-[#311C31] text-sm text-[#FC72FF] font-medium rounded-md outline-none">
                   <p>Switch</p>
                   <LuChevronsUpDown className='h-5 w-5' />

@@ -5,10 +5,12 @@ import  Web3, { FMT_BYTES, FMT_NUMBER }  from 'web3';
 import { initPolkadotAPI } from '@/lib/polkadot';
 import { AccountInfo } from '@polkadot/types/interfaces';
 import { Chain } from '@/constants/config';
+import { decodeAddress, encodeAddress } from '@polkadot/util-crypto';
 
 export type Account = {
   address: string;
   balance: number;
+  chain?: string;
   chainId?: number;
 };
 
@@ -56,6 +58,7 @@ type FaucetContextType = {
   setSelectedPolkadotAccount: (account: string) => void;
   setSelectedEthereumAccount: (account: string) => void;
   switchEthereumChain: (chain: Chain) => void;
+  switchPolkadotChain: (chain: Chain) => void;
 }
 
 const FaucetContext = React.createContext<FaucetContextType | null>(null);
@@ -90,7 +93,7 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
         if (extensions.length === 0) {
           throw new Error('No Polkadot wallet detected');
         }
-        const api = await initPolkadotAPI();
+        const api = await initPolkadotAPI('wss://beresheet.jelliedowl.net');
         const web3Accounts = (await import('@polkadot/extension-dapp')).web3Accounts;
         const accounts = await web3Accounts();
         formatBalance.setDefaults({
@@ -101,7 +104,8 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
           const balance = (await api.query.system.account(account.address)) as AccountInfo;
           const amount = balance.data.free;
           return {
-            address: account.address,
+            address: api.createType('Address', account.address).toString(),
+            chain: (await api.rpc.system.chain()).toHuman(),
             balance: Number(formatBalance(amount))
           };
         }));
@@ -209,13 +213,51 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
         method: "wallet_switchEthereumChain",
         params: [{ chainId: `0x${Number(chain.chainId).toString(16)}` }],
       })
+      await updateEthereumBalances();
     } catch (err) {
       if ((err as any).code === 4902) {
         await (window as any).ethereum.request({
           method: "wallet_addEthereumChain",
           params: [{ chainId: `0x${Number(chain.chainId).toString(16)}`, chainName: chain.name, rpcUrls: [chain.rpcUrl], nativeCurrency: chain.nativeCurrency }],
         })
+        await updateEthereumBalances();
+      };
+    };
+  };
+
+  const switchPolkadotChain = async(chain: Chain) => {
+    console.log("Switching to desired chain");
+    try {
+      if ((window as any).injectedWeb3) {
+        const web3Enable = (await import('@polkadot/extension-dapp')).web3Enable;
+        const extensions = await web3Enable('Polkadot-JS Apps')
+        if (extensions.length === 0) {
+          throw new Error('No Polkadot wallet detected');
+        }
+        console.log(`Connecting to ${chain.name}`, chain.rpcUrl);
+        const api = await initPolkadotAPI(chain.rpcUrl);
+        const web3Accounts = (await import('@polkadot/extension-dapp')).web3Accounts;
+        const accounts = await web3Accounts();
+        formatBalance.setDefaults({
+          decimals: chain.nativeCurrency.decimals,
+          unit: chain.nativeCurrency.symbol
+        });
+        const balances = await Promise.all(accounts.map(async (account) => {
+          const balance = (await api.query.system.account(account.address)) as AccountInfo;
+          const amount = balance.data.free;
+          console.log("Address:", encodeAddress(decodeAddress(account.address), chain.prefix) );
+          return {
+            address: encodeAddress(decodeAddress(account.address), chain.prefix),
+            chain: (await api.rpc.system.chain()).toHuman(),
+            balance: Number(formatBalance(amount))
+          };
+        }));
+        console.log("polkadot accounts", balances);
+        setPolkadotAccounts(balances);
+        setSelectedPolkadotAccount(balances[0].address);
       }
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -284,6 +326,7 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
       setSelectedEthereumAccount,
       setSelectedPolkadotAccount,
       switchEthereumChain,
+      switchPolkadotChain,
     }}>
       {children}
     </FaucetContext.Provider>
