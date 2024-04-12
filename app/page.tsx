@@ -80,8 +80,8 @@ export default function Home() {
                 onChange={(e) => setUser({ ...user, chain: e.target.value })}
                 placeholder="Polkadot" />
               <Link href={usePathname() + '?' + createQueryString('switch', 'true')}>
-                <button className="w-[120px] h-full p-2 flex gap-2 items-center justify-center bg-[#311C31] text-sm text-[#FC72FF] font-medium rounded-md outline-none">
-                  <p>Switch</p>
+                <button className="w-[120px] h-full p-2 flex gap-2 items-center justify-between bg-[#311C31] text-sm text-[#FC72FF] font-medium rounded-md outline-none">
+                  {!chain ? <p>Switch</p> : <p>{chains.find((a) => a.name === chain)?.nativeCurrency.symbol}</p>}
                   <LuChevronsUpDown className='h-5 w-5' />
                 </button>
               </Link>
