@@ -15,7 +15,7 @@ const Navbar = (): React.JSX.Element => {
 				</h1>
 				<ul className="sm:flex text-sm flex-row hidden items-center justify-between space-x-5">
 					<li
-						className={`${path === "/" ? "text-[#EAEAEA]" : "text-[#606060]"}`}
+						className={`${path === "/" ? "text-[#EAEAEA] underline underline-offset-8" : "text-[#606060]"}`}
 					>
 						<Link href="/">
 							<p>Faucet</p>
@@ -23,7 +23,7 @@ const Navbar = (): React.JSX.Element => {
 					</li>
 					<li
 						className={`${
-							path === "/status" ? "text-[#EAEAEA]" : "text-[#606060]"
+							path === "/status" ? "text-[#EAEAEA] underline underline-offset-8" : "text-[#606060]"
 						}`}
 					>
 						<Link href="/status">
