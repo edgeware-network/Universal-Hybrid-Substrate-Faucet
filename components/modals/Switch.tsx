@@ -8,6 +8,7 @@ import { Switch as HeadlessSwitch } from '@headlessui/react';
 import { Chain, chains } from '@/constants/config';
 import Switcher from '../widgets/Switcher';
 import Selector from '../widgets/Selector';
+import { useRouter } from 'next/navigation';
 
 interface SwitchModalProps {
   onClose: () => void;
@@ -17,6 +18,7 @@ const Switch: FC<SwitchModalProps> = ({onClose}: SwitchModalProps) => {
   const { state, switchEthereumChain, switchPolkadotChain } = useFaucetContext();
   const [queryChain, setQueryChain] = useState("");
   const [toggle, setToggle] = useState<boolean>(true);
+  const router = useRouter();
 
   const handleClose = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target instanceof HTMLDivElement && e.target.id  === 'switch_modal') onClose();
@@ -45,6 +47,10 @@ const Switch: FC<SwitchModalProps> = ({onClose}: SwitchModalProps) => {
     }
   });
 
+  const handleClick = () => {
+    router.push("/");
+  };
+
   return (
     <div id='switch_modal' onClick={handleClose} className="z-40 bg-[rgba(0,0,0,0.6)] w-[100vw] h-[100vh] flex fixed items-center justify-center inset-0">
       <div className="z-50 md:w-[65vw] w-[95vw] h-[calc(80vh-16px)] bg-[#131313] flex flex-col items-center gap-[16px] rounded-[16px] border-2 border-[#303030] p-4">
@@ -58,7 +64,7 @@ const Switch: FC<SwitchModalProps> = ({onClose}: SwitchModalProps) => {
               onChange={(e) => setQueryChain(e.target.value)}
               placeholder="Search chains"/>
           </div>
-          <div className="flex flex-row items-center justify-center p-2 bg-[#1b1b1b] rounded-[10px]">
+          <div className="flex flex-row items-center justify-center p-2 bg-[#1b1b1b] rounded-[10px]" onClick={handleClick}>
             <HeadlessSwitch checked={toggle} onChange={setToggle} className="relative inline-flex h-6 w-6 items-center rounded-full ">
               <span className="sr-only text-white">Mode</span>
               <GiCycle
