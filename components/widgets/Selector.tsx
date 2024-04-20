@@ -13,7 +13,9 @@ const Selector = ({ queryChains }: SelectorProps): React.JSX.Element => {
   const rococo_chains = queryChains.filter(chain => chain.chainType === "Rococo & Parachain");
   const paseo_chains = queryChains.filter(chain => chain.chainType === "Paseo & Parachain");
   const solochains = queryChains.filter(chain => chain.chainType === "Solochain");
-
+  const [activeChain, setActiveChain] = React.useState<string>("");
+  const [selectedChains, setSelectedChains] = React.useState<string[]>([]);
+  console.log(selectedChains);
   const all_chains = [
     {
       title: 'Westend & Parachain',
@@ -36,11 +38,20 @@ const Selector = ({ queryChains }: SelectorProps): React.JSX.Element => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {name, checked} = event.target;
     if (checked) {
-
+      setSelectedChains([...selectedChains, name]);
     } else {
-      
+      setSelectedChains(selectedChains.filter((chain) => chain !== name));
     }
-  }
+  };
+
+  const handleClick = (chain: Chain) => {
+    setActiveChain(chain.name);
+    if (selectedChains.includes(chain.name)) {
+      setSelectedChains(selectedChains.filter((chain_name) => chain_name !== chain.name));
+    } else {
+      setSelectedChains([...selectedChains, chain.name]);
+    }
+  };
 
   return (
     <div className="flex flex-col w-full space-y-1 p-1">
@@ -51,10 +62,10 @@ const Selector = ({ queryChains }: SelectorProps): React.JSX.Element => {
             <div className="border-b-2 ml-2 border-[#303030]" />
           </div>
           <div className="grid text-sm gap-1 grid-cols-2 items-center font-bold">
-            {chain_group.chains.map((chain, index) => (
-              <div key={index} className="text-[#dadada] bg-[#131313] flex items-center ml-2 px-2 py-1 h-full rounded-md cursor-pointer hover:bg-[#181818]">
+            {chain_group.chains.map((chain) => (
+              <div key={chain.name} id="current" className="text-[#dadada] bg-[#131313] flex items-center ml-2 px-2 py-1 h-full rounded-md cursor-pointer hover:bg-[#181818]" onClick={() => handleClick(chain)}>
                 <div className="flex items-center justify-center space-x-1">
-                  <input type="checkbox" onChange={handleChange}  value={chain.url} name={chain.name} />
+                  <input id={chain.name} type="checkbox" checked={selectedChains.includes(chain.name)} onChange={handleChange} value={chain.name} name={chain.name} />
                   <Image src="/metamask.svg" alt={chain.name} width={20} height={20} className="h-6 w-6" />
                   <span className="h-2 w-2 mr-2 flex shrink-0" />
                   <span className="">{chain.name}</span>
