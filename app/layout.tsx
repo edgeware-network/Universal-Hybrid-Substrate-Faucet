@@ -5,7 +5,6 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Suspense } from "react";
 import { FaucetProvider } from "@/context";
-import Switch from "@/components/modals/Switch";
 
 const space_mono = Space_Mono({ weight: ["400", "700"], subsets: ["latin"] });
 
@@ -25,7 +24,6 @@ export default function RootLayout({
         <FaucetProvider>
           <Suspense fallback={<div className=" text-white bg-[#000]/30 flex items-center justify-center z-50">Loading...</div>}>
             <Navbar />
-            <Switch />
             {children}
           </Suspense>
           <Footer />

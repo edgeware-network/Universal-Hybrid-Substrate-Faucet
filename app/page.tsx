@@ -1,9 +1,9 @@
 "use client";
+import Switch from '@/components/modals/Switch';
 import { chains } from '@/constants/config';
 import { useFaucetContext } from '@/context';
-import Link from 'next/link';
-import { usePathname, useSearchParams } from 'next/navigation';
-import { KeyboardEvent, MouseEvent, useCallback, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { KeyboardEvent, MouseEvent, useState } from 'react';
 import { LuChevronsUpDown } from 'react-icons/lu';
 
 export interface IUser {
@@ -19,25 +19,45 @@ export default function Home() {
     address: "",
     amount: "",
   });
+  const [showSwitchModal, setShowSwitchModal] = useState(false);
   const searchParams = useSearchParams();
-  const chainUrl = searchParams.get('chain');
-  const switchChain = chains.find((chain) => chain.url === chainUrl);
+  const switchToChain = searchParams.get('chain');
+  const switchChain = chains.find((chain) => chain.url === switchToChain)?.name ?? "";
 
-  const initialChain = () => {
+  const handleShowSwitchModal = () => {
+    setShowSwitchModal(true);
+  };
+
+  const handleCloseSwitchModal = () => {
+    setShowSwitchModal(false);
+  };
+
+  function getInitialChain(){
     if(state.ethereumConnected) {
     const selectedAccount = ethereumAccounts.find((account) => account.address === state.selectedEthereumAccount)
-    return chains.find((chain) => chain.chainId === String((selectedAccount?.chainId)))
-    }
+    const selectedChain = chains.find((chain) => chain.chainId === String((selectedAccount?.chainId)))
+    return selectedChain?.name
+    };
     if(state.polkadotConnected) {
       const selectedAccount = polkadotAccounts.find((account) => account.address === state.selectedPolkadotAccount)
-      return chains.find((chain) => chain.name === selectedAccount?.chain)
-    }
+      const selectedChain = chains.find((chain) => chain.name === selectedAccount?.chain)
+      return selectedChain?.name
+    };
   };
-  const initialChainName = initialChain();
-
-  const selectedAddress = state.ethereumConnected ? state.selectedEthereumAccount : state.polkadotConnected ? state.selectedPolkadotAccount : user.address;
-  const address = selectedAddress === undefined ? "" : selectedAddress;
-  const chain = initialChainName?.name === undefined ? switchChain?.name === undefined ? user.chain : switchChain.name : initialChainName.name;
+  
+  function getAddress(){
+    if(state.ethereumConnected) {
+      const selectedAccount = ethereumAccounts.find((account) => account.address === state.selectedEthereumAccount)
+      return selectedAccount?.address
+    };
+    if(state.polkadotConnected) {
+      const selectedAccount = polkadotAccounts.find((account) => account.address === state.selectedPolkadotAccount)
+      return selectedAccount?.address
+    };
+  };
+  
+  const address = getAddress() === undefined ? user.address : getAddress() ?? ""; 
+  const chain = getInitialChain() === undefined ? switchChain === undefined ? user.chain : switchChain : getInitialChain() ?? "";
 
   const checkForNumbers = (event: KeyboardEvent<HTMLInputElement>) => {
 		const neededChars = ["Backspace", "Tab", "Enter", ",", "."];
@@ -51,16 +71,6 @@ export default function Home() {
 		}
 	};
 
-  const createQueryString = useCallback(
-    (name: string, value: string) => {
-      const params = new URLSearchParams(searchParams.toString())
-      params.set(name, value)
- 
-      return params.toString()
-    },
-    [searchParams]
-  );
-
   const getMaxAmount = (event: MouseEvent<HTMLButtonElement>) => {
     setUser({...user, amount: "10"});
     event.preventDefault();
@@ -68,7 +78,7 @@ export default function Home() {
 
   return (
     <main className="relative top-[100px]">
-      <form className="sm:flex hidden flex-col items-center justify-center gap-[8px] p-[4px] bg-[#131313] rounded-[12px]">
+      <div className="sm:flex hidden flex-col items-center justify-center gap-[8px] p-[4px] bg-[#131313] rounded-[12px]">
         <div className="flex flex-col items-center space-y-[5px]">
           <div className="max-w-[568px] w-[100vw] bg-[#1b1b1b] flex flex-col space-y-[3px] items-start justify-center p-4 rounded-[12px] border-2 border-[#202020] focus-within:border-[#404040]">
             <span className="text-xs text-[#9b9b9b]">Chain</span>
@@ -79,12 +89,11 @@ export default function Home() {
                 value={chain} 
                 onChange={(e) => setUser({ ...user, chain: e.target.value })}
                 placeholder="Polkadot" />
-              <Link href={usePathname() + '?' + createQueryString('switch', 'true')}>
-                <button className="w-[120px] h-full p-2 flex gap-2 items-center justify-between bg-[#311C31] text-sm text-[#FC72FF] font-medium rounded-md outline-none">
-                  {!chain ? <p>Switch</p> : <p>{chains.find((a) => a.name === chain)?.nativeCurrency.symbol}</p>}
-                  <LuChevronsUpDown className='h-5 w-5' />
-                </button>
-              </Link>
+              <button className="w-[120px] h-full p-2 flex gap-2 items-center justify-between bg-[#311C31] text-sm text-[#FC72FF] font-medium rounded-md outline-none" onClick={handleShowSwitchModal}>
+                {!chain ? <p>Switch</p> : <p>{chains.find((a) => a.name === chain)?.nativeCurrency.symbol}</p>}
+                <LuChevronsUpDown className='h-5 w-5' />
+              </button>
+              {showSwitchModal && <Switch onClose={handleCloseSwitchModal} />}
             </div>
             <span className="h-3 w-full text-[#9b9b9b] text-xs">
               {chain === "" ? "" : `You are on ${chain}`}
@@ -121,7 +130,7 @@ export default function Home() {
           </div>
         </div>
         <button type="submit" className="bg-[#311C31] text-[#FC72FF] w-full h-14 text-lg font-medium rounded-[10px]">Request tokens</button>
-      </form>
+      </div>
     </main>
   );
 };
