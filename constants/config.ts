@@ -1,7 +1,8 @@
 
 export type Chain = {
   name: string;
-  url: string,
+  url: string;
+  chainType: string;
   chainId: string;
   rpcUrl: string;
   nativeCurrency: {
@@ -18,6 +19,7 @@ export const chains: Chain[] = [
   {
     name: 'Westend',
     url: 'westend',
+    chainType: 'Westend & Parachain',
     chainId: '',
     rpcUrl: 'wss://westend-rpc.polkadot.io',
     nativeCurrency: {
@@ -31,6 +33,7 @@ export const chains: Chain[] = [
   {
     name: 'Rococo Assethub',
     url: 'rococo-assethub',
+    chainType: 'Westend & Parachain',
     chainId: '',
     rpcUrl: 'wss://rococo-asset-hub-rpc.polkadot.io',
     nativeCurrency: {
@@ -44,6 +47,7 @@ export const chains: Chain[] = [
   {
     name: 'Nodle',
     chainId: '',
+    chainType: 'Westend & Parachain',
     url: 'nodle',
     rpcUrl: 'wss://node-6957502816543653888.lh.onfinality.io/ws?apikey=09b04494-3139-4b57-a5d1-e1c4c18748ce',
     nativeCurrency: {
@@ -58,6 +62,7 @@ export const chains: Chain[] = [
     name: 'Beresheet',
     url: 'beresheet',
     chainId: '',
+    chainType: 'Solochain',
     rpcUrl: 'wss://beresheet.jelliedowl.net',
     nativeCurrency: {
       name: 'tEDG',
@@ -71,6 +76,7 @@ export const chains: Chain[] = [
     name: 'Rococo',
     url: 'rococo',
     chainId: '',
+    chainType: 'Rococo & Parachain',
     rpcUrl: 'wss://rococo-rpc.polkadot.io',
     nativeCurrency: {
       name: 'ROC',
@@ -84,6 +90,7 @@ export const chains: Chain[] = [
     name: 'Beresheet BereEVM',
     url: 'beresheet-bereevm',
     chainId: '2022',
+    chainType: 'Solochain',
     rpcUrl: 'https://beresheet-evm.jelliedowl.net',
     nativeCurrency: {
       name: 'tEDG',
@@ -96,6 +103,7 @@ export const chains: Chain[] = [
     name: 'Moonbase Alpha',
     url: 'moonbase-alpha',
     chainId: '1287',
+    chainType: 'Westend & Parachain',
     rpcUrl: 'https://rpc.testnet.moonbeam.network',
     nativeCurrency: {
       name: 'DEV',
@@ -108,6 +116,7 @@ export const chains: Chain[] = [
     name: 'Tangle',
     url: 'tangle',
     chainId: '3799',
+    chainType: 'Paseo & Parachain',
     rpcUrl: 'https://testnet-rpc.tangle.tools',
     nativeCurrency: {
       name: 'tTNT',
@@ -119,6 +128,7 @@ export const chains: Chain[] = [
   {
     name: 'Bifrost',
     url: 'bifrost',
+    chainType: 'Westend & Parachain',
     chainId: '49088',
     rpcUrl: 'https://public-01.testnet.bifrostnetwork.com/rpc',
     nativeCurrency: {
