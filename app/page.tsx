@@ -2,27 +2,12 @@
 import Switch from '@/components/modals/Switch';
 import { chains } from '@/constants/config';
 import { useFaucetContext } from '@/context';
-import { useSearchParams } from 'next/navigation';
 import { KeyboardEvent, MouseEvent, useState } from 'react';
 import { LuChevronsUpDown } from 'react-icons/lu';
 
-export interface IUser {
-  chain: string;
-  address: string;
-  amount: string;
-};
-
 export default function Home() {
-  const { state, ethereumAccounts, polkadotAccounts } = useFaucetContext();
-  const [user, setUser] = useState<IUser>({
-    chain: "",
-    address: "",
-    amount: "",
-  });
+  const { user, setUser } = useFaucetContext();
   const [showSwitchModal, setShowSwitchModal] = useState(false);
-  const searchParams = useSearchParams();
-  const switchToChain = searchParams.get('chain');
-  const switchChain = chains.find((chain) => chain.url === switchToChain)?.name ?? "";
 
   const handleShowSwitchModal = () => {
     setShowSwitchModal(true);
@@ -31,34 +16,7 @@ export default function Home() {
   const handleCloseSwitchModal = () => {
     setShowSwitchModal(false);
   };
-
-  function getInitialChain(){
-    if(state.ethereumConnected) {
-    const selectedAccount = ethereumAccounts.find((account) => account.address === state.selectedEthereumAccount)
-    const selectedChain = chains.find((chain) => chain.chainId === String((selectedAccount?.chainId)))
-    return selectedChain?.name
-    };
-    if(state.polkadotConnected) {
-      const selectedAccount = polkadotAccounts.find((account) => account.address === state.selectedPolkadotAccount)
-      const selectedChain = chains.find((chain) => chain.name === selectedAccount?.chain)
-      return selectedChain?.name
-    };
-  };
   
-  function getAddress(){
-    if(state.ethereumConnected) {
-      const selectedAccount = ethereumAccounts.find((account) => account.address === state.selectedEthereumAccount)
-      return selectedAccount?.address
-    };
-    if(state.polkadotConnected) {
-      const selectedAccount = polkadotAccounts.find((account) => account.address === state.selectedPolkadotAccount)
-      return selectedAccount?.address
-    };
-  };
-  
-  const address = getAddress() === undefined ? user.address : getAddress() ?? ""; 
-  const chain = getInitialChain() === undefined ? switchChain === undefined ? user.chain : switchChain : getInitialChain() ?? "";
-
   const checkForNumbers = (event: KeyboardEvent<HTMLInputElement>) => {
 		const neededChars = ["Backspace", "Tab", "Enter", ",", "."];
 		// allow only numbers, backspace, tab, enter, comma and period
@@ -70,6 +28,8 @@ export default function Home() {
 			event.preventDefault();
 		}
 	};
+
+  console.log("User Data: ", user);
 
   const getMaxAmount = (event: MouseEvent<HTMLButtonElement>) => {
     setUser({...user, amount: "10"});
@@ -86,17 +46,17 @@ export default function Home() {
               <input 
                 type="text" 
                 className="w-2/3 h-10 text-3xl bg-inherit outline-none placeholder:text-[#5d5d5d]" 
-                value={chain} 
+                value={user.chain} 
                 onChange={(e) => setUser({ ...user, chain: e.target.value })}
                 placeholder="Polkadot" />
               <button className="w-[120px] h-full p-2 flex gap-2 items-center justify-between bg-[#311C31] text-sm text-[#FC72FF] font-medium rounded-md outline-none" onClick={handleShowSwitchModal}>
-                {!chain ? <p>Switch</p> : <p>{chains.find((a) => a.name === chain)?.nativeCurrency.symbol}</p>}
+                {!user.chain ? <p>Switch</p> : <p>{chains.find((a) => a.name === user.chain)?.nativeCurrency.symbol}</p>}
                 <LuChevronsUpDown className='h-5 w-5' />
               </button>
               {showSwitchModal && <Switch onClose={handleCloseSwitchModal} />}
             </div>
             <span className="h-3 w-full text-[#9b9b9b] text-xs">
-              {chain === "" ? "" : `You are on ${chain}`}
+              {user.chain === "" ? "" : `You are on ${user.chain}`}
             </span>
           </div>
           <div className="max-w-[568px] w-[100vw] bg-[#1b1b1b] flex flex-col space-y-[3px] items-start justify-center p-4 rounded-[12px] border-2 border-[#202020] focus-within:border-[#404040]">
@@ -105,12 +65,12 @@ export default function Home() {
               <input 
                 type="text" 
                 className="w-full h-10 text-3xl bg-inherit outline-none placeholder:text-[#5d5d5d]" 
-                value={address} 
+                value={user.address} 
                 onChange={(e) => setUser({ ...user, address: e.target.value })}
                 placeholder="0x" />
             </div>
             <span className="h-3 w-full text-[#9b9b9b] text-xs">
-              {chain === "" ? "" : `Your ${chain} wallet address`}
+              {user.chain === "" ? "" : `Your ${user.chain} wallet address`}
             </span>
           </div>
           <div className="max-w-[568px] w-[100vw] bg-[#1b1b1b] flex flex-col space-y-[3px] items-start justify-center p-4 rounded-[12px] border-2 border-[#202020] focus-within:border-[#404040]">

@@ -11,9 +11,15 @@ import { useRouter } from 'next/navigation';
 export type Account = {
   address: string;
   balance: number;
-  chain?: string;
+  chain: string;
   chainId?: number;
   symbol: string;
+};
+
+export type User = {
+  chain: string;
+  address: string;
+  amount: string;
 };
 
 type State = {
@@ -61,6 +67,8 @@ type FaucetContextType = {
   setSelectedEthereumAccount: (account: string) => void;
   switchEthereumChain: (chain: Chain) => void;
   switchPolkadotChain: (chain: Chain) => void;
+  user: User;
+  setUser: (user: User) => void;
 }
 
 const FaucetContext = React.createContext<FaucetContextType | null>(null);
@@ -69,6 +77,11 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
   const [state, dispatch] = React.useReducer(reducer, initialState);
   const [polkadotAccounts, setPolkadotAccounts] = React.useState<Account[]>([]);
   const [ethereumAccounts, setEthereumAccounts] = React.useState<Account[]>([]);
+  const [user, setUser] = React.useState<User>({
+    chain: "",
+    address: "",
+    amount: "",
+  });
   const router = useRouter();
 
   const setPolkadotConnected = (connected: boolean) => {
@@ -115,6 +128,7 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
         }));
         console.log("polkadot accounts", balances);
         setPolkadotAccounts(balances);
+        setUser({...user, address: balances[0].address, chain: balances[0].chain});
         return true;
       }
     } catch (err) {
@@ -138,14 +152,18 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
           const balance = await web3.eth.getBalance(account);
           const chainId = await web3.eth.getChainId({number: FMT_NUMBER.NUMBER, bytes: FMT_BYTES.HEX});
           const symbol = chains.find((chain) => chain.chainId === String(chainId))?.nativeCurrency.symbol ?? "";
+          const chain = chains.find((chain) => chain.chainId === String(chainId)) ?? chains[0];
           return {
             address: account,
             balance: Number(Web3.utils.fromWei(balance, 'ether')),
             chainId: chainId,
-            symbol: symbol
+            symbol: symbol,
+            chain: chain.name,
           };
         }));
         setEthereumAccounts(balances);
+        setSelectedEthereumAccount(balances[0].address);
+        setUser({...user, address: balances[0].address, chain: balances[0].chain});
         return true;
       } else {
         throw new Error('Ethereum wallet not detected');
@@ -218,6 +236,7 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
 
   const switchEthereumChain = async(chain: Chain) => {
     console.log("Switching to desired chain");
+    setUser({...user, chain: chain.name});
     try {
       await (window as any).ethereum.request({
         method: "wallet_switchEthereumChain",
@@ -266,6 +285,8 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
         console.log("polkadot accounts", balances);
         setPolkadotAccounts(balances);
         setSelectedPolkadotAccount(balances[0].address);
+        setUser({...user, address: balances[0].address, chain: chain.name});
+        console.log("User: inside switchPolkadotChain", user);
       }
     } catch (err) {
       console.log(err);
@@ -291,11 +312,14 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
           setEthereumConnected(true);
           if ('ethereum' in window) {
             const chainId = await (window as any).ethereum.request({ method: 'eth_chainId' });
+            const accounts = await (window as any).ethereum.request({ method: 'eth_requestAccounts' });
             const availableChain = chains.find(chain => `0x${Number(chain.chainId).toString(16)}` === chainId);
             if (!availableChain) {
               router.push('/?chain=beresheet-bereevm')
+              setUser({...user, chain: 'Beresheet BereEVM', address: accounts[0]});
             } else {
               router.push(`/?chain=${availableChain.url}`)
+              setUser({...user, chain: availableChain.name, address: accounts[0]});
             }
           }
         }
@@ -321,6 +345,7 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
       }
     }
     disconnect();
+    setUser({...user, chain: "", address: ""});
     router.push("/");
   };
 
@@ -328,15 +353,17 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
     if (state.polkadotConnected && polkadotAccounts && polkadotAccounts.length > 0) {
       if (!state.selectedPolkadotAccount) {
         setSelectedPolkadotAccount(polkadotAccounts[0].address);
+        setUser({...user, address: polkadotAccounts[0].address, chain: polkadotAccounts[0].chain});
       }
     }
 
     if (state.ethereumConnected && ethereumAccounts && ethereumAccounts.length > 0) {
       if (!state.selectedEthereumAccount) {
         setSelectedEthereumAccount(ethereumAccounts[0].address);
+        setUser({...user, address: ethereumAccounts[0].address, chain: ethereumAccounts[0].chain});
       }
     }
-  }, [state, polkadotAccounts, ethereumAccounts]);
+  }, [state, polkadotAccounts, ethereumAccounts, user]);
 
   return (
     <FaucetContext.Provider value={{
@@ -349,6 +376,8 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
       setSelectedPolkadotAccount,
       switchEthereumChain,
       switchPolkadotChain,
+      user,
+      setUser,
     }}>
       {children}
     </FaucetContext.Provider>
