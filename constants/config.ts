@@ -31,7 +31,7 @@ export const chains: Chain[] = [
     type: 'substrate'
   },
   {
-    name: 'Rococo Assethub',
+    name: 'Rococo Asset Hub',
     url: 'rococo-assethub',
     chainType: 'Westend & Parachain',
     chainId: '',
@@ -45,7 +45,7 @@ export const chains: Chain[] = [
     type: 'substrate'
   },
   {
-    name: 'Nodle',
+    name: 'Parachain Hades testnet',
     chainId: '',
     chainType: 'Westend & Parachain',
     url: 'nodle',

@@ -12,7 +12,7 @@ interface ConnectModalProps{
 export const dynamic = 'force-dynamic';
 
 const Connect: FC<ConnectModalProps> = ({onClose}: ConnectModalProps) => {
-  const { state, handleConnect, handleDisconnect, ethereumAccounts, polkadotAccounts, setSelectedEthereumAccount, setSelectedPolkadotAccount } = useFaucetContext();
+  const { state, handleConnect, user, setUser, handleDisconnect, ethereumAccounts, polkadotAccounts, setSelectedEthereumAccount, setSelectedPolkadotAccount } = useFaucetContext();
 
   return (
     <div className="z-40 bg-transparent w-[432px] h-[calc(100vh-16px)] fixed left-auto right-0 mt-1 mr-2 inset-0 flex overflow-hidden rounded-[16px]" >
@@ -36,6 +36,8 @@ const Connect: FC<ConnectModalProps> = ({onClose}: ConnectModalProps) => {
             onConnect={handleConnect} 
             onDisconnect={handleDisconnect}
             accounts={polkadotAccounts}
+            user={user}
+            setUser={setUser}
             selectedAccount={state.selectedPolkadotAccount}
             setSelectedAccount={setSelectedPolkadotAccount}/>}
           
@@ -45,6 +47,8 @@ const Connect: FC<ConnectModalProps> = ({onClose}: ConnectModalProps) => {
             connected={state.ethereumConnected}
             onConnect={handleConnect} 
             accounts={ethereumAccounts}
+            user={user}
+            setUser={setUser}
             onDisconnect={handleDisconnect}
             selectedAccount={state.selectedEthereumAccount}
             setSelectedAccount={setSelectedEthereumAccount}/>}

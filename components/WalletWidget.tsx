@@ -1,7 +1,6 @@
 import React from 'react';
-import type { Account } from '@/context';
+import type { Account, User } from '@/context';
 import { RiArrowDownSLine } from "react-icons/ri";
-import { IoExitOutline } from "react-icons/io5";
 import { FaPowerOff } from "react-icons/fa6";
 import { Listbox } from '@headlessui/react';
 import Image from 'next/image';
@@ -11,6 +10,8 @@ type WalletProps = {
   selectedAccount?: string;
   setSelectedAccount?: (account: string) => void;
   connected: boolean;
+  user: User;
+  setUser: (user: User) => void;
   type: 'polkadot' | 'ethereum';
   onConnect: (type: 'polkadot' | 'ethereum') => void;
   onDisconnect: (type: 'polkadot' | 'ethereum') => void;
@@ -18,6 +19,8 @@ type WalletProps = {
 
 export const WalletWidget = ({
   connected,
+  user,
+  setUser,
   type,
   onConnect,
   onDisconnect,
@@ -96,6 +99,7 @@ export const WalletWidget = ({
                 key={account.address}
                 value={account.address}
                 className="flex cursor-pointer flex-row items-center p-4 text-left hover:bg-grey-800"
+                onClick={() => setUser({ ...user, address: account.address, chain: account.chain })}
               >
                 <span
                   className={`mr-2 h-2 w-2 shrink-0 rounded-full ${
