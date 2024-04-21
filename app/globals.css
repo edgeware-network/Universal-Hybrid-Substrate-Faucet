@@ -6,7 +6,7 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
-  --color: #a266d7;
+  --color: 162, 102, 215;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -54,7 +54,7 @@ input[type="checkbox"]::before {
   height: 0.65em;
   transform: scale(0);
   transition: 120ms transform ease-in-out;
-  box-shadow: inset 1em 1em var(--color);
+  box-shadow: inset 1em 1em rgb(var(--color));
   background-color: CanvasText;
   transform-origin: center;
   clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
