@@ -15,9 +15,8 @@ interface SwitchModalProps {
 };
 
 const Switch: FC<SwitchModalProps> = ({onClose}: SwitchModalProps) => {
-  const { state, switchEthereumChain, switchPolkadotChain } = useFaucetContext();
+  const { state, switchEthereumChain, switchPolkadotChain, toggle, setToggle } = useFaucetContext();
   const [queryChain, setQueryChain] = useState("");
-  const [toggle, setToggle] = useState<boolean>(true);
   const router = useRouter();
 
   const handleClose = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -85,7 +84,7 @@ const Switch: FC<SwitchModalProps> = ({onClose}: SwitchModalProps) => {
         <div className="bg-black/30 w-full h-full p-2 flex flex-col gap-2 rounded-[12px] overflow-y-scroll">
           {toggle 
             ? <Switcher queryChains={queryChains} handleSwitch={handleSwitch} onClose={onClose} />
-            : <Selector queryChains={queryChains} />}
+            : <Selector queryChains={queryChains} onClose={onClose} />}
         </div>
       </div>
     </div>

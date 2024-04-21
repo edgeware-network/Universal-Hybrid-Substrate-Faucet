@@ -69,6 +69,10 @@ type FaucetContextType = {
   switchPolkadotChain: (chain: Chain) => void;
   user: User;
   setUser: (user: User) => void;
+  selectedChains: string[];
+  setSelectedChains: (chains: string[]) => void;
+  toggle: boolean;
+  setToggle: (toggle: boolean) => void;
 }
 
 const FaucetContext = React.createContext<FaucetContextType | null>(null);
@@ -83,6 +87,8 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
     amount: "",
   });
   const router = useRouter();
+  const [selectedChains, setSelectedChains] = React.useState<string[]>([]);
+  const [toggle, setToggle] = React.useState<boolean>(true);
 
   const setPolkadotConnected = (connected: boolean) => {
     dispatch({ type: 'SET_POLKADOT_CONNECTED', payload: connected });
@@ -378,6 +384,10 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
       switchPolkadotChain,
       user,
       setUser,
+      selectedChains,
+      setSelectedChains,
+      toggle,
+      setToggle,
     }}>
       {children}
     </FaucetContext.Provider>

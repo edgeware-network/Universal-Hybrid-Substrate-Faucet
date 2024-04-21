@@ -50,13 +50,13 @@ const Switcher = ({ queryChains, handleSwitch, onClose }: SwitcherProps): React.
               <Link href={`/?chain=${chain.url}`} key={chain.url} onClick={onClose}>
               {state.ethereumConnected || state.polkadotConnected 
                 ? 
-                  <div className="text-[#dadada] bg-[#131313] flex items-center ml-2 px-2 py-1 h-8 rounded-md cursor-pointer hover:bg-[#181818]" onClick={() => handleSwitch(chain)}>
+                  <div className="text-[#dadada] bg-[#131313] flex items-center ml-2 px-2 py-1 h-full rounded-md cursor-pointer hover:bg-[#181818]" onClick={() => handleSwitch(chain)}>
                     <Image src="/metamask.svg" alt={chain.name} width={20} height={20} className="h-6 w-6" />
                     <span className="h-2 w-2 mr-2 flex shrink-0" />
                     <span className="">{chain.name}</span>
                   </div>
                 :
-                  <div className="text-[#dadada] bg-[#131313] flex items-center ml-2 px-2 py-1 h-8 rounded-md cursor-pointer hover:bg-[#181818]" onClick={() => setUser({...user, chain: chain.name})}>
+                  <div className="text-[#dadada] bg-[#131313] flex items-center ml-2 px-2 py-1 h-full rounded-md cursor-pointer hover:bg-[#181818]" onClick={() => setUser({...user, chain: chain.name})}>
                     <Image src="/metamask.svg" alt={chain.name} width={20} height={20} className="h-6 w-6" />
                     <span className="h-2 w-2 mr-2 flex shrink-0" />
                     <span className="">{chain.name}</span>
