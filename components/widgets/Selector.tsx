@@ -58,7 +58,7 @@ const Selector = ({ queryChains, onClose }: SelectorProps): React.JSX.Element =>
     setUser({ ...user, chain: selectedChains.toLocaleString() });
     onClose();
   };
-
+  
   return (
     <form id="chain-selector" className="flex flex-col items-center justify-center space-y-5 p-1" onSubmit={handleSubmit}>
       <div className="flex flex-col w-full space-y-1">

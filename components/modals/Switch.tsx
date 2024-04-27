@@ -15,7 +15,7 @@ interface SwitchModalProps {
 };
 
 const Switch: FC<SwitchModalProps> = ({onClose}: SwitchModalProps) => {
-  const { state, switchEthereumChain, switchPolkadotChain, toggle, setToggle } = useFaucetContext();
+  const { state, switchEthereumChain, switchPolkadotChain, toggle, setToggle, setUser, user } = useFaucetContext();
   const [queryChain, setQueryChain] = useState("");
   const router = useRouter();
 
@@ -46,8 +46,10 @@ const Switch: FC<SwitchModalProps> = ({onClose}: SwitchModalProps) => {
     }
   });
 
-  const handleClick = () => {
+  const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
     router.push("/");
+    event.preventDefault();
+    setUser({...user, chain: "", address: ""});
   };
 
   return (

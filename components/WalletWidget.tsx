@@ -63,7 +63,6 @@ export const WalletWidget = ({
     return null;
   }
   
-  
   const fullSelectedAccount = accounts.find((a) => a.address === selectedAccount)!;
 
   const truncate = (_walletAddress: string) => {

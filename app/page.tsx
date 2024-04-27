@@ -1,6 +1,6 @@
 "use client";
 import Switch from '@/components/modals/Switch';
-import { Chain, chains } from '@/constants/config';
+import { chains } from '@/constants/config';
 import { useFaucetContext } from '@/context';
 import { Menu } from '@headlessui/react';
 import { decodeAddress, encodeAddress } from '@polkadot/util-crypto';
@@ -10,6 +10,7 @@ import { LuChevronsUpDown } from 'react-icons/lu';
 export default function Home() {
   const { user, setUser, selectedChains, toggle } = useFaucetContext();
   const [showSwitchModal, setShowSwitchModal] = useState(false);
+  const [switchMenu, setSwitchMenu] = useState<string>("Switch");
 
   const handleShowSwitchModal = () => {
     setShowSwitchModal(true);
@@ -37,6 +38,8 @@ export default function Home() {
   };
 
   const getAddress = (chain: string) => {
+    setSwitchMenu(chain);
+    if (!user.address) return;
     const type = chains.find((c) => c.name === chain)?.type;
     if (type === "substrate") {
       const prefix = chains.find((c) => c.name === chain)?.prefix;
@@ -87,7 +90,7 @@ export default function Home() {
               <span className="text-xs text-[#9b9b9b] h-6">Address</span>
               {!toggle &&
                 <Menu>
-                  <Menu.Button className="text-[#0066ff] bg-[rgba(0,102,255,0.1)] px-2 py-1 rounded-md text-xs">Switch address</Menu.Button>
+                  <Menu.Button className="text-[#0066ff] bg-[rgba(0,102,255,0.1)] px-2 py-1 rounded-md text-xs">{switchMenu} format</Menu.Button>
                   <Menu.Items className={`absolute left-auto right-0 top-[170px] z-50 mt-2 origin-bottom-right mr-4 w-[160px] rounded-md bg-[#131313] shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none p-1`}>
                     {selectedChains.map((chain) => (
                       <Menu.Item key={chain}>
@@ -124,6 +127,7 @@ export default function Home() {
                 {user.chain === "" ? "" : `Click on switch button to change address.`}
                 </span>}
           </div>
+          {toggle &&
           <div className="max-w-[568px] w-[100vw] bg-[#1b1b1b] flex flex-col space-y-[3px] items-start justify-center p-4 rounded-[12px] border-2 border-[#202020] focus-within:border-[#0e0909]">
             <span className="text-xs text-[#9b9b9b] h-6">Amount</span>
             <div className="flex items-center justify-between w-full">
@@ -138,7 +142,7 @@ export default function Home() {
               <button onClick={getMaxAmount} className="w-1/2 h-full p-2 flex gap-2 items-center justify-center bg-[rgba(0,102,255,0.1)] text-base text-[#0066FF] font-medium rounded-[8px] outline-none">Max</button>
             </div>
             <span className="text-[#9b9b9b] text-xs h-3 w-full">You can request up to 10 tokens.</span>
-          </div>
+          </div>}
         </div>
         <button type="submit" onClick={handleSubmit} className="bg-[#311C31] text-[#FC72FF] w-full h-14 text-lg font-medium rounded-[10px]">Request tokens</button>
       </div>
