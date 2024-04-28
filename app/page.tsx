@@ -12,7 +12,7 @@ import { useRouter } from 'next/navigation';
 import { Toaster, toast } from 'react-hot-toast';
 
 export default function Home() {
-  const { user, setUser, selectedChains, toggle } = useFaucetContext();
+  const { user, setUser, selectedChains, toggle, state } = useFaucetContext();
   const [showSwitchModal, setShowSwitchModal] = useState(false);
   const [switchMenu, setSwitchMenu] = useState<string>("Switch");
   const captchaRef = useRef<HCaptcha>(null);
@@ -59,6 +59,21 @@ export default function Home() {
     event.preventDefault();
     captchaRef.current?.execute();
     console.log(user);
+    toast.custom((t) => (
+      <div
+        className={`${
+          t.visible ? 'animate-enter' : 'animate-leave'
+        } max-w-[512px] w-full bg-[#1b1b1b] shadow-lg rounded-lg items-center border-[#404040] justify-center gap-[10px] pointer-events-auto flex ring-1 p-4 ring-black ring-opacity-5`}
+      >
+        <LuCheckSquare className="text-green-500 h-5 w-5"/>
+        <span className="h-2 w-2 mr-2 block shrink-0" />
+        {toggle 
+          ? <p className="text-sm">Successfully, sent {user.amount} {chains.find((a) => a.name === user.chain)?.nativeCurrency.symbol} to your wallet address </p>
+          : <p className="text-sm">Successfully, sent {user.amount} to your selected chains</p>
+        }
+      </div>
+    ))
+    setUser({ ...user, amount: "", chain: "", address: "" });
     router.push("/");
   };
 
@@ -189,7 +204,8 @@ export default function Home() {
         </div>
         <div className="w-full flex flex-col space-y-2 items-center justify-center">
           <button type="submit" className="bg-[#311C31] text-[#FC72FF] w-full h-14 text-lg font-medium rounded-[10px] active:scale-95">Request tokens</button>
-          <HCaptcha sentry ref={captchaRef} theme="light" sitekey={process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY!} onVerify={onVerify} />
+          {!state.ethereumConnected && !state.polkadotConnected &&
+          <HCaptcha sentry ref={captchaRef} theme="light" sitekey={process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY!} onVerify={onVerify} />}
         </div>
       </form>
       {showSwitchModal && <Switch onClose={handleCloseSwitchModal} />}
