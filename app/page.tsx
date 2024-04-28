@@ -4,15 +4,22 @@ import { chains } from '@/constants/config';
 import { useFaucetContext } from '@/context';
 import { Menu } from '@headlessui/react';
 import { decodeAddress, encodeAddress } from '@polkadot/util-crypto';
-import { KeyboardEvent, MouseEvent, useState } from 'react';
-import { LuChevronsUpDown } from 'react-icons/lu';
+import { KeyboardEvent, MouseEvent, useRef, useState } from 'react';
+import { LuChevronsUpDown, LuCheckSquare } from 'react-icons/lu';
+import HCaptcha from '@hcaptcha/react-hcaptcha';
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
+import { Toaster, toast } from 'react-hot-toast';
 
 export default function Home() {
   const { user, setUser, selectedChains, toggle } = useFaucetContext();
   const [showSwitchModal, setShowSwitchModal] = useState(false);
   const [switchMenu, setSwitchMenu] = useState<string>("Switch");
+  const captchaRef = useRef<HCaptcha>(null);
+  const router = useRouter();
 
-  const handleShowSwitchModal = () => {
+  const handleShowSwitchModal = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
     setShowSwitchModal(true);
   };
 
@@ -48,14 +55,51 @@ export default function Home() {
     };
   };
 
-  const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    captchaRef.current?.execute();
     console.log(user);
+    router.push("/");
+  };
+
+  const onVerify = async(captchaCode: string | null) => {
+    if (!captchaCode) {
+      return;
+    };
+    try {
+      const res = await axios.post('/api/verify', {chain: user.chain, address: user.address, amount: 10 | Number(user.amount), captcha: captchaCode });
+
+      if(res.data) {
+        toast.custom((t) => (
+          <div
+            className={`${
+              t.visible ? 'animate-enter' : 'animate-leave'
+            } max-w-[512px] w-full bg-[#1b1b1b] shadow-lg rounded-lg items-center border-[#404040] justify-center gap-[10px] pointer-events-auto flex ring-1 p-4 ring-black ring-opacity-5`}
+          >
+            <LuCheckSquare className="text-green-500 h-5 w-5"/>
+            <span className="h-2 w-2 mr-2 block shrink-0" />
+            {toggle 
+              ? <p className="text-sm">Successfully, sent {user.amount} {chains.find((a) => a.name === user.chain)?.nativeCurrency.symbol} to your wallet address </p>
+              : <p className="text-sm">Successfully, sent {user.amount} to your selected chains</p>
+            }
+          </div>
+        ))
+      } else {
+        const error = await res.data;
+        throw new Error(error.message);
+      }
+    } catch (error: any) {
+      toast.error(error.message || "Something went wrong");
+    } finally { 
+      captchaRef.current?.resetCaptcha();
+      setUser({ chain: "", amount: "", address: "" });
+    }
   };
 
   return (
     <main className="relative top-[100px]">
-      <div className="sm:flex hidden flex-col items-center justify-center gap-[8px] p-[4px] bg-[#131313] rounded-[12px]">
+      <Toaster />
+      <form className="sm:flex hidden flex-col items-center justify-center gap-[8px] p-[4px] bg-[#131313] rounded-[12px]" onSubmit={handleSubmit}>
         <div className="flex flex-col items-center space-y-[5px]">
           <div className="max-w-[568px] w-[100vw] bg-[#1b1b1b] flex flex-col space-y-[3px] items-start justify-center p-4 rounded-[12px] border-2 border-[#202020] focus-within:border-[#404040]">
             <span className="text-xs text-[#9b9b9b] h-6">Chain</span>
@@ -75,7 +119,6 @@ export default function Home() {
                     <p>Select</p>
                     <LuChevronsUpDown className='h-5 w-5' />
                   </button>}
-              {showSwitchModal && <Switch onClose={handleCloseSwitchModal} />}
             </div>
             {toggle
               ? <span className="h-3 w-full text-[#9b9b9b] text-xs">
@@ -102,7 +145,7 @@ export default function Home() {
                                 ? 'bg-[rgba(0,102,255,0.1)] text-[#0066ff]'
                                 : 'text-[#9b9b9b]'
                             } flex rounded-md items-center w-full text-xs`}
-                          >
+                            >
                             {chain}
                           </div>
                         )}
@@ -144,8 +187,12 @@ export default function Home() {
             <span className="text-[#9b9b9b] text-xs h-3 w-full">You can request up to 10 tokens.</span>
           </div>}
         </div>
-        <button type="submit" onClick={handleSubmit} className="bg-[#311C31] text-[#FC72FF] w-full h-14 text-lg font-medium rounded-[10px]">Request tokens</button>
-      </div>
+        <div className="w-full flex flex-col space-y-2 items-center justify-center">
+          <button type="submit" className="bg-[#311C31] text-[#FC72FF] w-full h-14 text-lg font-medium rounded-[10px] active:scale-95">Request tokens</button>
+          <HCaptcha sentry ref={captchaRef} theme="light" sitekey={process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY!} onVerify={onVerify} />
+        </div>
+      </form>
+      {showSwitchModal && <Switch onClose={handleCloseSwitchModal} />}
     </main>
   );
 };
