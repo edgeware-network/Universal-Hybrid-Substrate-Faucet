@@ -207,7 +207,7 @@ export default function Home() {
         <div className="w-full flex flex-col space-y-2 items-center justify-center">
           <button type="submit" className="bg-[#311C31] text-[#FC72FF] w-full h-14 text-lg font-medium rounded-[10px] active:scale-95">Request tokens</button>
           {!state.ethereumConnected && !state.polkadotConnected &&
-          <HCaptcha sentry ref={captchaRef} theme="light" sitekey={process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY!} onVerify={onVerify} />}
+          <HCaptcha sentry size="invisible" ref={captchaRef} theme="light" sitekey={process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY!} onVerify={onVerify} />}
         </div>
       </form>
       {showSwitchModal && <Switch onClose={handleCloseSwitchModal} />}
