@@ -207,7 +207,7 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
             if ((err as any).code === 4902) {
               await (window as any).ethereum.request({
                 method: "wallet_addEthereumChain",
-                params: [{ chainId: "0x7e6", chainName: "Beresheet BereEVM", rpcUrls: "https://beresheet-evm.jelliedowl.net", nativeCurrency: { name: "tEDG", symbol: "tEDG", decimals: 18} }],
+                params: [{ chainId: "0x7e6", chainName: "Beresheet BereEVM", rpcUrls: ["https://beresheet-evm.jelliedowl.net"], nativeCurrency: { name: "tEDG", symbol: "tEDG", decimals: 18} }],
               })
             };
         };
