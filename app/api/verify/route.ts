@@ -1,7 +1,6 @@
 import axios from "axios";
-import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
-export async function POST(req: NextRequest, res: NextResponse) {
+export async function POST(req: NextRequest) {
 
   const body = await req.json();
   const { chain, address, amount, captcha } = body;
