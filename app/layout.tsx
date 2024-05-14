@@ -20,9 +20,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${space_mono.className} bg-[#131313] min-h-screen z-0 flex flex-col items-center justify-between p-4`}>
+      <body
+        className={`${space_mono.className} bg-[#131313] min-h-screen z-0 flex flex-col items-center justify-between p-4`}
+      >
         <FaucetProvider>
-          <Suspense fallback={<div className=" text-white bg-[#000]/30 flex items-center justify-center z-50">Loading...</div>}>
+          <Suspense
+            fallback={
+              <div className=" text-white bg-[#000]/30 flex items-center justify-center z-50">
+                Loading...
+              </div>
+            }
+          >
             <Navbar />
             {children}
           </Suspense>
