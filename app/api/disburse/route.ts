@@ -10,20 +10,20 @@ export async function POST(req: NextRequest) {
   const body = await req.json();
   const { disburseChains }: DisburseRequest = body;
   console.log(disburseChains);
-  // try {
-  //   const disbursements = disburseChains.map(async (chain) => {
-  //     if(chain.type === 'substrate') {
-  //       await disburseSubstrateToken(chain);
-  //     } else if(chain.type === 'ethereum') {
-  //       await disburseEvmToken(chain);
-  //     }
-  //   });
-  //   const results = await Promise.all(disbursements);
-  //   console.log(results);
+  try {
+    const disbursements = disburseChains.map(async (chain) => {
+      console.log(chain)
+      if(chain.type === 'substrate') {
+        await disburseSubstrateToken(chain);
+      } else if(chain.type === 'evm') {
+        await disburseEvmToken(chain);
+      }
+    });
+    await Promise.all(disbursements);
 
-  // } catch (error) {
-  //   console.error(error);
-  //   return NextResponse.json({message: "failed"}, { status: 400 });
-  // }
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({message: "failed"}, { status: 400 });
+  }
   return NextResponse.json({message: "success"}, { status: 200 });
 };
