@@ -290,7 +290,7 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
         }));
         console.log("polkadot accounts", balances);
         setPolkadotAccounts(balances);
-        setSelectedPolkadotAccount(balances[0].address);
+        setSelectedPolkadotAccount(encodeAddress(decodeAddress(user.address), chain.prefix));
         setUser({...user, address: encodeAddress(decodeAddress(user.address), chain.prefix), chain: chain.name});
       }
     } catch (err) {
