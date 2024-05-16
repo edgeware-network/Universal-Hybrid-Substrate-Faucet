@@ -291,8 +291,7 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
         console.log("polkadot accounts", balances);
         setPolkadotAccounts(balances);
         setSelectedPolkadotAccount(balances[0].address);
-        setUser({...user, address: balances[0].address, chain: chain.name});
-        console.log("User: inside switchPolkadotChain", user);
+        setUser({...user, address: encodeAddress(decodeAddress(user.address), chain.prefix), chain: chain.name});
       }
     } catch (err) {
       console.log(err);
