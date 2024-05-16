@@ -49,14 +49,14 @@ const Selector = ({
     },
   ];
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, checked } = event.target;
-    if (checked) {
-      setSelectedChains([...selectedChains, name]);
-    } else {
-      setSelectedChains(selectedChains.filter((chain) => chain !== name));
-    }
-  };
+  // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const { name, checked } = event.target;
+  //   if (checked) {
+  //     setSelectedChains([...selectedChains, name]);
+  //   } else {
+  //     setSelectedChains(selectedChains.filter((chain) => chain !== name));
+  //   }
+  // };
 
   const handleClick = (chain: Chain) => {
     if (selectedChains.includes(chain.name)) {
@@ -77,7 +77,7 @@ const Selector = ({
   return (
     <form
       id="chain-selector"
-      className="flex flex-col items-center justify-center space-y-5 p-1"
+      className="flex flex-col items-center justify-end space-y-5 p-1 "
       onSubmit={handleSubmit}
     >
       <div className="flex flex-col w-full space-y-1">
@@ -91,58 +91,40 @@ const Selector = ({
             </div>
             <div className="grid text-sm gap-1 grid-cols-3 font-normal">
               {chain_group.chains.map((chain) => (
-                <Fragment key={chain.name}>
-                  {selectedChains.includes(chain.name) ? (
-                    <div
-                      key={chain.url}
-                      className="text-[#fff] text-wrap text-center bg-[#c358c5] flex flex-auto items-center ml-2 px-2 py-1 h-full rounded-full cursor-pointer"
-                    >
+                <div
+                  key={chain.url}
+                  className={`${
+                    selectedChains.includes(chain.name)
+                      ? "text-[#fff] bg-[#c358c5]"
+                      : "text-[#dadada] hover:bg-[#181818]"
+                  } text-wrap text-center flex items-center ml-2 px-2 py-1 h-full rounded-md cursor-pointer`}
+                  onClick={() => handleClick(chain)}
+                >
+                  <div className="flex items-center">
+                    {selectedChains.includes(chain.name) && (
                       <IoMdCloseCircle
                         className="h-5 w-5 mr-2 text-[#131313]"
                         onClick={() => handleClick(chain)}
                       />
-                      <div className="">{chain.name}</div>
-                    </div>
-                  ) : (
-                    <div
-                      key={chain.url}
-                      className="text-[#dadada] text-wrap text-center bg-[#131313] flex items-center ml-2 px-2 py-1 h-full rounded-md cursor-pointer hover:bg-[#181818]"
-                    >
-                      <input
-                        type="checkbox"
-                        onClick={() =>
-                          setUser({
-                            ...user,
-                            chain: selectedChains.toLocaleString(),
-                          })
-                        }
-                        value={chain.name}
-                        name={chain.name}
-                        onChange={handleChange}
-                        checked={selectedChains.includes(chain.name)}
-                      />
-                      <span className="h-1 w-1 mr-1 block shrink-0" />
-                      <div className="flex items-center justify-center">
-                        <Image
-                          src="/metamask.svg"
-                          alt={chain.name}
-                          width={20}
-                          height={20}
-                          className="h-6 w-6"
-                        />
-                        <span className="h-2 w-2 mr-2 flex shrink-0" />
-                        <span className="">{chain.name}</span>
-                      </div>
-                    </div>
-                  )}
-                </Fragment>
+                    )}
+                    <Image
+                      src="/metamask.svg"
+                      alt={chain.name}
+                      width={20}
+                      height={20}
+                      className="h-6 w-6"
+                    />
+                    <span className="h-2 w-2 mr-2 flex shrink-0" />
+                    <span>{chain.name}</span>
+                  </div>
+                </div>
               ))}
             </div>
           </div>
         ))}
       </div>
       <button
-        className="w-1/4 text-[#fff] bg-[rgba(0,102,255,0.8)] active:scale-95 p-2 rounded-[12px]"
+        className="w-1/4 text-[#fff] bg-[rgba(0,102,255,0.7)] hover:bg-[rgba(0,102,255,0.9)] active:scale-95 p-2 rounded-[12px]"
         type="submit"
       >
         Submit
