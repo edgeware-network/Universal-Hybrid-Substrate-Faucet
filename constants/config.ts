@@ -45,6 +45,20 @@ export const chains: Chain[] = [
     type: 'substrate'
   },
   {
+    name: 'Rococo',
+    url: 'rococo',
+    chainId: '',
+    chainType: 'Rococo & Parachain',
+    rpcUrl: 'wss://rococo-rpc.polkadot.io',
+    nativeCurrency: {
+      name: 'ROC',
+      symbol: 'ROC',
+      decimals: 12
+    },
+    prefix: 42,
+    type: 'substrate'
+  },
+  {
     name: 'Parachain Hades testnet',
     chainId: '',
     chainType: 'Westend & Parachain',
@@ -73,18 +87,17 @@ export const chains: Chain[] = [
     type: 'substrate'
   },
   {
-    name: 'Rococo',
-    url: 'rococo',
-    chainId: '',
-    chainType: 'Rococo & Parachain',
-    rpcUrl: 'wss://rococo-rpc.polkadot.io',
+    name: 'Bifrost',
+    url: 'bifrost',
+    chainType: 'Westend & Parachain',
+    chainId: '49088',
+    rpcUrl: 'https://public-01.testnet.bifrostnetwork.com/rpc',
     nativeCurrency: {
-      name: 'ROC',
-      symbol: 'ROC',
-      decimals: 12
+      name: 'BFC',
+      symbol: 'BFC',
+      decimals: 18
     },
-    prefix: 42,
-    type: 'substrate'
+    type: 'evm'
   },
   {
     name: 'Beresheet BereEVM',
@@ -95,19 +108,6 @@ export const chains: Chain[] = [
     nativeCurrency: {
       name: 'tEDG',
       symbol: 'tEDG',
-      decimals: 18
-    },
-    type: 'evm'
-  },
-  {
-    name: 'Moonbase Alpha',
-    url: 'moonbase-alpha',
-    chainId: '1287',
-    chainType: 'Westend & Parachain',
-    rpcUrl: 'https://rpc.testnet.moonbeam.network',
-    nativeCurrency: {
-      name: 'DEV',
-      symbol: 'DEV',
       decimals: 18
     },
     type: 'evm'
@@ -126,14 +126,27 @@ export const chains: Chain[] = [
     type: 'evm'
   },
   {
-    name: 'Bifrost',
-    url: 'bifrost',
+    name: 'Moonbase Alpha',
+    url: 'moonbase-alpha',
+    chainId: '1287',
     chainType: 'Westend & Parachain',
-    chainId: '49088',
-    rpcUrl: 'https://public-01.testnet.bifrostnetwork.com/rpc',
+    rpcUrl: 'https://rpc.testnet.moonbeam.network',
     nativeCurrency: {
-      name: 'BFC',
-      symbol: 'BFC',
+      name: 'DEV',
+      symbol: 'DEV',
+      decimals: 18
+    },
+    type: 'evm'
+  },
+  {
+    name: 'Moonbase Alpha',
+    url: 'moonbase-alpha',
+    chainId: '1287',
+    chainType: 'Westend & Parachain',
+    rpcUrl: 'https://rpc.testnet.moonbeam.network',
+    nativeCurrency: {
+      name: 'DEV',
+      symbol: 'DEV',
       decimals: 18
     },
     type: 'evm'
