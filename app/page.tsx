@@ -11,6 +11,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { Toaster, toast } from "react-hot-toast";
 import Loading from "@/components/Loading";
+import ParticlesComponent from "@/components/ParticlesComponent";
 
 export default function Home() {
   const [isLoading, setLoading] = useState(true);
@@ -202,171 +203,178 @@ export default function Home() {
   };
 
   return (
-    <main className="relative top-[100px]">
-      <Toaster />
-      {isLoading ? (
-        <Loading />
-      ) : (
-        <form
-          className="sm:flex hidden flex-col items-center justify-center gap-[8px] p-[4px] bg-[#131313] rounded-[12px]"
-          onSubmit={handleSubmit}
-        >
-          <div className="flex flex-col items-center space-y-[5px]">
-            <div className="max-w-[568px] w-[100vw] bg-[#1b1b1b] flex flex-col space-y-[3px] items-start justify-center p-4 rounded-[12px] border-2 border-[#202020] focus-within:border-[#404040]">
-              <span className="text-xs text-[#9b9b9b] h-6">Chain</span>
-              <div className="flex items-center justify-between w-full">
-                <input
-                  type="text"
-                  className="w-2/3 h-10 text-3xl bg-inherit outline-none placeholder:text-[#5d5d5d]"
-                  value={user.chain}
-                  onChange={(e) => setUser({ ...user, chain: e.target.value })}
-                  placeholder="Polkadot"
-                />
-                {toggle ? (
-                  <button
-                    className="w-[120px] h-full p-2 flex gap-2 items-center justify-between bg-[#311C31] text-sm text-[#FC72FF] font-medium rounded-md outline-none"
-                    onClick={handleShowSwitchModal}
-                  >
-                    {!user.chain ? (
-                      <p>Switch</p>
-                    ) : (
-                      <p>
-                        {
-                          chains.find((a) => a.name === user.chain)
-                            ?.nativeCurrency.symbol
-                        }
-                      </p>
-                    )}
-                    <LuChevronsUpDown className="h-5 w-5" />
-                  </button>
-                ) : (
-                  <button
-                    className="w-[120px] h-full p-2 flex gap-2 items-center justify-between bg-[#311C31] text-sm text-[#FC72FF] font-medium rounded-md outline-none"
-                    onClick={handleShowSwitchModal}
-                  >
-                    <p>Select</p>
-                    <LuChevronsUpDown className="h-5 w-5" />
-                  </button>
-                )}
-              </div>
-              {toggle ? (
-                <span className="h-3 w-full text-[#9b9b9b] text-xs">
-                  {user.chain === "" ? "" : `You are on ${user.chain}`}
-                </span>
-              ) : (
-                <span className="h-3 w-full text-[#9b9b9b] text-xs">
-                  {user.chain === ""
-                    ? ""
-                    : `You have selected ${selectedChains.length} chains`}
-                </span>
-              )}
-            </div>
-            <div className="max-w-[568px] w-[100vw] bg-[#1b1b1b] flex flex-col space-y-[3px] items-start justify-center p-4 rounded-[12px] border-2 border-[#202020] focus-within:border-[#404040]">
-              <div className="flex items-center justify-between w-full">
-                <span className="text-xs text-[#9b9b9b] h-6">Address</span>
-                {!toggle && (
-                  <Menu>
-                    <Menu.Button className="text-[#0066ff] bg-[rgba(0,102,255,0.1)] px-2 py-1 rounded-md text-xs">
-                      {switchMenu} format
-                    </Menu.Button>
-                    <Menu.Items
-                      className={`absolute left-auto right-0 top-[170px] z-50 mt-2 origin-bottom-right mr-4 w-[160px] rounded-md bg-[#131313] shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none p-1`}
-                    >
-                      {selectedChains.map((chain) => (
-                        <Menu.Item key={chain}>
-                          {({ active }) => (
-                            <div
-                              onClick={() => getAddress(chain)}
-                              className={`cursor-pointer text-wrap text-start p-2 ${
-                                active
-                                  ? "bg-[rgba(0,102,255,0.1)] text-[#0066ff]"
-                                  : "text-[#9b9b9b]"
-                              } flex rounded-md items-center w-full text-xs`}
-                            >
-                              {chain}
-                            </div>
-                          )}
-                        </Menu.Item>
-                      ))}
-                    </Menu.Items>
-                  </Menu>
-                )}
-              </div>
-              <div className="flex items-center justify-between w-full">
-                <input
-                  type="text"
-                  className="w-full h-10 text-3xl bg-inherit outline-none placeholder:text-[#5d5d5d]"
-                  value={user.address}
-                  onChange={(e) =>
-                    setUser({ ...user, address: e.target.value })
-                  }
-                  placeholder="0x"
-                />
-              </div>
-              {toggle ? (
-                <span className="h-3 w-full text-[#9b9b9b] text-xs">
-                  {user.chain === "" ? "" : `Your ${user.chain} wallet address`}
-                </span>
-              ) : (
-                <span className="h-3 w-full text-[#9b9b9b] text-xs">
-                  {user.chain === ""
-                    ? ""
-                    : `Click on switch button to change address.`}
-                </span>
-              )}
-            </div>
-            {toggle && (
-              <div className="max-w-[568px] w-[100vw] bg-[#1b1b1b] flex flex-col space-y-[3px] items-start justify-center p-4 rounded-[12px] border-2 border-[#202020] focus-within:border-[#0e0909]">
-                <span className="text-xs text-[#9b9b9b] h-6">Amount</span>
+    <>
+      <main className="relative top-[100px] z-10">
+        <Toaster />
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <form
+            className=" sm:flex hidden flex-col items-center justify-center gap-[8px] p-[4px] bg-[#131313] rounded-[12px]"
+            onSubmit={handleSubmit}
+          >
+            <div className="flex flex-col items-center space-y-[5px]">
+              <div className="max-w-[568px] w-[100vw] bg-[#1b1b1b] flex flex-col space-y-[3px] items-start justify-center p-4 rounded-[12px] border-2 border-[#202020] focus-within:border-[#404040]">
+                <span className="text-xs text-[#9b9b9b] h-6">Chain</span>
                 <div className="flex items-center justify-between w-full">
                   <input
                     type="text"
-                    className="w-1/2 h-10 text-3xl bg-inherit outline-none placeholder:text-[#5d5d5d]"
-                    value={user.amount}
-                    inputMode="decimal"
-                    onKeyDown={checkForNumbers}
+                    className="w-2/3 h-10 text-3xl bg-inherit outline-none placeholder:text-[#5d5d5d]"
+                    value={user.chain}
                     onChange={(e) =>
-                      setUser({
-                        ...user,
-                        amount: e.target.value.replace(",", "."),
-                      })
+                      setUser({ ...user, chain: e.target.value })
                     }
-                    placeholder="0"
+                    placeholder="Polkadot"
                   />
-                  <button
-                    onClick={getMaxAmount}
-                    className="w-1/2 h-full p-2 flex gap-2 items-center justify-center bg-[rgba(0,102,255,0.1)] text-base text-[#0066FF] font-medium rounded-[8px] outline-none"
-                  >
-                    Max
-                  </button>
+                  {toggle ? (
+                    <button
+                      className="w-[120px] h-full p-2 flex gap-2 items-center justify-between bg-[#311C31] text-sm text-[#FC72FF] font-medium rounded-md outline-none"
+                      onClick={handleShowSwitchModal}
+                    >
+                      {!user.chain ? (
+                        <p>Switch</p>
+                      ) : (
+                        <p>
+                          {
+                            chains.find((a) => a.name === user.chain)
+                              ?.nativeCurrency.symbol
+                          }
+                        </p>
+                      )}
+                      <LuChevronsUpDown className="h-5 w-5" />
+                    </button>
+                  ) : (
+                    <button
+                      className="w-[120px] h-full p-2 flex gap-2 items-center justify-between bg-[#311C31] text-sm text-[#FC72FF] font-medium rounded-md outline-none"
+                      onClick={handleShowSwitchModal}
+                    >
+                      <p>Select</p>
+                      <LuChevronsUpDown className="h-5 w-5" />
+                    </button>
+                  )}
                 </div>
-                <span className="text-[#9b9b9b] text-xs h-3 w-full">
-                  You can request up to 10 tokens.
-                </span>
+                {toggle ? (
+                  <span className="h-3 w-full text-[#9b9b9b] text-xs">
+                    {user.chain === "" ? "" : `You are on ${user.chain}`}
+                  </span>
+                ) : (
+                  <span className="h-3 w-full text-[#9b9b9b] text-xs">
+                    {user.chain === ""
+                      ? ""
+                      : `You have selected ${selectedChains.length} chains`}
+                  </span>
+                )}
               </div>
-            )}
-          </div>
-          <div className="w-full flex flex-col space-y-2 items-center justify-center">
-            <button
-              type="submit"
-              className="bg-[#311C31] text-[#FC72FF] w-full h-14 text-lg font-medium rounded-[10px] active:scale-95"
-            >
-              Request tokens
-            </button>
-            {!state.ethereumConnected && !state.polkadotConnected && (
-              <HCaptcha
-                sentry
-                size="invisible"
-                ref={captchaRef}
-                theme="light"
-                sitekey={process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY!}
-                onVerify={onVerify}
-              />
-            )}
-          </div>
-        </form>
-      )}
-      {showSwitchModal && <Switch onClose={handleCloseSwitchModal} />}
-    </main>
+              <div className="max-w-[568px] w-[100vw] bg-[#1b1b1b] flex flex-col space-y-[3px] items-start justify-center p-4 rounded-[12px] border-2 border-[#202020] focus-within:border-[#404040]">
+                <div className="flex items-center justify-between w-full">
+                  <span className="text-xs text-[#9b9b9b] h-6">Address</span>
+                  {!toggle && (
+                    <Menu>
+                      <Menu.Button className="text-[#0066ff] bg-[rgba(0,102,255,0.1)] px-2 py-1 rounded-md text-xs">
+                        {switchMenu} format
+                      </Menu.Button>
+                      <Menu.Items
+                        className={`absolute left-auto right-0 top-[170px] z-50 mt-2 origin-bottom-right mr-4 w-[160px] rounded-md bg-[#131313] shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none p-1`}
+                      >
+                        {selectedChains.map((chain) => (
+                          <Menu.Item key={chain}>
+                            {({ active }) => (
+                              <div
+                                onClick={() => getAddress(chain)}
+                                className={`cursor-pointer text-wrap text-start p-2 ${
+                                  active
+                                    ? "bg-[rgba(0,102,255,0.1)] text-[#0066ff]"
+                                    : "text-[#9b9b9b]"
+                                } flex rounded-md items-center w-full text-xs`}
+                              >
+                                {chain}
+                              </div>
+                            )}
+                          </Menu.Item>
+                        ))}
+                      </Menu.Items>
+                    </Menu>
+                  )}
+                </div>
+                <div className="flex items-center justify-between w-full">
+                  <input
+                    type="text"
+                    className="w-full h-10 text-3xl bg-inherit outline-none placeholder:text-[#5d5d5d]"
+                    value={user.address}
+                    onChange={(e) =>
+                      setUser({ ...user, address: e.target.value })
+                    }
+                    placeholder="0x"
+                  />
+                </div>
+                {toggle ? (
+                  <span className="h-3 w-full text-[#9b9b9b] text-xs">
+                    {user.chain === ""
+                      ? ""
+                      : `Your ${user.chain} wallet address`}
+                  </span>
+                ) : (
+                  <span className="h-3 w-full text-[#9b9b9b] text-xs">
+                    {user.chain === ""
+                      ? ""
+                      : `Click on switch button to change address.`}
+                  </span>
+                )}
+              </div>
+              {toggle && (
+                <div className="max-w-[568px] w-[100vw] bg-[#1b1b1b] flex flex-col space-y-[3px] items-start justify-center p-4 rounded-[12px] border-2 border-[#202020] focus-within:border-[#0e0909]">
+                  <span className="text-xs text-[#9b9b9b] h-6">Amount</span>
+                  <div className="flex items-center justify-between w-full">
+                    <input
+                      type="text"
+                      className="w-1/2 h-10 text-3xl bg-inherit outline-none placeholder:text-[#5d5d5d]"
+                      value={user.amount}
+                      inputMode="decimal"
+                      onKeyDown={checkForNumbers}
+                      onChange={(e) =>
+                        setUser({
+                          ...user,
+                          amount: e.target.value.replace(",", "."),
+                        })
+                      }
+                      placeholder="0"
+                    />
+                    <button
+                      onClick={getMaxAmount}
+                      className="w-1/2 h-full p-2 flex gap-2 items-center justify-center bg-[rgba(0,102,255,0.1)] text-base text-[#0066FF] font-medium rounded-[8px] outline-none"
+                    >
+                      Max
+                    </button>
+                  </div>
+                  <span className="text-[#9b9b9b] text-xs h-3 w-full">
+                    You can request up to 10 tokens.
+                  </span>
+                </div>
+              )}
+            </div>
+            <div className="w-full flex flex-col space-y-2 items-center justify-center">
+              <button
+                type="submit"
+                className="bg-[#311C31] text-[#FC72FF] w-full h-14 text-lg font-medium rounded-[10px] active:scale-95"
+              >
+                Request tokens
+              </button>
+              {!state.ethereumConnected && !state.polkadotConnected && (
+                <HCaptcha
+                  sentry
+                  size="invisible"
+                  ref={captchaRef}
+                  theme="light"
+                  sitekey={process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY!}
+                  onVerify={onVerify}
+                />
+              )}
+            </div>
+          </form>
+        )}
+        {showSwitchModal && <Switch onClose={handleCloseSwitchModal} />}
+      </main>
+      <ParticlesComponent />
+    </>
   );
 }
