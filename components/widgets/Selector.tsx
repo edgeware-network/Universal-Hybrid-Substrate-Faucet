@@ -2,8 +2,7 @@
 import { Chain } from "@/constants/config";
 import { useFaucetContext } from "@/context";
 import Image from "next/image";
-import React, { Fragment } from "react";
-import { RxCross2 } from "react-icons/rx";
+import React, { useState } from "react";
 import { IoMdCloseCircle } from "react-icons/io";
 
 interface SelectorProps {
@@ -17,6 +16,8 @@ const Selector = ({
 }: SelectorProps): React.JSX.Element => {
   const { user, setUser, selectedChains, setSelectedChains } =
     useFaucetContext();
+  const [selectedType, setSelectedType] = useState<string | null>(null);
+
   const westend_chains = queryChains.filter(
     (chain) => chain.chainType === "Westend & Parachain"
   );
@@ -29,7 +30,7 @@ const Selector = ({
   const solochains = queryChains.filter(
     (chain) => chain.chainType === "Solochain"
   );
-  console.log(selectedChains);
+
   const all_chains = [
     {
       title: "Westend & Parachain",
@@ -49,22 +50,28 @@ const Selector = ({
     },
   ];
 
-  // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const { name, checked } = event.target;
-  //   if (checked) {
-  //     setSelectedChains([...selectedChains, name]);
-  //   } else {
-  //     setSelectedChains(selectedChains.filter((chain) => chain !== name));
-  //   }
-  // };
-
   const handleClick = (chain: Chain) => {
+    let updatedSelectedChains: string[] = [];
+
     if (selectedChains.includes(chain.name)) {
-      setSelectedChains(
-        selectedChains.filter((chain_name) => chain_name !== chain.name)
+      // If the chain is already selected, remove it from selected chains
+      updatedSelectedChains = selectedChains.filter(
+        (chainName) => chainName !== chain.name
       );
     } else {
-      setSelectedChains([...selectedChains, chain.name]);
+      // If the chain is not selected, add it to selected chains
+      updatedSelectedChains = [...selectedChains, chain.name];
+    }
+
+    setSelectedChains(updatedSelectedChains);
+
+    // Update the selectedType based on the current selection
+    if (updatedSelectedChains.length === 0) {
+      setSelectedType(null);
+    } else if (chain.type === "substrate") {
+      setSelectedType("substrate");
+    } else if (chain.type === "evm") {
+      setSelectedType("evm");
     }
   };
 
@@ -77,7 +84,7 @@ const Selector = ({
   return (
     <form
       id="chain-selector"
-      className="flex flex-col items-center justify-end space-y-5 p-1 "
+      className="flex flex-col items-center justify-end space-y-5 p-1"
       onSubmit={handleSubmit}
     >
       <div className="flex flex-col w-full space-y-1">
@@ -97,6 +104,8 @@ const Selector = ({
                     selectedChains.includes(chain.name)
                       ? "text-[#fff] bg-[#c358c5]"
                       : "text-[#dadada] hover:bg-[#181818]"
+                  } ${
+                    selectedType && chain.type !== selectedType ? "hidden" : ""
                   } text-wrap text-center flex items-center ml-2 px-2 py-1 h-full rounded-md cursor-pointer`}
                   onClick={() => handleClick(chain)}
                 >
