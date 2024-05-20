@@ -233,7 +233,7 @@ export default function Home() {
                     onChange={(e) =>
                       setUser({ ...user, chain: e.target.value })
                     }
-                    placeholder="Polkadot"
+                    placeholder="Rococo Relay Chain"
                   />
                   {toggle ? (
                     <button
@@ -313,7 +313,7 @@ export default function Home() {
                     onChange={(e) =>
                       setUser({ ...user, address: e.target.value })
                     }
-                    placeholder="0x"
+                    placeholder="address"
                   />
                 </div>
                 {toggle ? (

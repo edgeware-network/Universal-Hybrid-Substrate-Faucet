@@ -138,17 +138,4 @@ export const chains: Chain[] = [
     },
     type: 'evm'
   },
-  {
-    name: 'Moonbase Alpha',
-    url: 'moonbase-alpha',
-    chainId: '1287',
-    chainType: 'Westend & Parachain',
-    rpcUrl: 'https://rpc.testnet.moonbeam.network',
-    nativeCurrency: {
-      name: 'DEV',
-      symbol: 'DEV',
-      decimals: 18
-    },
-    type: 'evm'
-  },
 ]
