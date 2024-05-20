@@ -46,7 +46,7 @@ const Connect: FC<ConnectModalProps> = ({ onClose }: ConnectModalProps) => {
   } = useFaucetContext();
 
   return (
-    <div className="connect-modal z-40 bg-transparent w-[432px] h-[calc(100vh-16px)] fixed left-auto right-0 mt-1 mr-2 inset-0 flex overflow-hidden rounded-[16px]">
+    <div className="connect-modal bg-transparent w-[432px] h-[calc(100vh-16px)] fixed left-auto right-0 mt-1 mr-2 inset-0 flex overflow-hidden rounded-[16px]">
       <div className="text-white w-[80px] hover:bg-[#4040402a] p-2">
         <button
           onClick={handleClose}

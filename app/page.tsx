@@ -12,21 +12,23 @@ import { useRouter } from "next/navigation";
 import { Toaster, toast } from "react-hot-toast";
 import Loading from "@/components/Loading";
 import ParticlesComponent from "@/components/ParticlesComponent";
+import SyncLoader from "react-spinners/SyncLoader";
 
 export default function Home() {
   const [isLoading, setLoading] = useState(true);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 1500);
-  }, []);
-
+  const [buttonText, setButtonText] = useState("Request Tokens");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { user, setUser, selectedChains, toggle, state } = useFaucetContext();
   const [showSwitchModal, setShowSwitchModal] = useState(false);
   const [switchMenu, setSwitchMenu] = useState<string>("Switch");
   const captchaRef = useRef<HCaptcha>(null);
   const router = useRouter();
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+  }, []);
 
   const handleShowSwitchModal = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -39,7 +41,6 @@ export default function Home() {
 
   const checkForNumbers = (event: KeyboardEvent<HTMLInputElement>) => {
     const neededChars = ["Backspace", "Tab", "Enter", ",", "."];
-    // allow only numbers, backspace, tab, enter, comma and period
     if (
       (event.key.charCodeAt(0) < 48 ||
         event.key.charCodeAt(0) > 57 ||
@@ -48,7 +49,6 @@ export default function Home() {
     ) {
       event.preventDefault();
     }
-    // allow only one period
     if (
       event.currentTarget.value.split(".").length === 2 &&
       (event.key === "." || event.key === ",")
@@ -106,6 +106,8 @@ export default function Home() {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setButtonText("Please wait");
+    setIsSubmitting(true);
     captchaRef.current?.execute();
     if (state.ethereumConnected || state.polkadotConnected) {
       const res = await axios.post(
@@ -123,7 +125,7 @@ export default function Home() {
             <span className="h-2 w-2 mr-2 block shrink-0" />
             {toggle ? (
               <p className="text-sm">
-                Successfully, sent {user.amount}{" "}
+                Successfully, sent {user.amount}
                 {
                   chains.find((a) => a.name === user.chain)?.nativeCurrency
                     .symbol
@@ -142,6 +144,8 @@ export default function Home() {
       }
       setUser({ ...user, amount: "", chain: "", address: "" });
     }
+    setButtonText("Request Tokens");
+    setIsSubmitting(false);
     router.push("/");
   };
 
@@ -196,21 +200,26 @@ export default function Home() {
       }
     } catch (error: any) {
       toast.error(error.message || "Something went wrong");
+      setButtonText("Request tokens");
+      setIsSubmitting(false);
     } finally {
       captchaRef.current?.resetCaptcha();
       setUser({ chain: "", amount: "", address: "" });
+      setButtonText("Request tokens");
+      setIsSubmitting(false);
     }
   };
 
   return (
-    <>
-      <main className="relative top-[100px] z-10">
+    <main className="relative">
+      <ParticlesComponent />
+      <div className="relative min-h-[80vh] items-center grid justify-center">
         <Toaster />
         {isLoading ? (
           <Loading />
         ) : (
           <form
-            className=" sm:flex hidden flex-col items-center justify-center gap-[8px] p-[4px] bg-[#131313] rounded-[12px]"
+            className="sm:flex hidden flex-col items-center justify-center gap-[8px] p-[4px] bg-[#131313] rounded-[12px]"
             onSubmit={handleSubmit}
           >
             <div className="flex flex-col items-center space-y-[5px]">
@@ -357,7 +366,12 @@ export default function Home() {
                 type="submit"
                 className="bg-[#311C31] text-[#FC72FF] w-full h-14 text-lg font-medium rounded-[10px] active:scale-95"
               >
-                Request tokens
+                {buttonText}{" "}
+                <span>
+                  {isSubmitting && (
+                    <SyncLoader color="#FC72FF" margin={2} size={10} />
+                  )}
+                </span>
               </button>
               {!state.ethereumConnected && !state.polkadotConnected && (
                 <HCaptcha
@@ -373,8 +387,7 @@ export default function Home() {
           </form>
         )}
         {showSwitchModal && <Switch onClose={handleCloseSwitchModal} />}
-      </main>
-      <ParticlesComponent />
-    </>
+      </div>
+    </main>
   );
 }
