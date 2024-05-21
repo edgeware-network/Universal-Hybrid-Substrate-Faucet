@@ -21,21 +21,20 @@ type FaucetChain = {
 };
 
 export default function Status() {
-  const [isLoading, setLoading] = useState(true);
+  const [isLoading, setLoading] = useState(false);
   const [faucetBalance, setFaucetBalance] = useState<FaucetChain[]>([]);
 
   useEffect(() => {
     async function getFaucetBalance() {
+      setLoading(true);
       const res = await axios.post("/api/balance", JSON.stringify({ chains }));
       if (res.data) {
         console.log(res.data.data);
         setFaucetBalance(res.data.data);
-      };
+      }
+      setLoading(false);
     }
     getFaucetBalance();
-    setTimeout(() => {
-      setLoading(false);
-    }, 1000);
   }, []);
 
   console.log(faucetBalance);
@@ -62,18 +61,44 @@ export default function Status() {
                   <h3 className="text-[#eaeaea] text-sm">{chain.name}</h3>
                   <div className="h-[6px] w-[60%] bg-[#202020] rounded-md ">
                     <div
-                      style={{ width: `${formatBalances(chain.balance, chain.nativeCurrency.decimals) > 100 ? 100 : formatBalances(chain.balance, chain.nativeCurrency.decimals)}%` }}
+                      style={{
+                        width: `${
+                          formatBalances(
+                            chain.balance,
+                            chain.nativeCurrency.decimals
+                          ) > 100
+                            ? 100
+                            : formatBalances(
+                                chain.balance,
+                                chain.nativeCurrency.decimals
+                              )
+                        }%`,
+                      }}
                       className={`h-full rounded-md ${
-                        formatBalances(chain.balance, chain.nativeCurrency.decimals) === 0
+                        formatBalances(
+                          chain.balance,
+                          chain.nativeCurrency.decimals
+                        ) === 0
                           ? "border-red-800 border-2"
-                          : formatBalances(chain.balance, chain.nativeCurrency.decimals) < 2*chain.threshold && formatBalances(chain.balance, chain.nativeCurrency.decimals) > 0
+                          : formatBalances(
+                              chain.balance,
+                              chain.nativeCurrency.decimals
+                            ) <
+                              2 * chain.threshold &&
+                            formatBalances(
+                              chain.balance,
+                              chain.nativeCurrency.decimals
+                            ) > 0
                           ? "bg-orange-400"
                           : "bg-green-400"
                       }`}
                     ></div>
                   </div>
                   <h3 className="text-[#9b9b9b] text-sm">
-                    {formatBalances(chain.balance, chain.nativeCurrency.decimals)}{" "}
+                    {formatBalances(
+                      chain.balance,
+                      chain.nativeCurrency.decimals
+                    )}{" "}
                     {chain.nativeCurrency.symbol}
                   </h3>
                 </div>
