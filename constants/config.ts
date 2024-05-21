@@ -12,8 +12,8 @@ export type Chain = {
   };
   prefix?: number;
   type: string;
+  threshold: number;
 }
-
 
 export const chains: Chain[] = [
   {
@@ -28,7 +28,8 @@ export const chains: Chain[] = [
       decimals: 12
     },
     prefix: 42,
-    type: 'substrate'
+    type: 'substrate',
+    threshold: 20,
   },
   {
     name: 'Rococo Asset Hub',
@@ -42,7 +43,8 @@ export const chains: Chain[] = [
       decimals: 12
     },
     prefix: 42,
-    type: 'substrate'
+    type: 'substrate',
+    threshold: 20,
   },
   {
     name: 'Rococo',
@@ -56,7 +58,8 @@ export const chains: Chain[] = [
       decimals: 12
     },
     prefix: 42,
-    type: 'substrate'
+    type: 'substrate',
+    threshold: 20,
   },
   {
     name: 'Parachain Hades testnet',
@@ -70,7 +73,8 @@ export const chains: Chain[] = [
       decimals: 11
     },
     prefix: 37,
-    type: 'substrate'
+    type: 'substrate',
+    threshold: 20,
   },
   {
     name: 'Beresheet',
@@ -84,7 +88,8 @@ export const chains: Chain[] = [
       decimals: 18
     },
     prefix: 7,
-    type: 'substrate'
+    type: 'substrate',
+    threshold: 20,
   },
   {
     name: 'Bifrost',
@@ -97,7 +102,8 @@ export const chains: Chain[] = [
       symbol: 'BFC',
       decimals: 18
     },
-    type: 'evm'
+    type: 'evm',
+    threshold: 20,
   },
   {
     name: 'Beresheet BereEVM',
@@ -110,21 +116,22 @@ export const chains: Chain[] = [
       symbol: 'tEDG',
       decimals: 18
     },
-    type: 'evm'
+    type: 'evm',
+    threshold: 20,
   },
-  {
-    name: 'Tangle',
-    url: 'tangle',
-    chainId: '3799',
-    chainType: 'Paseo & Parachain',
-    rpcUrl: 'https://testnet-rpc.tangle.tools',
-    nativeCurrency: {
-      name: 'tTNT',
-      symbol: 'tTNT',
-      decimals: 18
-    },
-    type: 'evm'
-  },
+  // {
+  //   name: 'Tangle',
+  //   url: 'tangle',
+  //   chainId: '3799',
+  //   chainType: 'Paseo & Parachain',
+  //   rpcUrl: 'https://testnet-rpc.tangle.tools',
+  //   nativeCurrency: {
+  //     name: 'tTNT',
+  //     symbol: 'tTNT',
+  //     decimals: 18
+  //   },
+  //   type: 'evm'
+  // },
   {
     name: 'Moonbase Alpha',
     url: 'moonbase-alpha',
@@ -136,6 +143,7 @@ export const chains: Chain[] = [
       symbol: 'DEV',
       decimals: 18
     },
-    type: 'evm'
+    type: 'evm',
+    threshold: 20,
   },
 ]

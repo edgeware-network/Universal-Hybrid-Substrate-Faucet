@@ -3,6 +3,7 @@ import { mnemonicToSeedSync } from "bip39";
 import { hdkey } from "ethereumjs-wallet";
 import Web3 from "web3";
 import { cryptoWaitReady } from "@polkadot/util-crypto"
+import { AccountInfo } from "@polkadot/types/interfaces";
 
 export type DisburseChains = {
   name: string;
@@ -18,7 +19,7 @@ export type DisburseChains = {
 };
 
 export function loadFaucetAccount() {
-  const seed = process.env.FAUCET_ACCOUNT_SEED;
+  const seed = process.env.FAUCET_ACCOUNT_SEED!;
   console.log(seed)
   if (!seed) {
     throw new Error("Faucet account seed not set");
@@ -65,3 +66,19 @@ export async function disburseEvmToken(chain: DisburseChains) {
   return receipt.transactionHash;
 
 };
+
+export async function getBalances(rpc: string, type: string) {
+  await cryptoWaitReady();
+  if(type === 'evm') {
+    const web3 = new Web3(rpc);
+    const faucetAccountAddress = process.env.FAUCET_EVM_ADDRESS!;
+    const balance = web3.utils.fromWei(await web3.eth.getBalance(faucetAccountAddress), "wei");
+    return balance;
+  };
+
+  const wsProvider = new WsProvider(rpc);
+  const api = await ApiPromise.create({ provider: wsProvider });
+  const faucetPublicKey = process.env.FAUCET_SUBSTRATE_PUBLIC_KEY!;
+  const account = (await api.query.system.account(faucetPublicKey) as AccountInfo);
+  return account.data.free.toString();
+}
