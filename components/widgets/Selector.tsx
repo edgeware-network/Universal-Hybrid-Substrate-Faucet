@@ -54,18 +54,15 @@ const Selector = ({
     let updatedSelectedChains: string[] = [];
 
     if (selectedChains.includes(chain.name)) {
-      // If the chain is already selected, remove it from selected chains
       updatedSelectedChains = selectedChains.filter(
         (chainName) => chainName !== chain.name
       );
     } else {
-      // If the chain is not selected, add it to selected chains
       updatedSelectedChains = [...selectedChains, chain.name];
     }
 
     setSelectedChains(updatedSelectedChains);
 
-    // Update the selectedType based on the current selection
     if (updatedSelectedChains.length === 0) {
       setSelectedType(null);
     } else if (chain.type === "substrate") {
@@ -117,7 +114,7 @@ const Selector = ({
                       />
                     )}
                     <Image
-                      src="/metamask.svg"
+                      src={chain.image} // Use the image from the config file
                       alt={chain.name}
                       width={20}
                       height={20}
