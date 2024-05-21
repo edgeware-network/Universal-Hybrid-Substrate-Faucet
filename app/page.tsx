@@ -106,6 +106,18 @@ export default function Home() {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (!toggle) {
+      if (!user.chain || !user.address) {
+        toast.error("Please fill in all the required fields.");
+        return;
+      }
+    } else {
+      // If toggle is false, validate user.chain, user.address, and user.amount
+      if (!user.chain || !user.address || !user.amount) {
+        toast.error("Please fill in all the required fields.");
+        return;
+      }
+    }
     setButtonText("Please wait");
     setIsSubmitting(true);
     captchaRef.current?.execute();
@@ -142,7 +154,7 @@ export default function Home() {
       } else {
         toast.error("Something went wrong, please try again");
       }
-      setUser({ ...user, amount: "", chain: "", address: "" });
+      setUser({ chain: "Rococo", amount: "", address: "" });
     }
     setButtonText("Request Tokens");
     setIsSubmitting(false);
@@ -150,6 +162,8 @@ export default function Home() {
   };
 
   const onVerify = async (captchaCode: string | null) => {
+    setIsSubmitting(true);
+    setButtonText("Please Wait");
     if (!captchaCode) {
       return;
     }
@@ -204,7 +218,7 @@ export default function Home() {
       setIsSubmitting(false);
     } finally {
       captchaRef.current?.resetCaptcha();
-      setUser({ chain: "", amount: "", address: "" });
+      setUser({ chain: "Rococo", amount: "", address: "" });
       setButtonText("Request tokens");
       setIsSubmitting(false);
     }
@@ -222,7 +236,7 @@ export default function Home() {
             className="sm:flex hidden flex-col items-center justify-center gap-[8px] p-[4px] bg-[#131313] rounded-[12px]"
             onSubmit={handleSubmit}
           >
-            <div className="flex flex-col items-center space-y-[5px]">
+            <div className="flex flex-col gap-[8px] items-center justify-center">
               <div className="max-w-[568px] w-[100vw] bg-[#1b1b1b] flex flex-col space-y-[3px] items-start justify-center p-4 rounded-[12px] border-2 border-[#202020] focus-within:border-[#404040]">
                 <span className="text-xs text-[#9b9b9b] h-6">Chain</span>
                 <div className="flex items-center justify-between w-full">

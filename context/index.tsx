@@ -89,7 +89,7 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
   const [polkadotAccounts, setPolkadotAccounts] = useState<Account[]>([]);
   const [ethereumAccounts, setEthereumAccounts] = useState<Account[]>([]);
   const [user, setUser] = useState<User>({
-    chain: "",
+    chain: "Rococo",
     address: "",
     amount: "",
   });
