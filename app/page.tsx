@@ -57,6 +57,8 @@ export default function Home() {
 				{
 					chain: user.chain,
 					address: user.address,
+					// INFO: For now, we use 10% of the threshold as the amount
+					amount: chains.find((a) => a.name === user.chain)?.threshold! * 0.1,
 					type: chains.find((a) => a.name === user.chain)?.type ?? "",
 					rpc: chains.find((a) => a.name === user.chain)?.rpcUrl ?? "",
 					nativeCurrency:
@@ -72,6 +74,8 @@ export default function Home() {
 					decodeAddress(user.address),
 					chains.find((a) => a.name === chain)?.prefix
 				),
+				// INFO: For now, we use 10% of the threshold as the amount
+				amount: chains.find((a) => a.name === user.chain)?.threshold! * 0.1,
 				type: chains.find((a) => a.name === chain)?.type ?? "",
 				rpc: chains.find((a) => a.name === chain)?.rpcUrl ?? "",
 				nativeCurrency:
