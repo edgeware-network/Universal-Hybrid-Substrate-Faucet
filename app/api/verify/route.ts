@@ -3,13 +3,9 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(req: NextRequest) {
 
   const body = await req.json();
-  const { chain, address, amount, captcha } = body;
+  const { captcha } = body;
 
   console.log(body);
-
-  if (!chain || !address || !amount) {
-    return NextResponse.json({error: "All fields are required" }, { status: 400 });
-  };
 
   if (!captcha) {
     return NextResponse.json({error: "Captcha is required" }, { status: 400 });
