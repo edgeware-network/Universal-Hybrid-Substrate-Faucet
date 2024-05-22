@@ -14,7 +14,7 @@ import Loading from "@/components/Loading";
 import ParticlesComponent from "@/components/ParticlesComponent";
 import SyncLoader from "react-spinners/SyncLoader";
 import Toast from "@/components/Toast";
-
+import { TbAlertSquareRounded } from "react-icons/tb";
 export default function Home() {
 	const [isLoading, setLoading] = useState(true);
 	const [buttonText, setButtonText] = useState("Request Tokens");
@@ -100,9 +100,10 @@ export default function Home() {
 					"/api/disburse",
 					JSON.stringify({ disburseChains: getDisburseData() })
 				);
-				toast.custom((t) => <Toast t={t} Icon={LuCheckSquare} className="text-green-500" message="Successfully, sent tokens to your wallet address!" />);
+				toast.custom((t) => <Toast t={t} Icon={LuCheckSquare} className="text-green-500 w-5 h-5" message="Successfully, sent tokens to your wallet address!" />);
 			} catch (error: any) {
-        console.log((error as AxiosError).response?.data);
+				const message = (error instanceof AxiosError) ? error.response?.data.message : "";
+				toast.custom((t) => <Toast t={t} Icon={TbAlertSquareRounded} className="text-red-500 w-5 h-5" message={`${message}`} />);
       }
 		}
 		setUser({ chain: "Rococo", address: "" });
@@ -122,19 +123,21 @@ export default function Home() {
         "/api/verify",
         JSON.stringify({ captcha: captchaCode })
       );
-      if (res.data) {
+      if (res.data.success) {
         try {
           const res = await axios.post(
             "/api/disburse",
             JSON.stringify({ disburseChains: getDisburseData() })
           );
-          toast.custom((t) => <Toast t={t} Icon={LuCheckSquare} className="text-green-500" message="Successfully, sent tokens to your wallet address!" />);
+          toast.custom((t) => <Toast t={t} Icon={LuCheckSquare} className="text-green-500 h-5 w-5" message="Successfully, sent tokens to your wallet address!" />);
         } catch (error: any) {
-          console.log((error as AxiosError).response?.data);
+					const message = (error instanceof AxiosError) ? error.response?.data.message : "";
+					toast.custom((t) => <Toast t={t} Icon={TbAlertSquareRounded} className="text-red-500 w-5 h-5" message={`${message}`} />);
         }
       };
     } catch (error: any) {
-      console.log((error as AxiosError).response?.data);
+			const message = (error instanceof AxiosError) ? error.response?.data.message : "";
+			toast.custom((t) => <Toast t={t} Icon={TbAlertSquareRounded} className="text-red-500 w-5 h-5" message={`${message}`} />);
     }
     captchaRef.current?.resetCaptcha();
     setUser({ chain: "Rococo", address: "" });
