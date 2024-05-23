@@ -4,6 +4,7 @@ import { hdkey } from "ethereumjs-wallet";
 import Web3 from "web3";
 import { cryptoWaitReady } from "@polkadot/util-crypto"
 import { AccountInfo } from "@polkadot/types/interfaces";
+import { AxiosError } from "axios";
 
 export type DisburseChains = {
   name: string;
@@ -70,15 +71,31 @@ export async function disburseEvmToken(chain: DisburseChains) {
 export async function getBalances(rpc: string, type: string) {
   await cryptoWaitReady();
   if(type === 'evm') {
-    const web3 = new Web3(rpc);
-    const faucetAccountAddress = process.env.FAUCET_EVM_ADDRESS!;
-    const balance = web3.utils.fromWei(await web3.eth.getBalance(faucetAccountAddress), "wei");
-    return balance;
+    try {
+      const web3 = new Web3(rpc);
+      const faucetAccountAddress = process.env.FAUCET_EVM_ADDRESS!;
+      const balance = web3.utils.fromWei(await web3.eth.getBalance(faucetAccountAddress), "wei");
+      return balance;
+    } catch(error) {
+      console.log((error instanceof AxiosError) ? error.response?.data.message : "");
+      return null;
+    }
   };
 
-  const wsProvider = new WsProvider(rpc);
-  const api = await ApiPromise.create({ provider: wsProvider });
-  const faucetPublicKey = process.env.FAUCET_SUBSTRATE_PUBLIC_KEY!;
-  const account = (await api.query.system.account(faucetPublicKey) as AccountInfo);
-  return account.data.free.toString();
+  try {
+    const wsProvider = new WsProvider(rpc);
+    wsProvider.on("error", (error) => {
+      console.log("wsProvider error", error);
+      return null;
+    });
+    const api = await ApiPromise.create({ provider: wsProvider });
+    await api.isReady;
+    const faucetPublicKey = process.env.FAUCET_SUBSTRATE_PUBLIC_KEY!;
+    const account = (await api.query.system.account(faucetPublicKey) as AccountInfo);
+    await api.disconnect();
+    return account.data.free.toString();
+  } catch (error: any) {
+    console.log((error instanceof AxiosError) ? error.response?.data.message : "");
+    return null;
+  }
 }

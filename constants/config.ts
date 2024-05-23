@@ -127,19 +127,21 @@ export const chains: Chain[] = [
     threshold: 20,
     image: "/images/westend.svg",
   },
-  // {
-  //   name: 'Tangle',
-  //   url: 'tangle',
-  //   chainId: '3799',
-  //   chainType: 'Paseo & Parachain',
-  //   rpcUrl: 'https://testnet-rpc.tangle.tools',
-  //   nativeCurrency: {
-  //     name: 'tTNT',
-  //     symbol: 'tTNT',
-  //     decimals: 18
-  //   },
-  //   type: 'evm'
-  // },
+  {
+    name: 'Tangle',
+    url: 'tangle',
+    chainId: '3799',
+    chainType: 'Paseo & Parachain',
+    rpcUrl: 'https://testnet-rpc.tangle.tools',
+    nativeCurrency: {
+      name: 'tTNT',
+      symbol: 'tTNT',
+      decimals: 18
+    },
+    type: 'evm',
+    threshold: 20,
+    image: '/images/westend.svg'
+  },
   {
     name: "Moonbase Alpha",
     url: "moonbase-alpha",

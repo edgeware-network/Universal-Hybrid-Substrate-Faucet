@@ -3,7 +3,6 @@ import { chains } from "@/constants/config";
 import ParticlesComponent from "@/components/ParticlesComponent";
 import { useState, useEffect } from "react";
 import Loading from "@/components/Loading";
-import { getBalances } from "@/lib/utils";
 import axios from "axios";
 import BigNumber from "bignumber.js";
 
@@ -39,7 +38,10 @@ export default function Status() {
 
   console.log(faucetBalance);
 
-  const formatBalances = (amount: string, decimals: number) => {
+  const formatBalances = (amount: string | null, decimals: number) => {
+    if (amount === null) {
+      return 0;
+    }
     return Number(new BigNumber(amount).shiftedBy(-decimals).toFixed(2));
   };
 
@@ -55,7 +57,7 @@ export default function Status() {
               {faucetBalance.map((chain) => (
                 <div
                   key={chain.name}
-                  className={`flex cursor-pointer text-center mr-2 flex-wrap w-[90%] flex-col items-center p-2 justify-center gap-[8px] bg-[#0f0f0f] rounded-[8px] row-span-1 col-span-1`}
+                  className={`flex cursor-pointer text-center mr-2 flex-wrap w-[90%] flex-col items-center p-2 justify-center gap-[8px] ${chain.balance === null ? "bg-[#4D1526]" : "bg-[#0f0f0f]"} rounded-[8px] row-span-1 col-span-1`}
                   onClick={() => console.log(chain)}
                 >
                   <h3 className="text-[#eaeaea] text-sm">{chain.name}</h3>
