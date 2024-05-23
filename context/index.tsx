@@ -26,6 +26,7 @@ export type Account = {
 export type User = {
   chain: string;
   address: string;
+  amount: string;
 };
 
 type State = {
@@ -90,6 +91,7 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User>({
     chain: "Rococo",
     address: "",
+    amount: "",
   });
   const router = useRouter();
   const [selectedChains, setSelectedChains] = useState<string[]>([]);

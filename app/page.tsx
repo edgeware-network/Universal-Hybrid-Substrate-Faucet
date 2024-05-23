@@ -4,7 +4,7 @@ import { chains } from "@/constants/config";
 import { useFaucetContext } from "@/context";
 import { Menu } from "@headlessui/react";
 import { decodeAddress, encodeAddress } from "@polkadot/util-crypto";
-import { MouseEvent, useRef, useState, useEffect } from "react";
+import { MouseEvent, useRef, useState, useEffect, KeyboardEvent } from "react";
 import { LuChevronsUpDown, LuCheckSquare } from "react-icons/lu";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 import axios, { AxiosError } from "axios";
@@ -40,6 +40,29 @@ export default function Home() {
 		setShowSwitchModal(false);
 	};
 
+	const checkForNumbers = (event: KeyboardEvent<HTMLInputElement>) => {
+    const neededChars = ["Backspace", "Tab", "Enter", ",", "."];
+    if (
+      (event.key.charCodeAt(0) < 48 ||
+        event.key.charCodeAt(0) > 57 ||
+        event.key.startsWith("Numpad")) &&
+      !neededChars.includes(event.key)
+    ) {
+      event.preventDefault();
+    }
+    if (
+      event.currentTarget.value.split(".").length === 2 &&
+      (event.key === "." || event.key === ",")
+    ) {
+      event.preventDefault();
+    }
+  };
+
+  const getMaxAmount = (event: MouseEvent<HTMLButtonElement>) => {
+    setUser({ ...user, amount: `${chains.find((a) => a.name === user.chain)?.threshold! * 0.1}` });
+    event.preventDefault();
+  };
+
 	const getAddress = (chain: string) => {
 		setSwitchMenu(chain);
 		if (!user.address) return;
@@ -57,8 +80,7 @@ export default function Home() {
 				{
 					chain: user.chain,
 					address: user.address,
-					// INFO: For now, we use 10% of the threshold as the amount
-					amount: chains.find((a) => a.name === user.chain)?.threshold! * 0.1,
+					amount: Number(user.amount),
 					type: chains.find((a) => a.name === user.chain)?.type ?? "",
 					rpc: chains.find((a) => a.name === user.chain)?.rpcUrl ?? "",
 					nativeCurrency:
@@ -75,7 +97,7 @@ export default function Home() {
 					chains.find((a) => a.name === chain)?.prefix
 				),
 				// INFO: For now, we use 10% of the threshold as the amount
-				amount: chains.find((a) => a.name === user.chain)?.threshold! * 0.1,
+				amount: chains.find((a) => a.name === chain)?.threshold! * 0.1,
 				type: chains.find((a) => a.name === chain)?.type ?? "",
 				rpc: chains.find((a) => a.name === chain)?.rpcUrl ?? "",
 				nativeCurrency:
@@ -87,9 +109,17 @@ export default function Home() {
 
 	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-		if (!user.chain || !user.address) {
-			toast.error("Please fill in all the required fields.");
-			return;
+		if (!toggle) {
+			if (!user.chain || !user.address) {
+				toast.error("Please fill in all the required fields.");
+				return;
+			}
+
+		} else {
+			if (!user.chain || !user.address || !user.amount) {
+				toast.error("Please fill in all the required fields.");
+				return;
+			}
 		}
 		setButtonText("Please wait");
 		setIsSubmitting(true);
@@ -105,8 +135,8 @@ export default function Home() {
 				const message = (error instanceof AxiosError) ? error.response?.data.message : "";
 				toast.custom((t) => <Toast t={t} Icon={TbAlertSquareRounded} className="text-red-500 w-5 h-5" message={`${message}`} />);
       }
+			setUser({ chain: "Rococo", address: "", amount: "" });
 		}
-		setUser({ chain: "Rococo", address: "" });
 		setButtonText("Request Tokens");
 		setIsSubmitting(false);
 		router.push("/");
@@ -138,11 +168,12 @@ export default function Home() {
     } catch (error: any) {
 			const message = (error instanceof AxiosError) ? error.response?.data.message : "";
 			toast.custom((t) => <Toast t={t} Icon={TbAlertSquareRounded} className="text-red-500 w-5 h-5" message={`${message}`} />);
-    }
-    captchaRef.current?.resetCaptcha();
-    setUser({ chain: "Rococo", address: "" });
-    setButtonText("Request tokens");
-    setIsSubmitting(false);
+		} finally {
+			captchaRef.current?.resetCaptcha();
+			setUser({ chain: "Rococo", address: "", amount: "" });
+			setButtonText("Request tokens");
+			setIsSubmitting(false);
+		}
 	};
 
 	return (
@@ -265,6 +296,36 @@ export default function Home() {
 									</span>
 								)}
 							</div>
+              {toggle && (
+                <div className="max-w-[568px] w-[100vw] bg-[#1b1b1b] flex flex-col space-y-[3px] items-start justify-center p-4 rounded-[12px] border-2 border-[#202020] focus-within:border-[#0e0909]">
+                  <span className="text-xs text-[#9b9b9b] h-6">Amount</span>
+                  <div className="flex items-center justify-between w-full">
+                    <input
+                      type="text"
+                      className="w-1/2 h-10 text-3xl bg-inherit outline-none placeholder:text-[#5d5d5d]"
+                      value={user.amount}
+                      inputMode="decimal"
+                      onKeyDown={checkForNumbers}
+                      onChange={(e) =>
+                        setUser({
+                          ...user,
+                          amount: e.target.value.replace(",", "."),
+                        })
+                      }
+                      placeholder="0"
+                    />
+                    <button
+                      onClick={getMaxAmount}
+                      className="w-1/2 h-full p-2 flex gap-2 items-center justify-center bg-[rgba(0,102,255,0.1)] text-base text-[#0066FF] font-medium rounded-[8px] outline-none"
+                    >
+                      Max
+                    </button>
+                  </div>
+                  <span className="text-[#9b9b9b] text-xs h-3 w-full">
+                    You can request up to {chains.find((a) => a.name === user.chain)?.threshold! * 0.1} tokens.
+                  </span>
+                </div>
+              )}
 						</div>
 						<div className="w-full flex flex-col space-y-2 items-center justify-center">
 							<button
