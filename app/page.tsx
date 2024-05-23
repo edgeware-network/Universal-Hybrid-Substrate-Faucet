@@ -201,7 +201,7 @@ export default function Home() {
 								<div className="flex items-center justify-between w-full">
 									<input
 										type="text"
-										className="w-2/3 h-10 text-3xl bg-inherit outline-none placeholder:text-[#5d5d5d]"
+										className="w-2/3 h-10 text-3xl text-[#FFFFFF] bg-inherit outline-none placeholder:text-[#5d5d5d]"
 										value={user.chain}
 										onChange={(e) =>
 											setUser({ ...user, chain: e.target.value })
@@ -281,7 +281,7 @@ export default function Home() {
 								<div className="flex items-center justify-between w-full">
 									<input
 										type="text"
-										className="w-full h-10 text-3xl bg-inherit outline-none placeholder:text-[#5d5d5d]"
+										className="w-full h-10 text-3xl text-[#FFFFFF] bg-inherit outline-none placeholder:text-[#5d5d5d]"
 										value={user.address}
 										onChange={(e) =>
 											setUser({ ...user, address: e.target.value })
@@ -309,7 +309,7 @@ export default function Home() {
                   <div className="flex items-center justify-between w-full">
                     <input
                       type="text"
-                      className="w-1/2 h-10 text-3xl bg-inherit outline-none placeholder:text-[#5d5d5d]"
+                      className="w-1/2 h-10 text-3xl text-[#FFFFFF] bg-inherit outline-none placeholder:text-[#5d5d5d]"
                       value={user.amount}
                       inputMode="decimal"
                       onKeyDown={checkForNumbers}
