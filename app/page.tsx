@@ -130,7 +130,7 @@ export default function Home() {
 					"/api/disburse",
 					JSON.stringify({ disburseChains: getDisburseData() })
 				);
-				toast.custom((t) => <Toast t={t} Icon={LuCheckSquare} className="text-green-500 w-5 h-5" message="Successfully, sent tokens to your wallet address!" />);
+				toast.custom((t) => <Toast t={t} Icon={LuCheckSquare} className="text-green-500 w-5 h-5" message={res.data.message} />);
 			} catch (error: any) {
 				const message = (error instanceof AxiosError) ? error.response?.data.message : "";
 				toast.custom((t) => <Toast t={t} Icon={TbAlertSquareRounded} className="text-red-500 w-5 h-5" message={`${message}`} />);
@@ -159,7 +159,7 @@ export default function Home() {
             "/api/disburse",
             JSON.stringify({ disburseChains: getDisburseData() })
           );
-          toast.custom((t) => <Toast t={t} Icon={LuCheckSquare} className="text-green-500 h-5 w-5" message="Successfully, sent tokens to your wallet address!" />);
+          toast.custom((t) => <Toast t={t} Icon={LuCheckSquare} className="text-green-500 h-5 w-5" message={res.data.message} />);
         } catch (error: any) {
 					const message = (error instanceof AxiosError) ? error.response?.data.message : "";
 					toast.custom((t) => <Toast t={t} Icon={TbAlertSquareRounded} className="text-red-500 w-5 h-5" message={`${message}`} />);
