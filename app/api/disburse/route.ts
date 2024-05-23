@@ -14,9 +14,9 @@ export async function POST(req: NextRequest) {
     const disbursements = disburseChains.map(async (chain) => {
       console.log(chain)
       if(chain.type === 'substrate') {
-        // await disburseSubstrateToken(chain);
+        await disburseSubstrateToken(chain);
       } else if(chain.type === 'evm') {
-        // await disburseEvmToken(chain);
+        await disburseEvmToken(chain);
       }
     });
     await Promise.all(disbursements);
