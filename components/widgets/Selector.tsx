@@ -93,7 +93,7 @@ const Selector = ({
               </span>
               <div className="border-b-2 ml-2 border-[#303030]" />
             </div>
-            <div className="grid text-sm gap-1 grid-cols-3 font-normal">
+            <div className="grid text-sm gap-1 grid-cols-2 font-medium items-center">
               {chain_group.chains.map((chain) => (
                 <div
                   key={chain.url}
@@ -114,7 +114,7 @@ const Selector = ({
                       />
                     )}
                     <Image
-                      src={chain.image} // Use the image from the config file
+                      src={`/images/${chain.url}.svg`} // Use the image from the config file
                       alt={chain.name}
                       width={20}
                       height={20}
