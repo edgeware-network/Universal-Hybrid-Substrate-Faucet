@@ -109,6 +109,12 @@ export default function Home() {
 
 	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
+
+		if (Number(user.amount) > Number(chains.find((a) => a.name === user.chain)?.threshold! * 0.1)) {
+			toast.custom((t) => <Toast t={t} Icon={TbAlertSquareRounded} className="text-red-500 w-5 h-5" message="Input amount exceeds the max disbursement amount!" />);
+			return;
+		};
+
 		if (!toggle) {
 			if (!user.chain || !user.address) {
 				toast.error("Please fill in all the required fields.");
@@ -147,7 +153,8 @@ export default function Home() {
 		setButtonText("Please Wait");
 		if (!captchaCode) {
 			return;
-		}
+		};
+		
     try {
       const res = await axios.post(
         "/api/verify",
