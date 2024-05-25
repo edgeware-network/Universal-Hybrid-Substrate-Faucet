@@ -12,7 +12,6 @@ export type Chain = {
   prefix?: number;
   type: string;
   threshold: number;
-  image: string;
 };
 
 export const chains: Chain[] = [
@@ -30,7 +29,6 @@ export const chains: Chain[] = [
     prefix: 42,
     type: "substrate",
     threshold: 20,
-    image: "/images/metamask.svg",
   },
   {
     name: "Rococo Asset Hub",
@@ -46,7 +44,6 @@ export const chains: Chain[] = [
     prefix: 42,
     type: "substrate",
     threshold: 20,
-    image: "/images/westend.svg",
   },
   {
     name: "Rococo",
@@ -62,7 +59,6 @@ export const chains: Chain[] = [
     prefix: 42,
     type: "substrate",
     threshold: 20,
-    image: "/images/westend.svg",
   },
   {
     name: "Parachain Hades testnet",
@@ -79,7 +75,6 @@ export const chains: Chain[] = [
     prefix: 37,
     type: "substrate",
     threshold: 20,
-    image: "/images/westend.svg",
   },
   {
     name: "Beresheet",
@@ -95,7 +90,6 @@ export const chains: Chain[] = [
     prefix: 7,
     type: "substrate",
     threshold: 20,
-    image: "/images/westend.svg",
   },
   {
     name: "Bifrost",
@@ -110,7 +104,6 @@ export const chains: Chain[] = [
     },
     type: "evm",
     threshold: 20,
-    image: "/images/westend.svg",
   },
   {
     name: "Beresheet BereEVM",
@@ -125,7 +118,6 @@ export const chains: Chain[] = [
     },
     type: "evm",
     threshold: 20,
-    image: "/images/westend.svg",
   },
   {
     name: 'Tangle',
@@ -140,7 +132,6 @@ export const chains: Chain[] = [
     },
     type: 'evm',
     threshold: 20,
-    image: '/images/westend.svg'
   },
   {
     name: "Moonbase Alpha",
@@ -155,6 +146,5 @@ export const chains: Chain[] = [
     },
     type: "evm",
     threshold: 20,
-    image: "/images/westend.svg",
   },
 ];
