@@ -156,14 +156,44 @@ export default function Home() {
           "/api/disburse",
           JSON.stringify({ disburseChains: getDisburseData() })
         );
-        toast.custom((t) => (
-          <Toast
-            t={t}
-            Icon={LuCheckSquare}
-            className="text-green-500 w-5 h-5"
-            message={res.data.message}
-          />
-        ));
+        console.log("response: ", res.data.data);
+        const disbursements: disburse[] = res.data.data;
+        const delay = (ms: number) =>
+          new Promise((res) => setTimeout(res, ms));
+
+        for (const d of disbursements) {
+          if (d.txhash) {
+            toast.custom(
+              (t) => (
+                <Toast
+                  t={t}
+                  Icon={LuCheckSquare}
+                  className="text-green-500 h-5 w-5"
+                  message={`Successfully sent ${
+                    getDisburseData().find((c) => c.chain === d.chain)?.amount
+                  } ${
+                    chains.find((c) => c.name === d.chain)?.nativeCurrency
+                      .symbol
+                  } to ${d.address}`}
+                />
+              ),
+              { duration: 4000 }
+            );
+          } else {
+            toast.custom(
+              (t) => (
+                <Toast
+                  t={t}
+                  Icon={TbAlertSquareRounded}
+                  className="text-red-500 h-5 w-5"
+                  message={`Exceeded API limit for ${d.chain}!`}
+                />
+              ),
+              { duration: 4000 }
+            );
+          }
+          await delay(500);
+        }
       } catch (error: any) {
         const message =
           error instanceof AxiosError ? error.response?.data.message : "";
