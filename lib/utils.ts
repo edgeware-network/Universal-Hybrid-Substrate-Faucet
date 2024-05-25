@@ -7,7 +7,7 @@ import { AccountInfo } from "@polkadot/types/interfaces";
 import { AxiosError } from "axios";
 
 export type DisburseChains = {
-  name: string;
+  chain: string;
   address: string;
   amount: number;
   type: string;
@@ -46,6 +46,7 @@ export async function disburseSubstrateToken(chain: DisburseChains) {
 
   } catch (error) {
     console.log((error instanceof AxiosError) ? error.response?.data.message : "");
+    return null;
   };
 };
 
@@ -73,6 +74,7 @@ export async function disburseEvmToken(chain: DisburseChains) {
 
   } catch(error) {
     console.log((error instanceof AxiosError) ? error.response?.data.message : "");
+    return null;
   }
 };
 
