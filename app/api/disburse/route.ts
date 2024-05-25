@@ -30,8 +30,7 @@ export async function POST(req: NextRequest) {
       };
       
       if (c.type === 'evm') {
-        // const evm_hash = await disburseEvmToken(c);
-        const evm_hash = "0x1234567890123456789012345678901234567890123456789012345678901234";
+        const evm_hash = await disburseEvmToken(c);
         return {
           address: c.address,
           chain: c.chain,
@@ -39,8 +38,7 @@ export async function POST(req: NextRequest) {
           createdAt: new Date(Date.now())
         }
       } else {
-        // const substrate_hash = await disburseSubstrateToken(c);
-        const substrate_hash = "0x1234567890123456789012345678901234567890123456789012345678901234";
+        const substrate_hash = await disburseSubstrateToken(c);
         return {
           address: c.address,
           chain: c.chain,
