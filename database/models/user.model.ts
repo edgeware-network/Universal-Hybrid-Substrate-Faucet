@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  expiresAt: Date,
+  createdAt: Date,
 });
 
 const User = mongoose.models.users || mongoose.model("users", userSchema);

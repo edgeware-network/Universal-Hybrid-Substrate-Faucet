@@ -1,4 +1,3 @@
-import { chains } from "@/constants/config";
 import User from "@/database/models/user.model";
 import { connectToDB } from "@/database/mongoose";
 import { DisburseChains, disburseEvmToken, disburseSubstrateToken } from "@/lib/utils";
@@ -17,9 +16,6 @@ export async function POST(req: NextRequest) {
   const { disburseChains }: DisburseRequest = body;
   console.log(disburseChains);
 
-  const user = await User.find({ chain: "Westend", address: "5DFQFJ6vAuURXbjw9QxTYZLuUynBUYFcgVRopfh7kWtiP6TU" });
-  console.log("condition: ", user);
-
   try {
 
     const disbursements = await Promise.all(disburseChains.map(async (c) => {
@@ -30,7 +26,7 @@ export async function POST(req: NextRequest) {
         address: c.address,
         chain: c.chain,
         txhash: null,
-        expiresAt: user.expiresAt
+        createdAt: user.createdAt
       };
       
       if (c.type === 'evm') {
@@ -40,7 +36,7 @@ export async function POST(req: NextRequest) {
           address: c.address,
           chain: c.chain,
           txhash: `${evm_hash}`,
-          expiresAt: new Date(Date.now() + 86400000)
+          createdAt: new Date(Date.now())
         }
       } else {
         // const substrate_hash = await disburseSubstrateToken(c);
@@ -49,7 +45,7 @@ export async function POST(req: NextRequest) {
           address: c.address,
           chain: c.chain,
           txhash: `${substrate_hash}`,
-          expiresAt: new Date(Date.now() + 86400000)
+          createdAt: new Date(Date.now())
         }
       }
     }));
@@ -59,6 +55,7 @@ export async function POST(req: NextRequest) {
     disbursements.map(async (disbursement) => {
       if (disbursement.txhash) {
         const newUser = new User(disbursement);
+        User.collection.createIndex({ createdAt: 1}, { expireAfterSeconds: 86400 });
         const savedUser = await newUser.save();
         console.log(savedUser);
       }
