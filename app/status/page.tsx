@@ -52,12 +52,14 @@ export default function Status() {
         {isLoading ? (
           <Loading />
         ) : (
-          <div className="sm:flex hidden flex-col items-center justify-center gap-[8px] p-[8px] bg-[#181818] rounded-md">
-            <div className="grid auto-rows-auto h-[420px] overflow-y-auto w-[60vw] gap-[8px] grid-cols-3 p-2">
-              {faucetBalance.map((chain) => (
+          <div className="elements sm:flex hidden flex-col items-center p-4 bg-[#181818] rounded-md">
+            <div className="grid auto-rows-auto h-[420px] overflow-y-auto w-[60vw] gap-3 grid-cols-3 ">
+              {faucetBalance.map((chain, index) => (
                 <div
                   key={chain.name}
-                  className={`flex cursor-pointer text-center mr-2 flex-wrap w-[90%] flex-col items-center p-2 justify-center gap-[8px] ${chain.balance === null ? "bg-[#4D1526]" : "bg-[#0f0f0f]"} rounded-[8px] row-span-1 col-span-1`}
+                  className={`flex cursor-pointer text-center px-2 flex-wrap w-full flex-col items-center p-2 justify-center gap-[8px] ${
+                    chain.balance === null ? "bg-[#4D1526]" : "bg-[#0f0f0f]"
+                  } rounded-[8px] row-span-1 col-span-1`}
                   onClick={() => console.log(chain)}
                 >
                   <h3 className="text-[#eaeaea] text-sm">{chain.name}</h3>
