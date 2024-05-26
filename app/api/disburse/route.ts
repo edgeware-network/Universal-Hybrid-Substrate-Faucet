@@ -1,48 +1,53 @@
 import User from "@/database/models/user.model";
 import { connectToDB } from "@/database/mongoose";
-import { DisburseChains, disburseEvmToken, disburseSubstrateToken } from "@/lib/utils";
+import { DisburseChain, disburseEvmToken, disburseSubstrateToken } from "@/lib/utils";
 import { NextRequest, NextResponse } from "next/server";
 
 connectToDB();
 
-export type DisburseRequest = {
-  disburseChains: DisburseChains[]
+type DisburseRequest = {
+  disburses: DisburseChain[]
 };
 
 export async function POST(req: NextRequest) {
 
-  const body = await req.json();
+  const { disburses }: DisburseRequest = await req.json();
 
-  const { disburseChains }: DisburseRequest = body;
-  console.log(disburseChains);
+  console.log(disburses);
 
   try {
 
-    const disbursements = await Promise.all(disburseChains.map(async (c) => {
-      const user = await User.findOne({ chain: c.chain, address: c.address });
-      console.log("disburse: ", c);
+    const disbursements = await Promise.all(disburses.map(async (disburse) => {
+      const user = await User.findOne({ chain: disburse.chain, address: disburse.address });
+      console.log("disburse: ", disburse);
 
       if (user) return  {
-        address: c.address,
-        chain: c.chain,
+        address: disburse.address,
+        amount: disburse.amount,
+        symbol: disburse.nativeCurrency.symbol,
+        chain: disburse.chain,
         txhash: null,
         createdAt: user.createdAt
       };
       
-      if (c.type === 'evm') {
-        const evm_hash = await disburseEvmToken(c);
+      if (disburse.type === 'evm') {
+        const evm_hash = await disburseEvmToken(disburse);
         return {
-          address: c.address,
-          chain: c.chain,
-          txhash: `${evm_hash}`,
+          address: disburse.address,
+          amount: disburse.amount,
+          symbol: disburse.nativeCurrency.symbol,
+          chain: disburse.chain,
+          txhash: (evm_hash === -1) ? -1 : evm_hash ? evm_hash : null,
           createdAt: new Date(Date.now())
         }
       } else {
-        const substrate_hash = await disburseSubstrateToken(c);
+        const substrate_hash = await disburseSubstrateToken(disburse);
         return {
-          address: c.address,
-          chain: c.chain,
-          txhash: `${substrate_hash}`,
+          address: disburse.address,
+          amount: disburse.amount,
+          symbol: disburse.nativeCurrency.symbol,
+          chain: disburse.chain,
+          txhash: (substrate_hash === -1) ? -1 : substrate_hash ? substrate_hash : null,
           createdAt: new Date(Date.now())
         }
       }
@@ -51,8 +56,8 @@ export async function POST(req: NextRequest) {
     console.log(disbursements);
 
     disbursements.map(async (disbursement) => {
-      if (disbursement.txhash) {
-        const newUser = new User(disbursement);
+      if (disbursement.txhash !== null && disbursement.txhash !== -1) {
+        const newUser = new User({address: disbursement.address, chain: disbursement.chain, txhash: disbursement.txhash, createdAt: disbursement.createdAt});
         User.collection.createIndex({ createdAt: 1}, { expireAfterSeconds: 86400 });
         const savedUser = await newUser.save();
         console.log(savedUser);

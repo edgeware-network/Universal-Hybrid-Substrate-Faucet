@@ -16,11 +16,13 @@ import SyncLoader from "react-spinners/SyncLoader";
 import Toast from "@/components/Toast";
 import { TbAlertSquareRounded } from "react-icons/tb";
 
-type disburse = {
+type Disburse = {
   chain: string;
   address: string;
-  txhash: string | null;
-  expiresAt: Date;
+  amount: number;
+  symbol: string;
+  txhash: string | null | number;
+  createdAt: Date;
 };
 
 export default function Home() {
@@ -103,10 +105,7 @@ export default function Home() {
     const disburse = selectedChains.map((chain) => {
       return {
         chain: chain,
-        address: encodeAddress(
-          decodeAddress(user.address),
-          chains.find((a) => a.name === chain)?.prefix
-        ),
+        address: (chains.find((a) => a.name === chain)?.type === "substrate") ? encodeAddress(decodeAddress(user.address), chains.find((a) => a.name === chain)?.prefix) : user.address,
         // INFO: For now, we use 10% of the threshold as the amount
         amount: chains.find((a) => a.name === chain)?.threshold! * 0.1,
         type: chains.find((a) => a.name === chain)?.type ?? "",
@@ -154,27 +153,33 @@ export default function Home() {
       try {
         const res = await axios.post(
           "/api/disburse",
-          JSON.stringify({ disburseChains: getDisburseData() })
+          JSON.stringify({ disburses: getDisburseData() })
         );
         console.log("response: ", res.data.data);
-        const disbursements: disburse[] = res.data.data;
+        const disbursements: Disburse[] = res.data.data;
         const delay = (ms: number) =>
           new Promise((res) => setTimeout(res, ms));
 
         for (const d of disbursements) {
-          if (d.txhash) {
+          if (d.txhash && d.txhash !== -1) {
             toast.custom(
               (t) => (
                 <Toast
                   t={t}
                   Icon={LuCheckSquare}
                   className="text-green-500 h-5 w-5"
-                  message={`Successfully sent ${
-                    getDisburseData().find((c) => c.chain === d.chain)?.amount
-                  } ${
-                    chains.find((c) => c.name === d.chain)?.nativeCurrency
-                      .symbol
-                  } to ${d.address}`}
+                  message={`Successful! Sent ${d.amount} ${d.symbol} to ${d.address}`}/>
+              ),
+              { duration: 4000 }
+            );
+          } else if (d.txhash === -1) {
+            toast.custom(
+              (t) => (
+                <Toast
+                  t={t}
+                  Icon={TbAlertSquareRounded}
+                  className="text-red-500 h-5 w-5"
+                  message={`Insufficient balance for ${d.chain}!`}
                 />
               ),
               { duration: 4000 }
@@ -219,7 +224,6 @@ export default function Home() {
     if (!captchaCode) {
       return;
     }
-
     try {
       const res = await axios.post(
         "/api/verify",
@@ -229,27 +233,32 @@ export default function Home() {
         try {
           const res = await axios.post(
             "/api/disburse",
-            JSON.stringify({ disburseChains: getDisburseData() })
+            JSON.stringify({ disburses: getDisburseData() })
           );
           console.log("response: ", res.data.data);
-          const disbursements: disburse[] = res.data.data;
+          const disbursements: Disburse[] = res.data.data;
           const delay = (ms: number) =>
             new Promise((res) => setTimeout(res, ms));
-
           for (const d of disbursements) {
-            if (d.txhash) {
+            if (d.txhash && d.txhash !== -1) {
               toast.custom(
                 (t) => (
                   <Toast
                     t={t}
                     Icon={LuCheckSquare}
                     className="text-green-500 h-5 w-5"
-                    message={`Successfully sent ${
-                      getDisburseData().find((c) => c.chain === d.chain)?.amount
-                    } ${
-                      chains.find((c) => c.name === d.chain)?.nativeCurrency
-                        .symbol
-                    } to ${d.address}`}
+                    message={`Successful! Sent ${d.amount} ${d.symbol} to ${d.address}`}/>
+                ),
+                { duration: 4000 }
+              );
+            } else if (d.txhash === -1) {
+              toast.custom(
+                (t) => (
+                  <Toast
+                    t={t}
+                    Icon={TbAlertSquareRounded}
+                    className="text-red-500 h-5 w-5"
+                    message={`Insufficient balance for ${d.chain}!`}
                   />
                 ),
                 { duration: 4000 }
