@@ -1,20 +1,23 @@
 "use client";
-import React, { FC, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { RxCross2 } from "react-icons/rx";
 import { FiSearch } from "react-icons/fi";
 import { GiCycle } from "react-icons/gi";
 import { useFaucetContext } from "@/context";
 import { Switch as HeadlessSwitch } from "@headlessui/react";
 import { Chain, chains } from "@/constants/config";
-import Switcher from "../widgets/Switcher";
-import Selector from "../widgets/Selector";
 import { useRouter } from "next/navigation";
+import Selection from "../widgets/Selection";
 
-interface SwitchModalProps {
+type SwitchModalProps = {
   onClose: () => void;
+  selectorMode: Chain[];
+  switcherMode: Chain | undefined;
+  setSelectorMode: (chains: Chain[]) => void;
+  setSwitcherMode: (chain: Chain | undefined) => void;
 }
 
-const Switch: FC<SwitchModalProps> = ({ onClose }: SwitchModalProps) => {
+export default function Switch({ selectorMode, setSelectorMode, switcherMode, setSwitcherMode, onClose }: SwitchModalProps){
   const {
     state,
     switchEthereumChain,
@@ -26,6 +29,12 @@ const Switch: FC<SwitchModalProps> = ({ onClose }: SwitchModalProps) => {
   } = useFaucetContext();
   const [queryChain, setQueryChain] = useState("");
   const router = useRouter();
+
+
+  useEffect(() => {
+    localStorage.setItem("SET_SELECTED_CHAINS", JSON.stringify(selectorMode));
+
+  },[selectorMode])
 
   const handleClose = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target instanceof HTMLDivElement && e.target.id === "switch_modal")
@@ -58,6 +67,12 @@ const Switch: FC<SwitchModalProps> = ({ onClose }: SwitchModalProps) => {
   const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
     router.push("/");
     event.preventDefault();
+    if(toggle){
+      setSelectorMode([])
+      localStorage.removeItem("SET_TYPE");
+    } else {
+      setSwitcherMode(undefined); 
+    };
     setUser({ ...user, chain: "", address: "" });
   };
 
@@ -80,7 +95,7 @@ const Switch: FC<SwitchModalProps> = ({ onClose }: SwitchModalProps) => {
             />
           </div>
           <div
-            className="flex flex-row items-center justify-center p-2 bg-[#311c31] rounded-[10px]"
+            className="flex flex-row items-center justify-center p-2 bg-[#212121] rounded-[10px]"
             onClick={handleClick}
           >
             <HeadlessSwitch
@@ -96,12 +111,12 @@ const Switch: FC<SwitchModalProps> = ({ onClose }: SwitchModalProps) => {
               />
             </HeadlessSwitch>
           </div>
-          <div className="flex flex-row text-wrap text-center items-center space-x-[5px] bg-[#1a1a1a] p-2 rounded-[16px] w-full h-full cursor-pointer">
+          <div className={`flex flex-row text-wrap text-center ${toggle ? "bg-[rgba(0,102,255,0.1)] text-[#0066ff]": "bg-[#311C31] text-[#FC72FF]"} items-center space-x-[5px] p-2 rounded-[16px] w-full h-full cursor-pointer`}>
             <span className="h-2 w-2 mr-2 block shrink-0" />
             {toggle ? (
-              <span className="text-[#9b9b9b] text-sm">Network Switcher</span>
+              <span className="text-sm">Network Switcher</span>
             ) : (
-              <span className="text-[#9b9b9b] text-sm">Network Selector</span>
+              <span className="text-sm">Network Selector</span>
             )}
           </div>
           <button onClick={onClose}>
@@ -110,18 +125,12 @@ const Switch: FC<SwitchModalProps> = ({ onClose }: SwitchModalProps) => {
         </div>
         <div className="bg-black/30 w-full h-full p-2 flex flex-col gap-2 rounded-[12px] overflow-y-scroll">
           {toggle ? (
-            <Switcher
-              queryChains={queryChains}
-              handleSwitch={handleSwitch}
-              onClose={onClose}
-            />
+            <Selection user={user} switchChain={handleSwitch} setUser={setUser} options={queryChains} onClose={onClose} value={switcherMode} onChange={(o) => setSwitcherMode(o)}/>
           ) : (
-            <Selector queryChains={queryChains} onClose={onClose} />
+            <Selection user={user} setUser={setUser} mode options={queryChains} onClose={onClose} value={selectorMode} onChange={(o) => setSelectorMode(o)}/>
           )}
         </div>
       </div>
     </div>
   );
 };
-
-export default Switch;

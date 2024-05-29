@@ -2,9 +2,10 @@ import { ApiPromise, Keyring, WsProvider } from "@polkadot/api";
 import { mnemonicToSeedSync } from "bip39";
 import { hdkey } from "ethereumjs-wallet";
 import Web3 from "web3";
-import { cryptoWaitReady } from "@polkadot/util-crypto"
+import { cryptoWaitReady, decodeAddress, encodeAddress } from "@polkadot/util-crypto"
 import { AccountInfo } from "@polkadot/types/interfaces";
 import { AxiosError } from "axios";
+import { Chain } from "@/constants/config";
 
 export type DisburseChain = {
   chain: string;
@@ -137,5 +138,19 @@ export async function getBalances(rpc: string, type: string) {
     console.log((error instanceof AxiosError) ? error.response?.data.message : "");
     return null;
 
+  };
+};
+
+export function disburse(toggle: boolean, address: string, amount: string, chain: Chain | undefined, chains: Chain[]){
+  if(toggle){
+    if (chain) return [{chain: chain.name, address: address, amount: Number(amount), type: chain.type, rpc: chain.rpcUrl, nativeCurrency: chain.nativeCurrency}]
+
+  } else {
+    const data = chains.map((chain) => {
+      // INFO: For now, we use 10% of the threshold as the amount
+      return {chain: chain.name, address: encodeAddress(decodeAddress(address), chain.prefix), amount:chain.threshold * 0.1, type: chain.type, rpc: chain.rpcUrl, nativeCurrency: chain.nativeCurrency}
+    })
+
+    return data
   };
 };

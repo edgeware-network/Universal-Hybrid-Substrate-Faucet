@@ -29,7 +29,7 @@ export type User = {
   amount: string;
 };
 
-type State = {
+export type State = {
   ethereumConnected: boolean;
   polkadotConnected: boolean;
   selectedEthereumAccount: string | undefined;
@@ -76,8 +76,6 @@ type FaucetContextType = {
   switchPolkadotChain: (chain: Chain) => void;
   user: User;
   setUser: (user: User) => void;
-  selectedChains: string[];
-  setSelectedChains: (chains: string[]) => void;
   toggle: boolean;
   setToggle: (toggle: boolean) => void;
 };
@@ -94,7 +92,6 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
     amount: "",
   });
   const router = useRouter();
-  const [selectedChains, setSelectedChains] = useState<string[]>([]);
   const [toggle, setToggle] = useState<boolean>(true);
   const [isLoading, setLoading] = useState<boolean>(false);
 
@@ -486,8 +483,6 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
         switchPolkadotChain,
         user,
         setUser,
-        selectedChains,
-        setSelectedChains,
         toggle,
         setToggle,
       }}

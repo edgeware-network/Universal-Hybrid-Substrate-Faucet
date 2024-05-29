@@ -1,6 +1,6 @@
 "use client";
 import Switch from "@/components/modals/Switch";
-import { chains } from "@/constants/config";
+import { Chain, chains } from "@/constants/config";
 import { useFaucetContext } from "@/context";
 import { Menu } from "@headlessui/react";
 import { decodeAddress, encodeAddress } from "@polkadot/util-crypto";
@@ -15,6 +15,7 @@ import ParticlesComponent from "@/components/ParticlesComponent";
 import SyncLoader from "react-spinners/SyncLoader";
 import Toast from "@/components/Toast";
 import { TbAlertSquareRounded } from "react-icons/tb";
+import { disburse } from "@/lib/utils";
 
 type Disburse = {
   chain: string;
@@ -29,9 +30,11 @@ export default function Home() {
   const [isLoading, setLoading] = useState(true);
   const [buttonText, setButtonText] = useState("Request Tokens");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { user, setUser, selectedChains, toggle, state } = useFaucetContext();
+  const { user, setUser, toggle, state } = useFaucetContext();
   const [showSwitchModal, setShowSwitchModal] = useState(false);
   const [switchMenu, setSwitchMenu] = useState<string>("Switch");
+  const [switcherMode, setSwitcherMode] = useState<Chain | undefined>();
+  const [selectorMode, setSelectorMode] = useState<Chain[]>([]);
   const captchaRef = useRef<HCaptcha>(null);
   const router = useRouter();
 
@@ -76,45 +79,13 @@ export default function Home() {
     event.preventDefault();
   };
 
-  const getAddress = (chain: string) => {
-    setSwitchMenu(chain);
+  const getAddress = (chain: Chain) => {
+    setSwitchMenu(chain.name);
     if (!user.address) return;
-    const type = chains.find((c) => c.name === chain)?.type;
-    if (type === "substrate") {
-      const prefix = chains.find((c) => c.name === chain)?.prefix;
-      const address = encodeAddress(decodeAddress(user.address), prefix);
+    if (chain.type === "substrate") {
+      const address = encodeAddress(decodeAddress(user.address), chain.prefix);
       setUser({ ...user, address: address });
     }
-  };
-
-  const getDisburseData = () => {
-    if (toggle) {
-      return [
-        {
-          chain: user.chain,
-          address: user.address,
-          amount: Number(user.amount),
-          type: chains.find((a) => a.name === user.chain)?.type ?? "",
-          rpc: chains.find((a) => a.name === user.chain)?.rpcUrl ?? "",
-          nativeCurrency:
-            chains.find((a) => a.name === user.chain)?.nativeCurrency ?? "",
-        },
-      ];
-    }
-
-    const disburse = selectedChains.map((chain) => {
-      return {
-        chain: chain,
-        address: (chains.find((a) => a.name === chain)?.type === "substrate") ? encodeAddress(decodeAddress(user.address), chains.find((a) => a.name === chain)?.prefix) : user.address,
-        // INFO: For now, we use 10% of the threshold as the amount
-        amount: chains.find((a) => a.name === chain)?.threshold! * 0.1,
-        type: chains.find((a) => a.name === chain)?.type ?? "",
-        rpc: chains.find((a) => a.name === chain)?.rpcUrl ?? "",
-        nativeCurrency:
-          chains.find((a) => a.name === chain)?.nativeCurrency ?? "",
-      };
-    });
-    return disburse;
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -153,7 +124,7 @@ export default function Home() {
       try {
         const res = await axios.post(
           "/api/disburse",
-          JSON.stringify({ disburses: getDisburseData() })
+          JSON.stringify({ disburses: disburse(toggle, user.address, user.amount, switcherMode, selectorMode) })
         );
         console.log("response: ", res.data.data);
         const disbursements: Disburse[] = res.data.data;
@@ -233,7 +204,7 @@ export default function Home() {
         try {
           const res = await axios.post(
             "/api/disburse",
-            JSON.stringify({ disburses: getDisburseData() })
+            JSON.stringify({ disburses: disburse(toggle, user.address, user.amount, switcherMode, selectorMode) })
           );
           console.log("response: ", res.data.data);
           const disbursements: Disburse[] = res.data.data;
@@ -370,7 +341,7 @@ export default function Home() {
                   <span className="h-3 w-full text-[#9b9b9b] text-xs">
                     {user.chain === ""
                       ? ""
-                      : `You have selected ${selectedChains.length} chains`}
+                      : `You have selected ${selectorMode.length} chains`}
                   </span>
                 )}
               </div>
@@ -385,8 +356,8 @@ export default function Home() {
                       <Menu.Items
                         className={`absolute left-auto right-0 top-[170px] z-50 mt-2 origin-bottom-right mr-4 w-[160px] rounded-md bg-[#131313] shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none p-1`}
                       >
-                        {selectedChains.map((chain) => (
-                          <Menu.Item key={chain}>
+                        {selectorMode.map((chain) => (
+                          <Menu.Item key={chain.url}>
                             {({ active }) => (
                               <div
                                 onClick={() => getAddress(chain)}
@@ -396,7 +367,7 @@ export default function Home() {
                                     : "text-[#9b9b9b]"
                                 } flex rounded-md items-center w-full text-xs`}
                               >
-                                {chain}
+                                {chain.name}
                               </div>
                             )}
                           </Menu.Item>
@@ -489,7 +460,7 @@ export default function Home() {
             </div>
           </form>
         )}
-        {showSwitchModal && <Switch onClose={handleCloseSwitchModal} />}
+        {showSwitchModal && <Switch selectorMode={selectorMode} setSelectorMode={setSelectorMode} switcherMode={switcherMode} setSwitcherMode={setSwitcherMode} onClose={handleCloseSwitchModal} />}
       </div>
     </main>
   );
