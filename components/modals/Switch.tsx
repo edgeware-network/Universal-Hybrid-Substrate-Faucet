@@ -69,7 +69,6 @@ export default function Switch({ selectorMode, setSelectorMode, switcherMode, se
     } else {
       setSwitcherMode(undefined); 
     };
-    setUser({ ...user, chain: "", address: "" });
   };
 
   return (
