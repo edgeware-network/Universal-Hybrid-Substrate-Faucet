@@ -115,7 +115,6 @@ export const WalletWidget = ({
                   setUser({
                     ...user,
                     address: account.address,
-                    chain: account.chain,
                   })
                 }
               >
