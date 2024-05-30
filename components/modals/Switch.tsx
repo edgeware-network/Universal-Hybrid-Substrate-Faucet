@@ -69,7 +69,6 @@ export default function Switch({ selectorMode, setSelectorMode, switcherMode, se
     } else {
       setSwitcherMode(undefined); 
     };
-    setUser({ ...user, chain: "", address: "" });
   };
 
   return (
@@ -121,9 +120,9 @@ export default function Switch({ selectorMode, setSelectorMode, switcherMode, se
         </div>
         <div className="bg-black/30 w-full h-full p-2 flex flex-col gap-2 rounded-[12px] overflow-y-scroll">
           {toggle ? (
-            <Selection user={user} switchChain={handleSwitch} setUser={setUser} options={queryChains} onClose={onClose} value={switcherMode} onChange={(o) => setSwitcherMode(o)}/>
+            <Selection state={state} user={user} switchChain={handleSwitch} setUser={setUser} options={queryChains} onClose={onClose} value={switcherMode} onChange={(o) => setSwitcherMode(o)}/>
           ) : (
-            <Selection user={user} setUser={setUser} mode options={queryChains} onClose={onClose} value={selectorMode} onChange={(o) => setSelectorMode(o)}/>
+            <Selection state={state} user={user} setUser={setUser} mode options={queryChains} onClose={onClose} value={selectorMode} onChange={(o) => setSelectorMode(o)}/>
           )}
         </div>
       </div>

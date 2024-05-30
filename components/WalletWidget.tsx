@@ -15,6 +15,7 @@ type WalletProps = {
   type: "polkadot" | "ethereum";
   onConnect: (type: "polkadot" | "ethereum") => void;
   onDisconnect: (type: "polkadot" | "ethereum") => void;
+  toggle: boolean;
 };
 
 export const WalletWidget = ({
@@ -27,6 +28,7 @@ export const WalletWidget = ({
   accounts,
   selectedAccount,
   setSelectedAccount,
+  toggle,
 }: WalletProps) => {
   if (!connected) {
     const handleConnect = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -79,7 +81,15 @@ export const WalletWidget = ({
     return _walletAddress.substring(0, 6) + "..." + _walletAddress.slice(-4);
   };
 
-  // console.log(fullSelectedAccount, connected, accounts)
+  const handleClick = (event: any, account: Account) => {
+    event.preventDefault();
+    if (toggle){
+      setUser({ ...user, chain: account.chain, address: account.address });
+    } else {
+      setUser({ ...user, address: account.address });
+    }
+  };
+  
   return (
     <div className="flex items-center justify-between w-full">
       <div className="flex relative w-full h-20 bg-[#1b1b1b] flex-row items-center rounded-[12px] text-white p-4">
@@ -111,13 +121,7 @@ export const WalletWidget = ({
                 key={account.address}
                 value={account.address}
                 className="flex cursor-pointer flex-row items-center p-4 text-left hover:bg-grey-800"
-                onClick={() =>
-                  setUser({
-                    ...user,
-                    address: account.address,
-                    chain: account.chain,
-                  })
-                }
+                onClick={(e) => handleClick(e, account)}
               >
                 <span
                   className={`mr-2 h-2 w-2 shrink-0 rounded-full ${

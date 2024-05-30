@@ -43,6 +43,7 @@ const Connect: FC<ConnectModalProps> = ({ onClose }: ConnectModalProps) => {
     polkadotAccounts,
     setSelectedEthereumAccount,
     setSelectedPolkadotAccount,
+    toggle,
   } = useFaucetContext();
 
   return (
@@ -66,6 +67,7 @@ const Connect: FC<ConnectModalProps> = ({ onClose }: ConnectModalProps) => {
         <div className="w-full flex flex-col gap-[10px] items-center">
           {!state.ethereumConnected && (
             <WalletWidget
+              toggle={toggle}
               type="polkadot"
               connected={state.polkadotConnected}
               onConnect={handleConnect}
@@ -80,6 +82,7 @@ const Connect: FC<ConnectModalProps> = ({ onClose }: ConnectModalProps) => {
 
           {!state.polkadotConnected && (
             <WalletWidget
+              toggle={toggle}
               type="ethereum"
               connected={state.ethereumConnected}
               onConnect={handleConnect}
