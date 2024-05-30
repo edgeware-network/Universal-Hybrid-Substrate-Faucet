@@ -81,8 +81,7 @@ export const WalletWidget = ({
     return _walletAddress.substring(0, 6) + "..." + _walletAddress.slice(-4);
   };
 
-  const handleClick = (event: any, account: Account) => {
-    event.preventDefault();
+  const handleClick = (account: Account) => {
     if (toggle){
       setUser({ ...user, chain: account.chain, address: account.address });
     } else {
@@ -121,7 +120,7 @@ export const WalletWidget = ({
                 key={account.address}
                 value={account.address}
                 className="flex cursor-pointer flex-row items-center p-4 text-left hover:bg-grey-800"
-                onClick={(e) => handleClick(e, account)}
+                onClick={() => handleClick(account)}
               >
                 <span
                   className={`mr-2 h-2 w-2 shrink-0 rounded-full ${

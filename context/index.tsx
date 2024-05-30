@@ -13,6 +13,7 @@ import { AccountInfo } from "@polkadot/types/interfaces";
 import { Chain, chains } from "@/constants/config";
 import { decodeAddress, encodeAddress } from "@polkadot/util-crypto";
 import ConnectingPopup from "@/components/widgets/ConnectingPopup";
+import BigNumber from "bignumber.js";
 
 export type Account = {
   address: string;
@@ -122,20 +123,16 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
         }
         const api = await initPolkadotAPI("wss://beresheet.jelliedowl.net");
         const accounts = await web3Accounts();
-        formatBalance.setDefaults({
-          decimals: 18,
-          unit: "EDG",
-        });
         const balances = await Promise.all(
           accounts.map(async (account) => {
             const balance = (await api.query.system.account(
               account.address
             )) as AccountInfo;
-            const amount = balance.data.free;
+            const amount = balance.data.free.toString();
             return {
               address: api.createType("Address", account.address).toString(),
               chain: (await api.rpc.system.chain()).toHuman(),
-              balance: Number(formatBalance(amount)),
+              balance: Number(new BigNumber(amount).shiftedBy(-18).toFixed(2)),
               symbol: "tEDG",
             };
           })
@@ -323,16 +320,12 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
         console.log(`Connecting to ${chain.name}`, chain.rpcUrl);
         const api = await initPolkadotAPI(chain.rpcUrl);
         const accounts = await web3Accounts();
-        formatBalance.setDefaults({
-          decimals: chain.nativeCurrency.decimals,
-          unit: chain.nativeCurrency.symbol,
-        });
         const balances = await Promise.all(
           accounts.map(async (account) => {
             const balance = (await api.query.system.account(
               account.address
             )) as AccountInfo;
-            const amount = balance.data.free;
+            const amount = balance.data.free.toString();
             console.log(
               "Address:",
               encodeAddress(decodeAddress(account.address), chain.prefix)
@@ -343,7 +336,7 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
                 chain.prefix
               ),
               chain: (await api.rpc.system.chain()).toHuman(),
-              balance: Number(formatBalance(amount)),
+              balance: Number(new BigNumber(amount).shiftedBy(-chain.nativeCurrency.decimals).toFixed(2)),
               symbol: chain.nativeCurrency.symbol,
             };
           })
