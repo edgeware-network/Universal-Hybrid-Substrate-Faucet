@@ -12,7 +12,6 @@ import { initPolkadotAPI } from "@/lib/polkadot";
 import { AccountInfo } from "@polkadot/types/interfaces";
 import { Chain, chains } from "@/constants/config";
 import { decodeAddress, encodeAddress } from "@polkadot/util-crypto";
-import { useRouter } from "next/navigation";
 import ConnectingPopup from "@/components/widgets/ConnectingPopup";
 
 export type Account = {
@@ -91,7 +90,6 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
     address: "",
     amount: "",
   });
-  const router = useRouter();
   const [toggle, setToggle] = useState<boolean>(true);
   const [isLoading, setLoading] = useState<boolean>(false);
 
@@ -380,7 +378,6 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
         res = await connectToPolkadot();
         if (res) {
           setPolkadotConnected(true);
-          router.push("/?chain=beresheet");
         }
       } else {
         res = await connectToEthereum();
@@ -397,14 +394,12 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
               (chain) => `0x${Number(chain.chainId).toString(16)}` === chainId
             );
             if (!availableChain) {
-              router.push("/?chain=beresheet-bereevm");
               setUser({
                 ...user,
                 chain: "Beresheet BereEVM",
                 address: accounts[0],
               });
             } else {
-              router.push(`/?chain=${availableChain.url}`);
               setUser({
                 ...user,
                 chain: availableChain.name,
@@ -438,7 +433,6 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
     }
     disconnect();
     setUser({ ...user, chain: "", address: "" });
-    router.push("/");
   };
 
   useEffect(() => {

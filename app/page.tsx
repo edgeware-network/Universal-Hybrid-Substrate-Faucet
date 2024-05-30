@@ -8,7 +8,6 @@ import { MouseEvent, useRef, useState, useEffect, KeyboardEvent } from "react";
 import { LuChevronsUpDown, LuCheckSquare } from "react-icons/lu";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 import axios, { AxiosError } from "axios";
-import { useRouter } from "next/navigation";
 import { Toaster, toast } from "react-hot-toast";
 import Loading from "@/components/Loading";
 import ParticlesComponent from "@/components/ParticlesComponent";
@@ -36,7 +35,6 @@ export default function Home() {
   const [switcherMode, setSwitcherMode] = useState<Chain | undefined>();
   const [selectorMode, setSelectorMode] = useState<Chain[]>([]);
   const captchaRef = useRef<HCaptcha>(null);
-  const router = useRouter();
 
   useEffect(() => {
     setTimeout(() => {
@@ -186,7 +184,6 @@ export default function Home() {
     }
     setButtonText("Request Tokens");
     setIsSubmitting(false);
-    router.push("/");
   };
 
   const onVerify = async (captchaCode: string | null) => {

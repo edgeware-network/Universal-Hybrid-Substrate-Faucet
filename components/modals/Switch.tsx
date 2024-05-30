@@ -6,7 +6,6 @@ import { GiCycle } from "react-icons/gi";
 import { useFaucetContext } from "@/context";
 import { Switch as HeadlessSwitch } from "@headlessui/react";
 import { Chain, chains } from "@/constants/config";
-import { useRouter } from "next/navigation";
 import Selection from "../widgets/Selection";
 
 type SwitchModalProps = {
@@ -28,8 +27,6 @@ export default function Switch({ selectorMode, setSelectorMode, switcherMode, se
     user,
   } = useFaucetContext();
   const [queryChain, setQueryChain] = useState("");
-  const router = useRouter();
-
 
   useEffect(() => {
     localStorage.setItem("SET_SELECTED_CHAINS", JSON.stringify(selectorMode));
@@ -65,7 +62,6 @@ export default function Switch({ selectorMode, setSelectorMode, switcherMode, se
   });
 
   const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    router.push("/");
     event.preventDefault();
     if(toggle){
       setSelectorMode([])
