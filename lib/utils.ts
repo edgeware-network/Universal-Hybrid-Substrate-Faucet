@@ -148,7 +148,7 @@ export function disburse(toggle: boolean, address: string, amount: string, chain
   } else {
     const data = chains.map((chain) => {
       // INFO: For now, we use 10% of the threshold as the amount
-      return {chain: chain.name, address: encodeAddress(decodeAddress(address), chain.prefix), amount:chain.threshold * 0.1, type: chain.type, rpc: chain.rpcUrl, nativeCurrency: chain.nativeCurrency}
+      return {chain: chain.name, address: chain.type === "substrate" ? encodeAddress(decodeAddress(address), chain.prefix) : address, amount:chain.threshold * 0.1, type: chain.type, rpc: chain.rpcUrl, nativeCurrency: chain.nativeCurrency}
     })
 
     return data

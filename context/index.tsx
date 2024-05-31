@@ -116,8 +116,8 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
     dispatch({ type: "SET_SELECTED_ETHEREUM_ACCOUNT", payload: account });
   };
 
-  const updatePolkadotBalances = async () => {
-    console.log("Updating Polkadot balances");
+  const updatePolkadotBalances = async (chain: Chain) => {
+    console.log(`Updating ${chain.name} balances...`);
     try {
       if ((window as any).injectedWeb3) {
         const { web3Enable, web3Accounts } = await import(
@@ -127,28 +127,31 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
         if (extensions.length === 0) {
           throw new Error("No Polkadot wallet detected");
         }
-        const api = await initPolkadotAPI("wss://beresheet.jelliedowl.net");
+        const api = await initPolkadotAPI(chain.rpcUrl);
         const accounts = await web3Accounts();
-        const balances = await Promise.all(
-          accounts.map(async (account) => {
-            const balance = (await api.query.system.account(
-              account.address
-            )) as AccountInfo;
-            const amount = balance.data.free.toString();
-            return {
-              address: api.createType("Address", account.address).toString(),
-              chain: (await api.rpc.system.chain()).toHuman(),
-              balance: Number(new BigNumber(amount).shiftedBy(-18).toFixed(2)),
-              symbol: "tEDG",
-            };
-          })
-        );
+        const balances = await Promise.all(accounts.map(async (account) => {
+          const balance = (await api.query.system.account(account.address)) as AccountInfo;
+          const amount = balance.data.free.toString();
+          console.log("Address:", encodeAddress(decodeAddress(account.address), chain.prefix));
+          return {
+            address: encodeAddress(
+              decodeAddress(account.address),
+              chain.prefix
+            ),
+            chain: (await api.rpc.system.chain()).toHuman(),
+            balance: Number(new BigNumber(amount).shiftedBy(-chain.nativeCurrency.decimals).toFixed(2)),
+            symbol: chain.nativeCurrency.symbol,
+          };
+        }));
         console.log("polkadot accounts", balances);
         setPolkadotAccounts(balances);
+        setSelectedPolkadotAccount(
+          encodeAddress(decodeAddress(user.address || balances[0].address), chain.prefix)
+        );
         setUser({
           ...user,
-          address: balances[0].address,
-          chain: balances[0].chain,
+          address: encodeAddress(decodeAddress(user.address || balances[0].address), chain.prefix),
+          chain: chain.name,
         });
         return true;
       }
@@ -157,38 +160,24 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const updateEthereumBalances = async () => {
-    console.log("Updating Ethereum balances");
+  const updateEthereumBalances = async (chain: Chain) => {
+    console.log(`Updating ${chain.name} balances...`);
     try {
       if ("ethereum" in window) {
         const web3 = new Web3(window.ethereum!);
-        await (window as any).ethereum.request({
-          method: "wallet_requestPermissions",
-          params: [{ eth_accounts: {} }],
-        });
-        await (window as any).ethereum.request({
-          method: "eth_requestAccounts",
-        });
+        await (window as any).ethereum.request({ method: "wallet_requestPermissions", params: [{ eth_accounts: {} }], });
+        await (window as any).ethereum.request({ method: "eth_requestAccounts", });
         const accounts = await web3.eth.getAccounts();
         console.log("ethereum accounts", accounts);
         const balances = await Promise.all(
           accounts.map(async (account) => {
             const balance = await web3.eth.getBalance(account);
-            const chainId = await web3.eth.getChainId({
-              number: FMT_NUMBER.NUMBER,
-              bytes: FMT_BYTES.HEX,
-            });
-            const symbol =
-              chains.find((chain) => chain.chainId === String(chainId))
-                ?.nativeCurrency.symbol ?? "";
-            const chain =
-              chains.find((chain) => chain.chainId === String(chainId)) ??
-              chains[0];
+            const chainId = await web3.eth.getChainId({ number: FMT_NUMBER.NUMBER, bytes: FMT_BYTES.HEX });
             return {
               address: account,
               balance: Number(Web3.utils.fromWei(balance, "ether")),
               chainId: chainId,
-              symbol: symbol,
+              symbol: chain.nativeCurrency.symbol,
               chain: chain.name,
             };
           })
@@ -209,35 +198,25 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const connectToPolkadot = async () => {
-    console.log("Attempting to connect to Polkadot");
+  const connectToPolkadot = async (chain : Chain) => {
+    console.log(`Attempting to connect to ${chain.name}`);
+    if (toggle) setSwitcherMode(chain); else setSelectorMode([chain]);
     try {
       if ((window as any).injectedWeb3) {
-        return await updatePolkadotBalances();
+        return await updatePolkadotBalances(chain);
       }
     } catch (err) {
       console.log(err);
     }
   };
 
-  const connectToEthereum = async () => {
-    console.log("Attempting to connect to Ethereum");
+  const connectToEthereum = async (chain: Chain) => {
+    console.log(`Attempting to connect to ${chain.name}`);
+    if (toggle) setSwitcherMode(chain); else setSelectorMode([chain]);
     try {
       if ("ethereum" in window) {
-        const chainId = await (window as any).ethereum.request({
-          method: "eth_chainId",
-          params: [],
-        });
-        const availableChain = chains.find(
-          (chain) => `0x${Number(chain.chainId).toString(16)}` === chainId
-        );
         try {
-          if (!availableChain) {
-            await (window as any).ethereum.request({
-              method: "wallet_switchEthereumChain",
-              params: [{ chainId: "0x7e6" }],
-            });
-          }
+          await (window as any).ethereum.request({ method: "wallet_switchEthereumChain", params: [{ chainId: `0x${Number(chain.chainId).toString(16)}` }] });
         } catch (err) {
           if ((err as any).code === 4902) {
             await (window as any).ethereum.request({
@@ -257,7 +236,7 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
             });
           }
         }
-        await updateEthereumBalances();
+        await updateEthereumBalances(chain);
         return true;
       } else {
         throw new Error("Ethereum wallet not detected");
@@ -286,14 +265,14 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const switchEthereumChain = async (chain: Chain) => {
-    console.log("Switching to desired chain");
+    console.log(`Switching to ${chain.name}`);
     setUser({ ...user, chain: chain.name });
     try {
       await (window as any).ethereum.request({
         method: "wallet_switchEthereumChain",
         params: [{ chainId: `0x${Number(chain.chainId).toString(16)}` }],
       });
-      await updateEthereumBalances();
+      await updateEthereumBalances(chain);
     } catch (err) {
       if ((err as any).code === 4902) {
         await (window as any).ethereum.request({
@@ -307,61 +286,27 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
             },
           ],
         });
-        await updateEthereumBalances();
+        await updateEthereumBalances(chain);
       }
     }
   };
 
   const switchPolkadotChain = async (chain: Chain) => {
-    console.log("Switching to desired chain");
+    console.log(`Switching to ${chain.name}`);
+    await updatePolkadotBalances(chain);
+  };
+
+  const setChainId = async() => {
     try {
-      if ((window as any).injectedWeb3) {
-        const { web3Enable, web3Accounts } = await import(
-          "@polkadot/extension-dapp"
-        );
-        const extensions = await web3Enable("Polkadot-JS Apps");
-        if (extensions.length === 0) {
-          throw new Error("No Polkadot wallet detected");
-        }
-        console.log(`Connecting to ${chain.name}`, chain.rpcUrl);
-        const api = await initPolkadotAPI(chain.rpcUrl);
-        const accounts = await web3Accounts();
-        const balances = await Promise.all(
-          accounts.map(async (account) => {
-            const balance = (await api.query.system.account(
-              account.address
-            )) as AccountInfo;
-            const amount = balance.data.free.toString();
-            console.log(
-              "Address:",
-              encodeAddress(decodeAddress(account.address), chain.prefix)
-            );
-            return {
-              address: encodeAddress(
-                decodeAddress(account.address),
-                chain.prefix
-              ),
-              chain: (await api.rpc.system.chain()).toHuman(),
-              balance: Number(new BigNumber(amount).shiftedBy(-chain.nativeCurrency.decimals).toFixed(2)),
-              symbol: chain.nativeCurrency.symbol,
-            };
-          })
-        );
-        console.log("polkadot accounts", balances);
-        setPolkadotAccounts(balances);
-        setSelectedPolkadotAccount(
-          encodeAddress(decodeAddress(user.address), chain.prefix)
-        );
-        setUser({
-          ...user,
-          address: encodeAddress(decodeAddress(user.address), chain.prefix),
-          chain: chain.name,
-        });
+      if("ethereum" in window) {
+        const chainId = await (window as any).ethereum.request({ method: "eth_chainId" });
+        const currentEvmChain = chains.find((chain) => `0x${Number(chain.chainId).toString(16)}` === chainId);
+        return currentEvmChain;
       }
     } catch (err) {
       console.log(err);
     }
-  };
+  }
 
   const handleConnect = (type: "polkadot" | "ethereum") => {
     if (
@@ -372,41 +317,16 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
     }
     setLoading(true);
     async function connect() {
-      let res;
-      if (type === "polkadot") {
-        res = await connectToPolkadot();
-        if (res) {
-          setPolkadotConnected(true);
-        }
+      if(type === "polkadot") {
+        const chain = chains.find((chain) => chain.url === "beresheet")!;
+        const res = await connectToPolkadot(chain);
+        if(res) setPolkadotConnected(true);
       } else {
-        res = await connectToEthereum();
-        if (res) {
-          setEthereumConnected(true);
-          if ("ethereum" in window) {
-            const chainId = await (window as any).ethereum.request({
-              method: "eth_chainId",
-            });
-            const accounts = await (window as any).ethereum.request({
-              method: "eth_requestAccounts",
-            });
-            const availableChain = chains.find(
-              (chain) => `0x${Number(chain.chainId).toString(16)}` === chainId
-            );
-            if (!availableChain) {
-              setUser({
-                ...user,
-                chain: "Beresheet BereEVM",
-                address: accounts[0],
-              });
-            } else {
-              setUser({
-                ...user,
-                chain: availableChain.name,
-                address: accounts[0],
-              });
-            }
-          }
-        }
+        const currentEvmChain = await setChainId();
+        const defaultEvmChain = chains.find((chain) => chain.url === "beresheet-bereevm")!;
+        const chain = (currentEvmChain) ? currentEvmChain: defaultEvmChain;
+        const res = await connectToEthereum(chain);
+        if(res) setEthereumConnected(true);
       }
       setLoading(false);
     }
@@ -426,6 +346,7 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
       } else {
         await disconnectFromEthereum();
         setEthereumConnected(false);
+        if(toggle) setSwitcherMode(undefined); else setSelectorMode([]);
         setSelectedEthereumAccount(undefined);
       }
       setLoading(false);

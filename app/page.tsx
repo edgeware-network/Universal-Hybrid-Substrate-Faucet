@@ -40,6 +40,7 @@ export default function Home() {
     }, 1000);
   }, []);
 
+  console.log(switcherMode, selectorMode, user);
   const handleShowSwitchModal = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     setShowSwitchModal(true);
@@ -178,7 +179,8 @@ export default function Home() {
           />
         ));
       }
-      setUser({ chain: "Rococo", address: "", amount: "" });
+      setUser({ chain: "", address: "", amount: "" });
+      if(toggle) setSwitcherMode(undefined); else setSelectorMode([]);
     }
     setButtonText("Request Tokens");
     setIsSubmitting(false);
@@ -422,11 +424,7 @@ export default function Home() {
                     </button>
                   </div>
                   <span className="text-[#9b9b9b] text-xs h-3 w-full">
-                    You can request up to{" "}
-                    {chains.find((a) => a.name === user.chain)?.threshold! *
-                      0.1}{" "}
-                    tokens.
-                  </span>
+                    {user.chain === "" ? "" : `You can request up to ${switcherMode?.threshold! * 0.1} ${switcherMode?.nativeCurrency.symbol} tokens.`}                  </span>
                 </div>
               )}
             </div>
