@@ -6,7 +6,6 @@ import React, {
   createContext,
   useContext,
 } from "react";
-import { formatBalance } from "@polkadot/util";
 import Web3, { FMT_BYTES, FMT_NUMBER } from "web3";
 import { initPolkadotAPI } from "@/lib/polkadot";
 import { AccountInfo } from "@polkadot/types/interfaces";
@@ -78,6 +77,10 @@ type FaucetContextType = {
   setUser: (user: User) => void;
   toggle: boolean;
   setToggle: (toggle: boolean) => void;
+  switcherMode: Chain | undefined;
+  setSwitcherMode: (chain: Chain | undefined) => void;
+  selectorMode: Chain[];
+  setSelectorMode: (chains: Chain[]) => void;
 };
 
 const FaucetContext = createContext<FaucetContextType | null>(null);
@@ -86,6 +89,9 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [polkadotAccounts, setPolkadotAccounts] = useState<Account[]>([]);
   const [ethereumAccounts, setEthereumAccounts] = useState<Account[]>([]);
+  const [switcherMode, setSwitcherMode] = useState<Chain | undefined>();
+  const [selectorMode, setSelectorMode] = useState<Chain[]>([]);
+
   const [user, setUser] = useState<User>({
     chain: "Rococo",
     address: "",
@@ -472,6 +478,10 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
         setUser,
         toggle,
         setToggle,
+        switcherMode,
+        setSwitcherMode,
+        selectorMode,
+        setSelectorMode,
       }}
     >
       {isLoading ? <ConnectingPopup /> : children}

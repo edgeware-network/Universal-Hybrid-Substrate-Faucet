@@ -29,11 +29,9 @@ export default function Home() {
   const [isLoading, setLoading] = useState(true);
   const [buttonText, setButtonText] = useState("Request Tokens");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { user, setUser, toggle, state } = useFaucetContext();
+  const { user, setUser, toggle, state, switcherMode, selectorMode, setSelectorMode, setSwitcherMode } = useFaucetContext();
   const [showSwitchModal, setShowSwitchModal] = useState(false);
   const [switchMenu, setSwitchMenu] = useState<string>("Switch");
-  const [switcherMode, setSwitcherMode] = useState<Chain | undefined>();
-  const [selectorMode, setSelectorMode] = useState<Chain[]>([]);
   const captchaRef = useRef<HCaptcha>(null);
 
   useEffect(() => {
