@@ -40,7 +40,7 @@ export default function Home() {
     }, 1000);
   }, []);
 
-  console.log(switcherMode, selectorMode, user);
+  // console.log(switcherMode, selectorMode, user);
   const handleShowSwitchModal = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     setShowSwitchModal(true);
@@ -272,7 +272,7 @@ export default function Home() {
       ));
     } finally {
       captchaRef.current?.resetCaptcha();
-      setUser({ chain: "Rococo", address: "", amount: "" });
+      setUser({ chain: "", address: "", amount: "" });
       setButtonText("Request tokens");
       setIsSubmitting(false);
     }

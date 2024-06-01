@@ -5,6 +5,7 @@ import React, {
   useReducer,
   createContext,
   useContext,
+  useCallback,
 } from "react";
 import Web3, { FMT_BYTES, FMT_NUMBER } from "web3";
 import { initPolkadotAPI } from "@/lib/polkadot";
@@ -93,7 +94,7 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
   const [selectorMode, setSelectorMode] = useState<Chain[]>([]);
 
   const [user, setUser] = useState<User>({
-    chain: "Rococo",
+    chain: "",
     address: "",
     amount: "",
   });
@@ -112,9 +113,9 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
     dispatch({ type: "SET_SELECTED_POLKADOT_ACCOUNT", payload: account });
   };
 
-  const setSelectedEthereumAccount = (account: string | undefined) => {
+  const setSelectedEthereumAccount = useCallback((account: string | undefined) => {
     dispatch({ type: "SET_SELECTED_ETHEREUM_ACCOUNT", payload: account });
-  };
+  },[]);
 
   const updatePolkadotBalances = async (chain: Chain) => {
     console.log(`Updating ${chain.name} balances...`);
@@ -132,7 +133,7 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
         const balances = await Promise.all(accounts.map(async (account) => {
           const balance = (await api.query.system.account(account.address)) as AccountInfo;
           const amount = balance.data.free.toString();
-          console.log("Address:", encodeAddress(decodeAddress(account.address), chain.prefix));
+          // console.log("Address:", encodeAddress(decodeAddress(account.address), chain.prefix));
           return {
             address: encodeAddress(
               decodeAddress(account.address),
@@ -143,7 +144,7 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
             symbol: chain.nativeCurrency.symbol,
           };
         }));
-        console.log("polkadot accounts", balances);
+        // console.log("polkadot accounts", balances);
         setPolkadotAccounts(balances);
         setSelectedPolkadotAccount(
           encodeAddress(decodeAddress(user.address || balances[0].address), chain.prefix)
@@ -160,15 +161,14 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const updateEthereumBalances = async (chain: Chain) => {
+  const updateEthereumBalances = useCallback(async (chain: Chain) => {
     console.log(`Updating ${chain.name} balances...`);
     try {
       if ("ethereum" in window) {
         const web3 = new Web3(window.ethereum!);
-        await (window as any).ethereum.request({ method: "wallet_requestPermissions", params: [{ eth_accounts: {} }], });
         await (window as any).ethereum.request({ method: "eth_requestAccounts", });
         const accounts = await web3.eth.getAccounts();
-        console.log("ethereum accounts", accounts);
+        // console.log("ethereum accounts", accounts);
         const balances = await Promise.all(
           accounts.map(async (account) => {
             const balance = await web3.eth.getBalance(account);
@@ -184,11 +184,8 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
         );
         setEthereumAccounts(balances);
         setSelectedEthereumAccount(balances[0].address);
-        setUser({
-          ...user,
-          address: balances[0].address,
-          chain: balances[0].chain,
-        });
+        setSelectorMode
+        setUser((previous) => ({ ...previous, address: previous.address || balances[0].address, chain: previous.chain || balances[0].chain }));
         return true;
       } else {
         throw new Error("Ethereum wallet not detected");
@@ -196,7 +193,7 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
     } catch (err) {
       console.error(err);
     }
-  };
+  },[setSelectedEthereumAccount]);
 
   const connectToPolkadot = async (chain : Chain) => {
     console.log(`Attempting to connect to ${chain.name}`);
@@ -208,8 +205,8 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
     } catch (err) {
       console.log(err);
     }
+    
   };
-
   const connectToEthereum = async (chain: Chain) => {
     console.log(`Attempting to connect to ${chain.name}`);
     if (toggle) setSwitcherMode(chain); else setSelectorMode([chain]);
@@ -217,6 +214,7 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
       if ("ethereum" in window) {
         try {
           await (window as any).ethereum.request({ method: "wallet_switchEthereumChain", params: [{ chainId: `0x${Number(chain.chainId).toString(16)}` }] });
+          await (window as any).ethereum.request({ method: "wallet_requestPermissions", params: [{ eth_accounts: {} }], });
         } catch (err) {
           if ((err as any).code === 4902) {
             await (window as any).ethereum.request({
@@ -234,6 +232,7 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
                 },
               ],
             });
+            await (window as any).ethereum.request({ method: "wallet_requestPermissions", params: [{ eth_accounts: {} }], });
           }
         }
         await updateEthereumBalances(chain);
@@ -257,6 +256,7 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
 
   const disconnectFromEthereum = async () => {
     console.log("Disconnecting from EVM wallet");
+    localStorage.removeItem("isEthereumConnected");
     try {
       console.log("Done!");
     } catch (err) {
@@ -272,6 +272,7 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
         method: "wallet_switchEthereumChain",
         params: [{ chainId: `0x${Number(chain.chainId).toString(16)}` }],
       });
+      await (window as any).ethereum.request({ method: "wallet_requestPermissions", params: [{ eth_accounts: {} }], });
       await updateEthereumBalances(chain);
     } catch (err) {
       if ((err as any).code === 4902) {
@@ -307,7 +308,7 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
       console.log(err);
     }
   }
-
+  
   const handleConnect = (type: "polkadot" | "ethereum") => {
     if (
       (type === "polkadot" && state.polkadotConnected) ||
@@ -326,7 +327,10 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
         const defaultEvmChain = chains.find((chain) => chain.url === "beresheet-bereevm")!;
         const chain = (currentEvmChain) ? currentEvmChain: defaultEvmChain;
         const res = await connectToEthereum(chain);
-        if(res) setEthereumConnected(true);
+        if(res) {
+          setEthereumConnected(true)
+          localStorage.setItem("isEthereumConnected", "true");
+        }
       }
       setLoading(false);
     }
@@ -356,32 +360,17 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   useEffect(() => {
-    if (
-      state.polkadotConnected &&
-      polkadotAccounts.length > 0 &&
-      !state.selectedPolkadotAccount
-    ) {
-      setSelectedPolkadotAccount(polkadotAccounts[0].address);
-      setUser({
-        ...user,
-        address: polkadotAccounts[0].address,
-        chain: polkadotAccounts[0].chain,
-      });
-    }
-
-    if (
-      state.ethereumConnected &&
-      ethereumAccounts.length > 0 &&
-      !state.selectedEthereumAccount
-    ) {
-      setSelectedEthereumAccount(ethereumAccounts[0].address);
-      setUser({
-        ...user,
-        address: ethereumAccounts[0].address,
-        chain: ethereumAccounts[0].chain,
-      });
-    }
-  }, [state, polkadotAccounts, ethereumAccounts, user]);
+    async function connectOnReload() {
+      const isEthereumConnected = localStorage.getItem("isEthereumConnected");
+      const chain = await setChainId();
+      if (isEthereumConnected === "true") {
+        await updateEthereumBalances(chain!);
+      if (toggle) setSwitcherMode(chain); else setSelectorMode([chain!]);
+        setEthereumConnected(true);
+      };
+    };
+    connectOnReload();
+  },[updateEthereumBalances, toggle]);
 
   return (
     <FaucetContext.Provider
