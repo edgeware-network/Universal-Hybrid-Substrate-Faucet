@@ -109,15 +109,15 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
     dispatch({ type: "SET_ETHEREUM_CONNECTED", payload: connected });
   };
 
-  const setSelectedPolkadotAccount = (account: string | undefined) => {
+  const setSelectedPolkadotAccount = useCallback((account: string | undefined) => {
     dispatch({ type: "SET_SELECTED_POLKADOT_ACCOUNT", payload: account });
-  };
+  },[]);
 
   const setSelectedEthereumAccount = useCallback((account: string | undefined) => {
     dispatch({ type: "SET_SELECTED_ETHEREUM_ACCOUNT", payload: account });
   },[]);
 
-  const updatePolkadotBalances = async (chain: Chain) => {
+  const updatePolkadotBalances = useCallback(async (chain: Chain) => {
     console.log(`Updating ${chain.name} balances...`);
     try {
       if ((window as any).injectedWeb3) {
@@ -146,20 +146,14 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
         }));
         // console.log("polkadot accounts", balances);
         setPolkadotAccounts(balances);
-        setSelectedPolkadotAccount(
-          encodeAddress(decodeAddress(user.address || balances[0].address), chain.prefix)
-        );
-        setUser({
-          ...user,
-          address: encodeAddress(decodeAddress(user.address || balances[0].address), chain.prefix),
-          chain: chain.name,
-        });
+        setSelectedPolkadotAccount(encodeAddress(decodeAddress(sessionStorage.getItem("selectedAccount") || balances[0].address), chain.prefix));
+        setUser((previous) => ({ ...previous, address: encodeAddress(decodeAddress(sessionStorage.getItem("selectedAccount") || balances[0].address), chain.prefix), chain: sessionStorage.getItem("selectedChain") || balances[0].chain }));
         return true;
       }
     } catch (err) {
       console.log(err);
     }
-  };
+  }, [setSelectedPolkadotAccount]);
 
   const updateEthereumBalances = useCallback(async (chain: Chain) => {
     console.log(`Updating ${chain.name} balances...`);
@@ -184,7 +178,6 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
         );
         setEthereumAccounts(balances);
         setSelectedEthereumAccount(sessionStorage.getItem("selectedAccount") ||balances[0].address);
-        setSelectorMode
         setUser((previous) => ({ ...previous, address: sessionStorage.getItem("selectedAccount") || balances[0].address, chain: previous.chain || balances[0].chain }));
         return true;
       } else {
@@ -197,6 +190,7 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
 
   const connectToPolkadot = async (chain : Chain) => {
     console.log(`Attempting to connect to ${chain.name}`);
+    sessionStorage.setItem("selectedChain", chain.name);
     if (toggle) setSwitcherMode(chain); else setSelectorMode([chain]);
     try {
       if ((window as any).injectedWeb3) {
@@ -247,6 +241,9 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
 
   const disconnectFromPolkadot = async () => {
     console.log("Disconnecting from Substrate wallet");
+    sessionStorage.removeItem("isSubstrateConnected");
+    sessionStorage.removeItem("selectedAccount");
+    sessionStorage.removeItem("selectedChain");
     try {
       console.log("Done!");
     } catch (err) {
@@ -256,8 +253,9 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
 
   const disconnectFromEthereum = async () => {
     console.log("Disconnecting from EVM wallet");
-    localStorage.removeItem("isEthereumConnected");
+    sessionStorage.removeItem("isEthereumConnected");
     sessionStorage.removeItem("selectedAccount");
+    sessionStorage.removeItem("selectedChain");
     try {
       console.log("Done!");
     } catch (err) {
@@ -295,6 +293,7 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
 
   const switchPolkadotChain = async (chain: Chain) => {
     console.log(`Switching to ${chain.name}`);
+    sessionStorage.setItem("selectedChain", chain.name);
     await updatePolkadotBalances(chain);
   };
 
@@ -322,7 +321,10 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
       if(type === "polkadot") {
         const chain = chains.find((chain) => chain.url === "beresheet")!;
         const res = await connectToPolkadot(chain);
-        if(res) setPolkadotConnected(true);
+        if(res) {
+          setPolkadotConnected(true);
+          sessionStorage.setItem("isSubstrateConnected", "true");
+        };
       } else {
         const currentEvmChain = await setChainId();
         const defaultEvmChain = chains.find((chain) => chain.url === "beresheet-bereevm")!;
@@ -330,7 +332,7 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
         const res = await connectToEthereum(chain);
         if(res) {
           setEthereumConnected(true)
-          localStorage.setItem("isEthereumConnected", "true");
+          sessionStorage.setItem("isEthereumConnected", "true");
         }
       }
       setLoading(false);
@@ -348,6 +350,7 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
         await disconnectFromPolkadot();
         setPolkadotConnected(false);
         setSelectedPolkadotAccount(undefined);
+        if(toggle) setSwitcherMode(undefined); else setSelectorMode([]);
       } else {
         await disconnectFromEthereum();
         setEthereumConnected(false);
@@ -361,17 +364,28 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   useEffect(() => {
-    async function connectOnReload() {
-      const isEthereumConnected = localStorage.getItem("isEthereumConnected");
+    async function connectEvmOnReload() {
+      const isEthereumConnected = sessionStorage.getItem("isEthereumConnected");
       const chain = await setChainId();
       if (isEthereumConnected === "true") {
         await updateEthereumBalances(chain!);
-      if (toggle) setSwitcherMode(chain); else setSelectorMode([chain!]);
+        if (toggle) setSwitcherMode(chain); else setSelectorMode([chain!]);
         setEthereumConnected(true);
       };
     };
-    connectOnReload();
-  },[updateEthereumBalances, toggle]);
+    async function connectSubstrateOnReload() {
+      const isSubstrateConnected = sessionStorage.getItem("isSubstrateConnected");
+      const chain = chains.find((chain) => chain.name === sessionStorage.getItem("selectedChain"))!;
+      console.log(chain);
+      if (isSubstrateConnected === "true") {
+        await updatePolkadotBalances(chain);
+        if (toggle) setSwitcherMode(chain); else setSelectorMode([chain]);
+        setPolkadotConnected(true);
+      };
+    };
+    connectEvmOnReload();
+    connectSubstrateOnReload();
+  },[updateEthereumBalances, updatePolkadotBalances, toggle]);
 
   return (
     <FaucetContext.Provider
