@@ -183,9 +183,9 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
           })
         );
         setEthereumAccounts(balances);
-        setSelectedEthereumAccount(balances[0].address);
+        setSelectedEthereumAccount(sessionStorage.getItem("selectedAccount") ||balances[0].address);
         setSelectorMode
-        setUser((previous) => ({ ...previous, address: previous.address || balances[0].address, chain: previous.chain || balances[0].chain }));
+        setUser((previous) => ({ ...previous, address: sessionStorage.getItem("selectedAccount") || balances[0].address, chain: previous.chain || balances[0].chain }));
         return true;
       } else {
         throw new Error("Ethereum wallet not detected");
@@ -257,6 +257,7 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
   const disconnectFromEthereum = async () => {
     console.log("Disconnecting from EVM wallet");
     localStorage.removeItem("isEthereumConnected");
+    sessionStorage.removeItem("selectedAccount");
     try {
       console.log("Done!");
     } catch (err) {

@@ -82,6 +82,7 @@ export const WalletWidget = ({
   };
 
   const handleClick = (account: Account) => {
+    sessionStorage.setItem("selectedAccount", account.address);
     if (toggle){
       setUser({ ...user, chain: account.chain, address: account.address });
     } else {
