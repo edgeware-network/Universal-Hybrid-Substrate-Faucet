@@ -14,6 +14,8 @@ import { Chain, chains } from "@/constants/config";
 import { decodeAddress, encodeAddress } from "@polkadot/util-crypto";
 import ConnectingPopup from "@/components/widgets/ConnectingPopup";
 import BigNumber from "bignumber.js";
+import toast from "react-hot-toast";
+import Toast from "@/components/Toast";
 
 export type Account = {
   address: string;
@@ -188,6 +190,31 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
     }
   },[setSelectedEthereumAccount]);
 
+  
+  const disconnectFromPolkadot = async () => {
+    console.log("Disconnecting from Substrate wallet");
+    sessionStorage.removeItem("isSubstrateConnected");
+    sessionStorage.removeItem("selectedAccount");
+    sessionStorage.removeItem("selectedChain");
+    try {
+      console.log("Done!");
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  
+  const disconnectFromEthereum = async () => {
+    console.log("Disconnecting from EVM wallet");
+    sessionStorage.removeItem("isEthereumConnected");
+    sessionStorage.removeItem("selectedAccount");
+    sessionStorage.removeItem("selectedChain");
+    try {
+      console.log("Done!");
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const connectToPolkadot = async (chain : Chain) => {
     console.log(`Attempting to connect to ${chain.name}`);
     sessionStorage.setItem("selectedChain", chain.name);
@@ -199,8 +226,8 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
     } catch (err) {
       console.log(err);
     }
-    
   };
+
   const connectToEthereum = async (chain: Chain) => {
     console.log(`Attempting to connect to ${chain.name}`);
     if (toggle) setSwitcherMode(chain); else setSelectorMode([chain]);
@@ -210,6 +237,11 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
           await (window as any).ethereum.request({ method: "wallet_switchEthereumChain", params: [{ chainId: `0x${Number(chain.chainId).toString(16)}` }] });
           await (window as any).ethereum.request({ method: "wallet_requestPermissions", params: [{ eth_accounts: {} }], });
         } catch (err) {
+          if((err as any).code === 4001) {
+            console.log("User rejected request");
+            return false;
+          };
+
           if ((err as any).code === 4902) {
             await (window as any).ethereum.request({
               method: "wallet_addEthereumChain",
@@ -227,41 +259,18 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
               ],
             });
             await (window as any).ethereum.request({ method: "wallet_requestPermissions", params: [{ eth_accounts: {} }], });
-          }
-        }
+          };
+        };
         await updateEthereumBalances(chain);
         return true;
       } else {
         throw new Error("Ethereum wallet not detected");
       }
     } catch (err) {
-      console.log(err);
-    }
+      console.error(err);
+    };
   };
 
-  const disconnectFromPolkadot = async () => {
-    console.log("Disconnecting from Substrate wallet");
-    sessionStorage.removeItem("isSubstrateConnected");
-    sessionStorage.removeItem("selectedAccount");
-    sessionStorage.removeItem("selectedChain");
-    try {
-      console.log("Done!");
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const disconnectFromEthereum = async () => {
-    console.log("Disconnecting from EVM wallet");
-    sessionStorage.removeItem("isEthereumConnected");
-    sessionStorage.removeItem("selectedAccount");
-    sessionStorage.removeItem("selectedChain");
-    try {
-      console.log("Done!");
-    } catch (err) {
-      console.error(err);
-    }
-  };
 
   const switchEthereumChain = async (chain: Chain) => {
     console.log(`Switching to ${chain.name}`);
