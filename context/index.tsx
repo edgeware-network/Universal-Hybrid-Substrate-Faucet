@@ -371,6 +371,9 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   useEffect(() => {
+    const delay = (ms: number) =>
+      new Promise((res) => setTimeout(res, ms));
+
     async function connectEvmOnReload() {
       const isEthereumConnected = sessionStorage.getItem("isEthereumConnected");
       const chain = await setChainId();
@@ -393,7 +396,9 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
           setPolkadotConnected(false);
           setSelectedPolkadotAccount(undefined);
           if (toggle) setSwitcherMode(undefined); else setSelectorMode([]);
-        }
+          window.location.reload();
+          delay(4000);
+        };
       };
     };
     connectEvmOnReload();
