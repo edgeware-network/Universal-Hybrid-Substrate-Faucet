@@ -120,34 +120,37 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
   const updatePolkadotBalances = useCallback(async (chain: Chain) => {
     console.log(`Updating ${chain.name} balances...`);
     try {
-      const web3Enable = (await import('@polkadot/extension-dapp')).web3Enable;
-      const extensions = await web3Enable('Polkadot-JS Apps'); 
-
-      if (extensions.length === 0) {
-        console.log("No extensions Found!");
-        return false;
-      }
-      const api = await initPolkadotAPI(chain.rpcUrl);
-      const accounts = await (await import('@polkadot/extension-dapp')).web3Accounts();
-      const balances = await Promise.all(accounts.map(async (account) => {
-        const balance = (await api.query.system.account(account.address)) as AccountInfo;
-        const amount = balance.data.free.toString();
-        // console.log("Address:", encodeAddress(decodeAddress(account.address), chain.prefix));
-        return {
-          address: encodeAddress(
-            decodeAddress(account.address),
-            chain.prefix
-          ),
-          chain: (await api.rpc.system.chain()).toHuman(),
-          balance: Number(new BigNumber(amount).shiftedBy(-chain.nativeCurrency.decimals).toFixed(2)),
-          symbol: chain.nativeCurrency.symbol,
+      if ((window as any).injectedWeb3) {
+        const { web3Enable, web3Accounts } = await import(
+          "@polkadot/extension-dapp"
+        );
+        const extensions = await web3Enable("Polkadot-JS Apps");
+        if (extensions.length === 0) {
+          console.log("No Polkadot wallet detected");
+          return false;
         };
-      }));
-      // console.log("polkadot accounts", balances);
-      setPolkadotAccounts(balances);
-      setSelectedPolkadotAccount(encodeAddress(decodeAddress(sessionStorage.getItem("selectedAccount") || balances[0].address), chain.prefix));
-      setUser((previous) => ({ ...previous, address: encodeAddress(decodeAddress(sessionStorage.getItem("selectedAccount") || balances[0].address), chain.prefix), chain: sessionStorage.getItem("selectedChain") || balances[0].chain }));
-      return true;
+        const api = await initPolkadotAPI(chain.rpcUrl);
+        const accounts = await web3Accounts();
+        const balances = await Promise.all(accounts.map(async (account) => {
+          const balance = (await api.query.system.account(account.address)) as AccountInfo;
+          const amount = balance.data.free.toString();
+          // console.log("Address:", encodeAddress(decodeAddress(account.address), chain.prefix));
+          return {
+            address: encodeAddress(
+              decodeAddress(account.address),
+              chain.prefix
+            ),
+            chain: (await api.rpc.system.chain()).toHuman(),
+            balance: Number(new BigNumber(amount).shiftedBy(-chain.nativeCurrency.decimals).toFixed(2)),
+            symbol: chain.nativeCurrency.symbol,
+          };
+        }));
+        // console.log("polkadot accounts", balances);
+        setPolkadotAccounts(balances);
+        setSelectedPolkadotAccount(encodeAddress(decodeAddress(sessionStorage.getItem("selectedAccount") || balances[0].address), chain.prefix));
+        setUser((previous) => ({ ...previous, address: encodeAddress(decodeAddress(sessionStorage.getItem("selectedAccount") || balances[0].address), chain.prefix), chain: sessionStorage.getItem("selectedChain") || balances[0].chain }));
+        return true;
+      };
     } catch (err) {
       console.log(err);
     }
@@ -216,7 +219,7 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
     sessionStorage.setItem("selectedChain", chain.name);
     if (toggle) setSwitcherMode(chain); else setSelectorMode([chain]);
     try {
-      if ((await import("@polkadot/extension-dapp")).isWeb3Injected) {
+      if ((window as any).injectedWeb3) {
         return await updatePolkadotBalances(chain);
       }
     } catch (err) {
@@ -382,14 +385,21 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
       const chain = chains.find((chain) => chain.name === sessionStorage.getItem("selectedChain"))!;
       console.log(chain);
       if (isSubstrateConnected === "true") {
-        await updatePolkadotBalances(chain);
-        if (toggle) setSwitcherMode(chain); else setSelectorMode([chain]);
-        setPolkadotConnected(true);
+        const res = await updatePolkadotBalances(chain);
+        if (res) {
+          if (toggle) setSwitcherMode(chain); else setSelectorMode([chain]);
+          setPolkadotConnected(true);
+        } else {
+          setPolkadotConnected(false);
+          setSelectedPolkadotAccount(undefined);
+          if (toggle) setSwitcherMode(undefined); else setSelectorMode([]);
+          window.location.reload();
+        }
       };
     };
     connectEvmOnReload();
     connectSubstrateOnReload();
-  },[updateEthereumBalances, updatePolkadotBalances, toggle]);
+  },[updateEthereumBalances, updatePolkadotBalances,  setSelectedPolkadotAccount, toggle]);
 
   return (
     <FaucetContext.Provider
