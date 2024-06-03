@@ -393,7 +393,6 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
           setPolkadotConnected(false);
           setSelectedPolkadotAccount(undefined);
           if (toggle) setSwitcherMode(undefined); else setSelectorMode([]);
-          window.location.reload();
         }
       };
     };
