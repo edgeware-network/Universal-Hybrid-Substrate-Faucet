@@ -124,7 +124,8 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
       const extensions = await web3Enable('Polkadot-JS Apps'); 
 
       if (extensions.length === 0) {
-        throw new Error("No Polkadot wallet detected");
+        console.log("No extensions Found!");
+        return false;
       }
       const api = await initPolkadotAPI(chain.rpcUrl);
       const accounts = await (await import('@polkadot/extension-dapp')).web3Accounts();
@@ -215,7 +216,7 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
     sessionStorage.setItem("selectedChain", chain.name);
     if (toggle) setSwitcherMode(chain); else setSelectorMode([chain]);
     try {
-      if ((window as any).injectedWeb3) {
+      if ((await import("@polkadot/extension-dapp")).isWeb3Injected) {
         return await updatePolkadotBalances(chain);
       }
     } catch (err) {
@@ -265,7 +266,6 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
       console.error(err);
     };
   };
-
 
   const switchEthereumChain = async (chain: Chain) => {
     console.log(`Switching to ${chain.name}`);
