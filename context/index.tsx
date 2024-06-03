@@ -14,8 +14,6 @@ import { Chain, chains } from "@/constants/config";
 import { decodeAddress, encodeAddress } from "@polkadot/util-crypto";
 import ConnectingPopup from "@/components/widgets/ConnectingPopup";
 import BigNumber from "bignumber.js";
-import toast from "react-hot-toast";
-import Toast from "@/components/Toast";
 
 export type Account = {
   address: string;
@@ -122,36 +120,33 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
   const updatePolkadotBalances = useCallback(async (chain: Chain) => {
     console.log(`Updating ${chain.name} balances...`);
     try {
-      if ((window as any).injectedWeb3) {
-        const { web3Enable, web3Accounts } = await import(
-          "@polkadot/extension-dapp"
-        );
-        const extensions = await web3Enable("Polkadot-JS Apps");
-        if (extensions.length === 0) {
-          throw new Error("No Polkadot wallet detected");
-        }
-        const api = await initPolkadotAPI(chain.rpcUrl);
-        const accounts = await web3Accounts();
-        const balances = await Promise.all(accounts.map(async (account) => {
-          const balance = (await api.query.system.account(account.address)) as AccountInfo;
-          const amount = balance.data.free.toString();
-          // console.log("Address:", encodeAddress(decodeAddress(account.address), chain.prefix));
-          return {
-            address: encodeAddress(
-              decodeAddress(account.address),
-              chain.prefix
-            ),
-            chain: (await api.rpc.system.chain()).toHuman(),
-            balance: Number(new BigNumber(amount).shiftedBy(-chain.nativeCurrency.decimals).toFixed(2)),
-            symbol: chain.nativeCurrency.symbol,
-          };
-        }));
-        // console.log("polkadot accounts", balances);
-        setPolkadotAccounts(balances);
-        setSelectedPolkadotAccount(encodeAddress(decodeAddress(sessionStorage.getItem("selectedAccount") || balances[0].address), chain.prefix));
-        setUser((previous) => ({ ...previous, address: encodeAddress(decodeAddress(sessionStorage.getItem("selectedAccount") || balances[0].address), chain.prefix), chain: sessionStorage.getItem("selectedChain") || balances[0].chain }));
-        return true;
+      const web3Enable = (await import('@polkadot/extension-dapp')).web3Enable;
+      const extensions = await web3Enable('Polkadot-JS Apps'); 
+
+      if (extensions.length === 0) {
+        throw new Error("No Polkadot wallet detected");
       }
+      const api = await initPolkadotAPI(chain.rpcUrl);
+      const accounts = await (await import('@polkadot/extension-dapp')).web3Accounts();
+      const balances = await Promise.all(accounts.map(async (account) => {
+        const balance = (await api.query.system.account(account.address)) as AccountInfo;
+        const amount = balance.data.free.toString();
+        // console.log("Address:", encodeAddress(decodeAddress(account.address), chain.prefix));
+        return {
+          address: encodeAddress(
+            decodeAddress(account.address),
+            chain.prefix
+          ),
+          chain: (await api.rpc.system.chain()).toHuman(),
+          balance: Number(new BigNumber(amount).shiftedBy(-chain.nativeCurrency.decimals).toFixed(2)),
+          symbol: chain.nativeCurrency.symbol,
+        };
+      }));
+      // console.log("polkadot accounts", balances);
+      setPolkadotAccounts(balances);
+      setSelectedPolkadotAccount(encodeAddress(decodeAddress(sessionStorage.getItem("selectedAccount") || balances[0].address), chain.prefix));
+      setUser((previous) => ({ ...previous, address: encodeAddress(decodeAddress(sessionStorage.getItem("selectedAccount") || balances[0].address), chain.prefix), chain: sessionStorage.getItem("selectedChain") || balances[0].chain }));
+      return true;
     } catch (err) {
       console.log(err);
     }
