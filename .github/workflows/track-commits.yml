@@ -1,0 +1,78 @@
+name: Track Commits and Update Config
+
+on:
+  schedule:
+    - cron: '0 * * * *' # Runs every hour
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  track-commits:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout this repository
+      uses: actions/checkout@v2
+
+    - name: Check for changes in PolkadotJS
+      run: |
+        git clone https://github.com/polkadot-js/apps.git
+        cd apps
+        git log -1 --pretty=format:"%H" -- packages/apps-config/src/endpoints/testing.ts packages/apps-config/src/endpoints/testingRelayPaseo.ts packages/apps-config/src/endpoints/testingRelayRococo.ts packages/apps-config/src/endpoints/testingRelayWestend.ts > ../latest_commit.txt
+        cd ..
+        if cmp -s latest_commit.txt latest_commit_checked.txt; then
+          echo "No changes detected."
+          exit 0
+        fi
+        echo "Changes detected."
+        mv latest_commit.txt latest_commit_checked.txt
+
+    - name: Create GitHub Issues and Pull Request
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        CHANGED_FILES=("testing.ts" "testingRelayPaseo.ts" "testingRelayRococo.ts" "testingRelayWestend.ts")
+        CONFIG_FILE_PATH="constants/config.ts"
+        BRANCH_NAME="update-config-$(date +%s)"
+
+        git config --global user.name 'github-actions'
+        git config --global user.email 'github-actions@github.com'
+
+        # Checkout the main branch to create a new branch from it
+        git checkout main
+        git checkout -b $BRANCH_NAME
+
+        for FILE in "${CHANGED_FILES[@]}"; do
+          if git diff --name-only HEAD~1 HEAD | grep -q "packages/apps-config/src/endpoints/$FILE"; then
+            # Determine chain type based on file
+            case $FILE in
+              "testing.ts")
+                CHAIN_TYPE="Solochains"
+                ;;
+              "testingRelayPaseo.ts")
+                CHAIN_TYPE="Paseo & Parachains"
+                ;;
+              "testingRelayRococo.ts")
+                CHAIN_TYPE="Rococo & Parachains"
+                ;;
+              "testingRelayWestend.ts")
+                CHAIN_TYPE="Westend & Parachains"
+                ;;
+            esac
+
+            # Extract changes and create GitHub issues
+            CHANGES=$(git diff HEAD~1 HEAD -- packages/apps-config/src/endpoints/$FILE)
+            ISSUE_BODY="Changes detected in $FILE:\n\`\`\`diff\n$CHANGES\n\`\`\`"
+            ISSUE_TITLE="Update detected in $FILE"
+            ISSUE_URL=$(gh issue create --title "$ISSUE_TITLE" --body "$ISSUE_BODY" --json url -q .url)
+
+            # Update config.ts with changes
+            node update-config.js "apps/packages/apps-config/src/endpoints/$FILE" "$CONFIG_FILE_PATH" "$CHAIN_TYPE"
+
+            git add $CONFIG_FILE_PATH
+            git commit -m "Update config for changes in $FILE"
+            # Create a pull request targeting the main branch
+            gh pr create --base main --title "Update config for $FILE" --body "This pull request addresses changes in $FILE as described in [this issue]($ISSUE_URL)."
+          fi
+        done
+
+        git push origin $BRANCH_NAME
