@@ -16,11 +16,45 @@ async function getLowestLatencyRpc(rpcs) {
   return latencies[0].rpc;
 }
 
-async function updateConfig(thirdPartyFilePath, configFilePath, chainType, addMissing = false) {
-  const thirdPartyFile = require(path.resolve(thirdPartyFilePath));
-  const configFile = require(path.resolve(configFilePath));
+function extractChainsFromTestingTs(fileContent) {
+  const chainRegex = /{\s*info: '([^']+)',\s*providers: {\s*([^}]+)\s*},\s*text: '([^']+)',\s*ui: {\s*color: '([^']+)',[^}]*\s*logo: ([^}]+)\s*}\s*}/g;
+  const chains = [];
+  let match;
 
-  const chainsToUpdate = thirdPartyFile.testChains.filter(chain => {
+  while ((match = chainRegex.exec(fileContent)) !== null) {
+    const providers = {};
+    const providersString = match[2];
+    providersString.split(',').forEach(provider => {
+      const [key, value] = provider.split(':').map(s => s.trim().replace(/'/g, ''));
+      providers[key] = value;
+    });
+
+    chains.push({
+      info: match[1],
+      text: match[3],
+      providers,
+      ui: {
+        color: match[4],
+        logo: match[5],
+      },
+    });
+  }
+
+  return chains;
+}
+
+async function updateConfig(thirdPartyFilePath, configFilePath, chainType, addMissing = false) {
+  const thirdPartyFileContent = fs.readFileSync(path.resolve(__dirname, thirdPartyFilePath), 'utf-8');
+  let configFile;
+
+  try {
+    configFile = JSON.parse(fs.readFileSync(configFilePath, 'utf-8'));
+  } catch (error) {
+    console.error(`Error parsing JSON from config file: ${error.message}`);
+    return;
+  }
+
+  const chainsToUpdate = extractChainsFromTestingTs(thirdPartyFileContent).filter(chain => {
     const providers = Object.values(chain.providers).filter(p => !p.startsWith('//'));
     return providers.length > 0;
   });
