@@ -29,7 +29,16 @@ export default function Home() {
   const [isLoading, setLoading] = useState(true);
   const [buttonText, setButtonText] = useState("Request Tokens");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { user, setUser, toggle, state, switcherMode, selectorMode, setSelectorMode, setSwitcherMode } = useFaucetContext();
+  const {
+    user,
+    setUser,
+    toggle,
+    state,
+    switcherMode,
+    selectorMode,
+    setSelectorMode,
+    setSwitcherMode,
+  } = useFaucetContext();
   const [showSwitchModal, setShowSwitchModal] = useState(false);
   const [switchMenu, setSwitchMenu] = useState<string>("Switch");
   const captchaRef = useRef<HCaptcha>(null);
@@ -121,12 +130,19 @@ export default function Home() {
       try {
         const res = await axios.post(
           "/api/disburse",
-          JSON.stringify({ disburses: disburse(toggle, user.address, user.amount, switcherMode, selectorMode) })
+          JSON.stringify({
+            disburses: disburse(
+              toggle,
+              user.address,
+              user.amount,
+              switcherMode,
+              selectorMode
+            ),
+          })
         );
         console.log("response: ", res.data.data);
         const disbursements: Disburse[] = res.data.data;
-        const delay = (ms: number) =>
-          new Promise((res) => setTimeout(res, ms));
+        const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
         for (const d of disbursements) {
           if (d.txhash && d.txhash !== -1) {
@@ -136,7 +152,8 @@ export default function Home() {
                   t={t}
                   Icon={LuCheckSquare}
                   className="text-green-500 h-5 w-5"
-                  message={`Successful! Sent ${d.amount} ${d.symbol} to ${d.address}`}/>
+                  message={`Successful! Sent ${d.amount} ${d.symbol} to ${d.address}`}
+                />
               ),
               { duration: 4000 }
             );
@@ -180,7 +197,8 @@ export default function Home() {
         ));
       }
       setUser({ chain: "", address: "", amount: "" });
-      if(toggle) setSwitcherMode(undefined); else setSelectorMode([]);
+      if (toggle) setSwitcherMode(undefined);
+      else setSelectorMode([]);
     }
     setButtonText("Request Tokens");
     setIsSubmitting(false);
@@ -201,7 +219,15 @@ export default function Home() {
         try {
           const res = await axios.post(
             "/api/disburse",
-            JSON.stringify({ disburses: disburse(toggle, user.address, user.amount, switcherMode, selectorMode) })
+            JSON.stringify({
+              disburses: disburse(
+                toggle,
+                user.address,
+                user.amount,
+                switcherMode,
+                selectorMode
+              ),
+            })
           );
           console.log("response: ", res.data.data);
           const disbursements: Disburse[] = res.data.data;
@@ -215,7 +241,8 @@ export default function Home() {
                     t={t}
                     Icon={LuCheckSquare}
                     className="text-green-500 h-5 w-5"
-                    message={`Successful! Sent ${d.amount} ${d.symbol} to ${d.address}`}/>
+                    message={`Successful! Sent ${d.amount} ${d.symbol} to ${d.address}`}
+                  />
                 ),
                 { duration: 4000 }
               );
@@ -399,7 +426,7 @@ export default function Home() {
                 )}
               </div>
               {toggle && (
-                <div className="max-w-[568px] w-[100vw] bg-[#1b1b1b] flex flex-col space-y-[3px] items-start justify-center p-4 rounded-[12px] border-2 border-[#202020] focus-within:border-[#0e0909]">
+                <div className="max-w-[568px] w-[100vw] bg-[#1b1b1b] flex flex-col space-y-[3px] items-start justify-center p-4 rounded-[12px] border-2 border-[#202020] focus-within:border-[#404040]">
                   <span className="text-xs text-[#9b9b9b] h-6">Amount</span>
                   <div className="flex items-center justify-between w-full">
                     <input
@@ -424,7 +451,12 @@ export default function Home() {
                     </button>
                   </div>
                   <span className="text-[#9b9b9b] text-xs h-3 w-full">
-                    {user.chain === "" ? "" : `You can request up to ${switcherMode?.threshold! * 0.001} ${switcherMode?.nativeCurrency.symbol} tokens.`}                  </span>
+                    {user.chain === ""
+                      ? ""
+                      : `You can request up to ${
+                          switcherMode?.threshold! * 0.001
+                        } ${switcherMode?.nativeCurrency.symbol} tokens.`}{" "}
+                  </span>
                 </div>
               )}
             </div>
@@ -453,7 +485,15 @@ export default function Home() {
             </div>
           </form>
         )}
-        {showSwitchModal && <Switch selectorMode={selectorMode} setSelectorMode={setSelectorMode} switcherMode={switcherMode} setSwitcherMode={setSwitcherMode} onClose={handleCloseSwitchModal} />}
+        {showSwitchModal && (
+          <Switch
+            selectorMode={selectorMode}
+            setSelectorMode={setSelectorMode}
+            switcherMode={switcherMode}
+            setSwitcherMode={setSwitcherMode}
+            onClose={handleCloseSwitchModal}
+          />
+        )}
       </div>
     </main>
   );

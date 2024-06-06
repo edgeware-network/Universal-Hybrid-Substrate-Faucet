@@ -76,6 +76,21 @@ const ParticlesComponent = () => {
                 height: 100,
               },
               {
+                src: "/images/polkadot-chain.svg",
+                width: 100,
+                height: 100,
+              },
+              {
+                src: "/images/polkadot-chain.svg",
+                width: 100,
+                height: 100,
+              },
+              {
+                src: "/images/paseo.png",
+                width: 100,
+                height: 100,
+              },
+              {
                 src: "/images/moonbase-alpha.svg",
                 width: 100,
                 height: 100,
