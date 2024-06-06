@@ -9,8 +9,8 @@ const Footer = (): React.JSX.Element => {
         Edgeware contributors
       </p>
 
-      <p className="text-xs font-medium text-[#494949]">
-        Edgeware © 2024 - {new Date().getFullYear()}
+      <p className="text-xs text-[#E6007A] font-bold">
+        Funded by Polkadot Treasury - {new Date().getFullYear()}
       </p>
     </div>
   );
