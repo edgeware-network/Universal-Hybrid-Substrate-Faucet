@@ -71,7 +71,7 @@ export default function Home() {
   const getMaxAmount = (event: MouseEvent<HTMLButtonElement>) => {
     setUser({
       ...user,
-      amount: `${chains.find((a) => a.name === user.chain)?.threshold! * 0.1}`,
+      amount: `${chains.find((a) => a.name === user.chain)?.threshold! * 0.001}`,
     });
     event.preventDefault();
   };
@@ -90,7 +90,7 @@ export default function Home() {
 
     if (
       Number(user.amount) >
-      Number(chains.find((a) => a.name === user.chain)?.threshold! * 0.1)
+      Number(chains.find((a) => a.name === user.chain)?.threshold! * 0.001)
     ) {
       toast.custom((t) => (
         <Toast
@@ -424,7 +424,7 @@ export default function Home() {
                     </button>
                   </div>
                   <span className="text-[#9b9b9b] text-xs h-3 w-full">
-                    {user.chain === "" ? "" : `You can request up to ${switcherMode?.threshold! * 0.1} ${switcherMode?.nativeCurrency.symbol} tokens.`}                  </span>
+                    {user.chain === "" ? "" : `You can request up to ${switcherMode?.threshold! * 0.001} ${switcherMode?.nativeCurrency.symbol} tokens.`}                  </span>
                 </div>
               )}
             </div>
