@@ -50,14 +50,14 @@ export async function disburseSubstrateToken(chain: DisburseChain) {
     if(faucetBalance > 0 && faucetBalance > transferAmount){
       const transfer = api.tx.balances.transferKeepAlive(chain.address, transferAmount.toString());
       const hash = await transfer.signAndSend(loadFaucetAccount().substrateAccount);
-    
+
       return `${hash}`;
 
     } else {
       return -1;
 
     };
-  
+
   } catch (error) {
     console.log((error instanceof AxiosError) ? error.response?.data.message : "");
     return null;
@@ -84,13 +84,13 @@ export async function disburseEvmToken(chain: DisburseChain) {
         gasPrice: await web3.eth.getGasPrice(),
         nonce: await web3.eth.getTransactionCount(process.env.FAUCET_EVM_ADDRESS!)
       };
-      
+
       console.log(tx);
-      
+
       const signedTx = await web3.eth.accounts.signTransaction(tx, loadFaucetAccount().privateKey);
       const receipt = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
       console.log(receipt.transactionHash);
-      
+
       return `${receipt.transactionHash}`;
 
     } else {
@@ -113,7 +113,7 @@ export async function getBalances(rpc: string, type: string) {
       const faucetAccountAddress = process.env.FAUCET_EVM_ADDRESS!;
       const balance = web3.utils.fromWei(await web3.eth.getBalance(faucetAccountAddress), "wei");
       return balance;
-      
+
     } catch(error) {
       console.log((error instanceof AxiosError) ? error.response?.data.message : "");
       return null;
@@ -147,8 +147,8 @@ export function disburse(toggle: boolean, address: string, amount: string, chain
 
   } else {
     const data = chains.map((chain) => {
-      // INFO: For now, we use 10% of the threshold as the amount
-      return {chain: chain.name, address: chain.type === "substrate" ? encodeAddress(decodeAddress(address), chain.prefix) : address, amount:chain.threshold * 0.1, type: chain.type, rpc: chain.rpcUrl, nativeCurrency: chain.nativeCurrency}
+      // INFO: For now, we use 0.1% of the threshold as the amount
+      return {chain: chain.name, address: chain.type === "substrate" ? encodeAddress(decodeAddress(address), chain.prefix) : address, amount:chain.threshold * 0.001, type: chain.type, rpc: chain.rpcUrl, nativeCurrency: chain.nativeCurrency}
     })
 
     return data
