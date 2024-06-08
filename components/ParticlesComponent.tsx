@@ -86,7 +86,7 @@ const ParticlesComponent = () => {
                 height: 100,
               },
               {
-                src: "/images/paseo.png",
+                src: "/images/paseo.svg",
                 width: 100,
                 height: 100,
               },
