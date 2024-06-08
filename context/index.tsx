@@ -154,7 +154,7 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
         setSelectedPolkadotAccount(encodeAddress(decodeAddress(sessionStorage.getItem("selectedAccount") || balances[0].address), chain.prefix));
         setUser((previous) => ({ ...previous, address: encodeAddress(decodeAddress(sessionStorage.getItem("selectedAccount") || balances[0].address), chain.prefix), chain: sessionStorage.getItem("selectedChain") || balances[0].chain }));
         // console.log("polkadot accounts", balances);
-        api.disconnect();
+        await api.disconnect();
         return true;
       };
     } catch (err) {
