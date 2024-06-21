@@ -820,7 +820,7 @@ export const chains: Chain[] = [
     rpcUrl: "wss://rpc.cc3-testnet.creditcoin.network/ws",
     nativeCurrency: {
       name: "CTC",
-      symbol: ""CTC,
+      symbol: "CTC",
       decimals: 18,
     },
     prefix: 42,
