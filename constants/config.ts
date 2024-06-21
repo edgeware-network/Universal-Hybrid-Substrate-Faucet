@@ -697,8 +697,7 @@ export const chains: Chain[] = [
     chainId: "",
     chainType: "Paseo & Parachains",
     url: "nodle-paradis",
-    rpcUrl:
-      "wss://node-6957502816543653888.lh.onfinality.io/ws?apikey=09b04494-3139-4b57-a5d1-e1c4c18748ce",
+    rpcUrl: "wss://node-6957502816543653888.lh.onfinality.io/ws?apikey=09b04494-3139-4b57-a5d1-e1c4c18748ce",
     nativeCurrency: {
       name: "notNODL",
       symbol: "notNODL",
