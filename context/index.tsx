@@ -84,6 +84,11 @@ type FaucetContextType = {
   setSelectorMode: (chains: Chain[]) => void;
 };
 
+const delay = (ms: number) => new Promise(
+  resolve => setTimeout(resolve, ms)
+);
+
+
 const FaucetContext = createContext<FaucetContextType | null>(null);
 
 export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
@@ -131,7 +136,7 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
         };
         const api = await initPolkadotAPI(chain.rpcUrl);
         const accounts = await web3Accounts();
-        const balances = await Promise.all(accounts.map(async (account) => {
+        const balances = await Promise.all(accounts.map(async(account) => {
           const balance = (await api.query.system.account(account.address)) as AccountInfo;
           const amount = balance.data.free.toString();
           // console.log("Address:", encodeAddress(decodeAddress(account.address), chain.prefix));
@@ -145,10 +150,11 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
             symbol: chain.nativeCurrency.symbol,
           };
         }));
-        // console.log("polkadot accounts", balances);
         setPolkadotAccounts(balances);
         setSelectedPolkadotAccount(encodeAddress(decodeAddress(sessionStorage.getItem("selectedAccount") || balances[0].address), chain.prefix));
         setUser((previous) => ({ ...previous, address: encodeAddress(decodeAddress(sessionStorage.getItem("selectedAccount") || balances[0].address), chain.prefix), chain: sessionStorage.getItem("selectedChain") || balances[0].chain }));
+        // console.log("polkadot accounts", balances);
+        await api.disconnect();
         return true;
       };
     } catch (err) {
@@ -371,8 +377,6 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   useEffect(() => {
-    const delay = (ms: number) =>
-      new Promise((res) => setTimeout(res, ms));
 
     async function connectEvmOnReload() {
       const isEthereumConnected = sessionStorage.getItem("isEthereumConnected");
@@ -394,11 +398,11 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
           setPolkadotConnected(true);
         } else {
           setPolkadotConnected(false);
+          if(toggle) setSwitcherMode(undefined); else setSelectorMode([]);
           setSelectedPolkadotAccount(undefined);
-          if (toggle) setSwitcherMode(undefined); else setSelectorMode([]);
+          await delay(3000);
           window.location.reload();
-          delay(4000);
-        };
+        }
       };
     };
     connectEvmOnReload();
