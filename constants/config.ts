@@ -1218,8 +1218,8 @@ export const chains: Chain[] = [
     threshold: 5000,
   },
   {
-    name: "Moonbase Alpha",
-    url: "moonbase-alpha",
+    name: "Moonbase Alpha EVM",
+    url: "moonbase-alpha-evm",
     chainId: "1287",
     chainType: "Solochains",
     rpcUrl: "https://rpc.testnet.moonbeam.network",
