@@ -1,27 +1,51 @@
 import { Chain } from "@/constants/config";
-import { getBalances } from "@/lib/utils";
+import { getEvmBalances, getSubstrateBalances } from "@/lib/utils";
 import { NextRequest, NextResponse } from "next/server";
 
 type FaucetRequest = {
   chains: Chain[];
-}
+};
+
+async function getBalances(chain: Chain) {
+  
+  if (chain.type === "evm") {
+    try {
+      return await getEvmBalances(chain);
+    } catch(error) {
+      console.log("getEvmBalances: failed for reason: ", error);
+      return null;
+    };
+  };
+
+  if (chain.type === "substrate") {
+    try {
+      return await getSubstrateBalances(chain);
+    } catch(error) {
+      console.log("getEvmBalances: failed for reason: ", error);
+      return null;
+    };
+  };
+  return null;
+};
 
 export async function POST(req: NextRequest, res: NextResponse) {
   const body = await req.json();
   const { chains }: FaucetRequest  = body;
   try {
-    const balances = await Promise.all(
-      chains.map(async (chain) => {
-        return {
-          name: chain.name,
-          balance: await getBalances(chain.rpcUrl, chain.type),
-          nativeCurrency: chain.nativeCurrency,
-          rpc: chain.rpcUrl,
-          type: chain.type,
-          threshold: chain.threshold,
-        };
-      })
-    );
+    const promises = chains.map(async(chain) => {
+      const balances = await getBalances(chain);
+      return {
+        name: chain.name,
+        balance: balances,
+        nativeCurrency: chain.nativeCurrency,
+        rpc: chain.rpcUrl,
+        type: chain.type,
+        threshold: chain.threshold,
+      };
+    });
+
+    const balances = await Promise.all(promises);
+
     console.log(balances);
     return NextResponse.json({ message: "success", data: balances }, { status: 200 });
   }

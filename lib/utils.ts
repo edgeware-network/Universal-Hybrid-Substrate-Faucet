@@ -6,6 +6,7 @@ import { cryptoWaitReady, decodeAddress, encodeAddress } from "@polkadot/util-cr
 import { AccountInfo } from "@polkadot/types/interfaces";
 import { AxiosError } from "axios";
 import { Chain } from "@/constants/config";
+import BigNumber from "bignumber.js";
 
 export type DisburseChain = {
   chain: string;
@@ -105,39 +106,45 @@ export async function disburseEvmToken(chain: DisburseChain) {
   }
 };
 
-export async function getBalances(rpc: string, type: string) {
+export async function getEvmBalances(chain: Chain) {
+  console.log(`Connecting to ${chain.name}...`);
   await cryptoWaitReady();
-  if(type === 'evm') {
-    try {
-      const web3 = new Web3(rpc);
-      const faucetAccountAddress = process.env.FAUCET_EVM_ADDRESS!;
-      const balance = web3.utils.fromWei(await web3.eth.getBalance(faucetAccountAddress), "wei");
-      return balance;
+  
+  const web3 = new Web3(chain.rpcUrl);
+  const faucetAccountAddress = process.env.FAUCET_EVM_ADDRESS!;
+  const balance = web3.utils.fromWei(await web3.eth.getBalance(faucetAccountAddress), "wei");
+  console.log(`${chain.name}: ${balance}`);
+  return balance;
+};
 
-    } catch(error) {
-      console.log((error instanceof AxiosError) ? error.response?.data.message : "");
-      return null;
+const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
-    }
-  };
+export async function getSubstrateBalances(chain: Chain) {
+  console.log(`Connecting to ${chain.name}...`);
+  await cryptoWaitReady();
 
   try {
-    const wsProvider = new WsProvider(rpc);
-    wsProvider.on("error", (error) => {
-      console.log("wsProvider error", error);
-      return null;
-    });
+    const wsProvider = new WsProvider(chain.rpcUrl);
+
+    await delay(5000);
+
+    if (!wsProvider.isConnected) throw `WebSocket Error for ${chain.name}`;
+    
     const api = await ApiPromise.create({ provider: wsProvider });
-    await api.isReady;
+    
+    await api.isReadyOrError;
+  
+  
     const faucetPublicKey = process.env.FAUCET_SUBSTRATE_PUBLIC_KEY!;
     const account = (await api.query.system.account(faucetPublicKey) as AccountInfo);
+    const balance = BigNumber(account.data.free.toString());
     await api.disconnect();
-    return account.data.free.toString();
+    console.log(`${chain.name}: ${balance}`);
+    return balance;
 
   } catch (error) {
-    console.log((error instanceof AxiosError) ? error.response?.data.message : "");
+    console.log(`getSubstrateBalances Worker: failed for reason: `, error);
     return null;
-
   };
 };
 

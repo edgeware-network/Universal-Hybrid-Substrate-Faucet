@@ -8,7 +8,7 @@ import BigNumber from "bignumber.js";
 
 type FaucetChain = {
   name: string;
-  balance: string;
+  balance: BigNumber;
   nativeCurrency: {
     name: string;
     decimals: number;
@@ -38,7 +38,7 @@ export default function Status() {
 
   console.log(faucetBalance);
 
-  const formatBalances = (amount: string | null, decimals: number) => {
+  const formatBalances = (amount: BigNumber | null, decimals: number) => {
     if (amount === null) {
       return 0;
     }
