@@ -3,7 +3,7 @@ export type Chain = {
   url: string;
   chainType: string;
   chainId: string;
-  rpcUrl: string;
+  rpcUrls: string[];
   nativeCurrency: {
     name: string;
     symbol: string;
@@ -20,7 +20,16 @@ export const chains: Chain[] = [
     url: "westend",
     chainType: "Westend & Parachains",
     chainId: "",
-    rpcUrl: "wss://westend-rpc.polkadot.io",
+    rpcUrls: [
+      "wss://westend-rpc.dwellir.com",
+      "wss://westend-rpc-tn.dwellir.com",
+      "wss://rpc.ibp.network/westend",
+      "wss://rpc.dotters.network/westend",
+      "wss://rpc-westend.luckyfriday.io",
+      "wss://westend.api.onfinality.io/public-ws",
+      "wss://westend-rpc.polkadot.io",
+      "wss://westend.public.curie.radiumblock.co/ws",
+    ],
     nativeCurrency: {
       name: "WND",
       symbol: "WND",
@@ -35,7 +44,13 @@ export const chains: Chain[] = [
     url: "westend-asset-hub",
     chainId: "",
     chainType: "Westend & Parachains",
-    rpcUrl: "wss://asset-hub-westend-rpc.dwellir.com",
+    rpcUrls: [
+      "wss://asset-hub-westend-rpc.dwellir.com",
+      "wss://westmint-rpc-tn.dwellir.com",
+      "wss://sys.ibp.network/westmint",
+      "wss://sys.dotters.network/westmint",
+      "wss://westend-asset-hub-rpc.polkadot.io",
+    ],
     nativeCurrency: {
       name: "WND",
       symbol: "WND",
@@ -50,7 +65,13 @@ export const chains: Chain[] = [
     url: "westend-bridge-hub",
     chainId: "",
     chainType: "Westend & Parachains",
-    rpcUrl: "wss://westend-bridge-hub-rpc.dwellir.com",
+    rpcUrls: [
+      "wss://bridge-hub-westend-rpc.dwellir.com",
+      "wss://westend-bridge-hub-rpc-tn.dwellir.com",
+      "wss://sys.ibp.network/bridgehub-westend",
+      "wss://sys.dotters.network/bridgehub-westend",
+      "wss://westend-bridge-hub-rpc.polkadot.io",
+    ],
     nativeCurrency: {
       name: "WND",
       symbol: "WND",
@@ -65,7 +86,13 @@ export const chains: Chain[] = [
     url: "westend-collectives",
     chainId: "",
     chainType: "Westend & Parachains",
-    rpcUrl: "wss://westend-collectives-rpc.dwellir.com",
+    rpcUrls: [
+      "wss://collectives-westend-rpc.dwellir.com",
+      "wss://westend-collectives-rpc-tn.dwellir.com",
+      "wss://sys.ibp.network/collectives-westend",
+      "wss://sys.dotters.network/collectives-westend",
+      "wss://westend-collectives-rpc.polkadot.io",
+    ],
     nativeCurrency: {
       name: "WND",
       symbol: "WND",
@@ -80,7 +107,12 @@ export const chains: Chain[] = [
     url: "westend-coretime",
     chainId: "",
     chainType: "Westend & Parachains",
-    rpcUrl: "wss://sys.ibp.network/coretime-westend",
+    rpcUrls: [
+      "wss://coretime-westend-rpc.dwellir.com",
+      "wss://sys.ibp.network/coretime-westend",
+      "wss://sys.dotters.network/coretime-westend",
+      "wss://westend-coretime-rpc.polkadot.io",
+    ],
     nativeCurrency: {
       name: "WND",
       symbol: "WND",
@@ -95,7 +127,12 @@ export const chains: Chain[] = [
     url: "westend-people",
     chainId: "",
     chainType: "Westend & Parachains",
-    rpcUrl: "wss://sys.ibp.network/people-westend",
+    rpcUrls: [
+      "wss://people-westend-rpc.dwellir.com",
+      "wss://sys.ibp.network/people-westend",
+      "wss://sys.dotters.network/people-westend",
+      "wss://westend-people-rpc.polkadot.io",
+    ],
     nativeCurrency: {
       name: "WND",
       symbol: "WND",
@@ -110,7 +147,7 @@ export const chains: Chain[] = [
     url: "rococo",
     chainId: "",
     chainType: "Rococo & Parachains",
-    rpcUrl: "wss://rococo-rpc.polkadot.io",
+    rpcUrls: ["wss://rococo-rpc.polkadot.io"],
     nativeCurrency: {
       name: "ROC",
       symbol: "ROC",
@@ -125,7 +162,10 @@ export const chains: Chain[] = [
     url: "rococo-asset-hub",
     chainType: "Rococo & Parachains",
     chainId: "",
-    rpcUrl: "wss://rococo-asset-hub-rpc.polkadot.io",
+    rpcUrls: [
+      "wss://asset-hub-rococo-rpc.dwellir.com",
+      "wss://rococo-asset-hub-rpc.polkadot.io",
+    ],
     nativeCurrency: {
       name: "ROC",
       symbol: "ROC",
@@ -140,7 +180,10 @@ export const chains: Chain[] = [
     url: "rococo-bridge-hub",
     chainId: "",
     chainType: "Rococo & Parachains",
-    rpcUrl: "wss://rococo-bridge-hub-rpc.dwellir.com",
+    rpcUrls: [
+      "wss://bridge-hub-rococo-rpc.dwellir.com",
+      "wss://rococo-bridge-hub-rpc.polkadot.io",
+    ],
     nativeCurrency: {
       name: "ROC",
       symbol: "ROC",
@@ -155,7 +198,7 @@ export const chains: Chain[] = [
     url: "rococo-contracts",
     chainId: "",
     chainType: "Rococo & Parachains",
-    rpcUrl: "wss://rococo-contracts-rpc.polkadot.io",
+    rpcUrls: ["wss://rococo-contracts-rpc.polkadot.io"],
     nativeCurrency: {
       name: "ROC",
       symbol: "ROC",
@@ -170,7 +213,7 @@ export const chains: Chain[] = [
     url: "rococo-coretime",
     chainId: "",
     chainType: "Rococo & Parachains",
-    rpcUrl: "wss://rococo-coretime-rpc.polkadot.io",
+    rpcUrls: ["wss://rococo-coretime-rpc.polkadot.io"],
     nativeCurrency: {
       name: "ROC",
       symbol: "ROC",
@@ -185,7 +228,7 @@ export const chains: Chain[] = [
     url: "encointer",
     chainId: "",
     chainType: "Rococo & Parachains",
-    rpcUrl: "wss://rococo.api.encointer.org",
+    rpcUrls: ["wss://rococo.api.encointer.org"],
     nativeCurrency: {
       name: "ROC",
       symbol: "ROC",
@@ -200,7 +243,7 @@ export const chains: Chain[] = [
     url: "rococo-people",
     chainId: "",
     chainType: "Rococo & Parachains",
-    rpcUrl: "wss://rococo-people-rpc.polkadot.io",
+    rpcUrls: ["wss://rococo-people-rpc.polkadot.io"],
     nativeCurrency: {
       name: "ROC",
       symbol: "ROC",
@@ -215,7 +258,7 @@ export const chains: Chain[] = [
     url: "rococo-amplitude",
     chainId: "",
     chainType: "Rococo & Parachains",
-    rpcUrl: "wss://rpc-foucoco.pendulumchain.tech",
+    rpcUrls: ["wss://rpc-foucoco.pendulumchain.tech"],
     nativeCurrency: {
       name: "AMPE",
       symbol: "AMPE",
@@ -225,27 +268,27 @@ export const chains: Chain[] = [
     type: "substrate",
     threshold: 100000,
   },
-  {
-    name: "AvN (Aventus)",
-    url: "rococo-aventus",
-    chainId: "",
-    chainType: "Rococo & Parachains",
-    rpcUrl: "wss://public-rpc.public-testnet.aventus.io",
-    nativeCurrency: {
-      name: "AVT",
-      symbol: "AVT",
-      decimals: 18,
-    },
-    prefix: 42,
-    type: "substrate",
-    threshold: 20000,
-  },
+  // {
+  //   name: "AvN (Aventus)",
+  //   url: "rococo-aventus",
+  //   chainId: "",
+  //   chainType: "Rococo & Parachains",
+  //   rpcUrls: ["wss://public-rpc.testnet.aventus.network"],
+  //   nativeCurrency: {
+  //     name: "AVT",
+  //     symbol: "AVT",
+  //     decimals: 18,
+  //   },
+  //   prefix: 42,
+  //   type: "substrate",
+  //   threshold: 20000,
+  // },
   {
     name: "Basilisk testnet",
     url: "rococo-basilisk",
     chainId: "",
     chainType: "Rococo & Parachains",
-    rpcUrl: "wss://basilisk-rococo-rpc.play.hydration.cloud",
+    rpcUrls: ["wss://basilisk-rococo-rpc.play.hydration.cloud"],
     nativeCurrency: {
       name: "BSX",
       symbol: "BSX",
@@ -260,7 +303,7 @@ export const chains: Chain[] = [
     url: "rococo-curio",
     chainId: "",
     chainType: "Rococo & Parachains",
-    rpcUrl: "wss://testnet.parachain.curioinvest.com/",
+    rpcUrls: ["wss://testnet.parachain.curioinvest.com/"],
     nativeCurrency: {
       name: "CGT",
       symbol: "CGT",
@@ -275,7 +318,7 @@ export const chains: Chain[] = [
     url: "roroco-laos",
     chainId: "",
     chainType: "Rococo & Parachains",
-    rpcUrl: "wss://rpc.giedi.laosfoundation.io",
+    rpcUrls: ["wss://rpc.giedi.laosfoundation.io"],
     nativeCurrency: {
       name: "GIE",
       symbol: "GIE",
@@ -290,7 +333,7 @@ export const chains: Chain[] = [
     url: "rococo-kinera",
     chainId: "",
     chainType: "Rococo & Parachains",
-    rpcUrl: "wss://node.kinera.network",
+    rpcUrls: ["wss://node.kinera.network"],
     nativeCurrency: {
       name: "UNIT",
       symbol: "UNIT",
@@ -305,7 +348,7 @@ export const chains: Chain[] = [
     url: "rococo-litentry",
     chainId: "",
     chainType: "Rococo & Parachains",
-    rpcUrl: "wss://rpc.rococo-parachain.litentry.io",
+    rpcUrls: ["wss://rpc.rococo-parachain.litentry.io"],
     nativeCurrency: {
       name: "LIT",
       symbol: "LIT",
@@ -320,7 +363,7 @@ export const chains: Chain[] = [
     url: "rococo-magnet",
     chainId: "",
     chainType: "Rococo & Parachains",
-    rpcUrl: "wss://magnet-rpc.magport.io/ws",
+    rpcUrls: ["wss://magnet-rpc.magport.io/ws"],
     nativeCurrency: {
       name: "DOT",
       symbol: "DOT",
@@ -335,7 +378,7 @@ export const chains: Chain[] = [
     url: "rococo-mangata",
     chainId: "",
     chainType: "Rococo & Parachains",
-    rpcUrl: "wss://collator-01-ws-rococo.mangata.online",
+    rpcUrls: ["wss://collator-01-ws-rococo.mangata.online"],
     nativeCurrency: {
       name: "MGAT",
       symbol: "MGAT",
@@ -350,7 +393,7 @@ export const chains: Chain[] = [
     url: "rococo-md5",
     chainId: "",
     chainType: "Rococo & Parachains",
-    rpcUrl: "wss://c1md5.hashed.network",
+    rpcUrls: ["wss://c1md5.hashed.network"],
     nativeCurrency: {
       name: "MD5",
       symbol: "MD5",
@@ -365,7 +408,7 @@ export const chains: Chain[] = [
     url: "rococo-muse",
     chainId: "",
     chainType: "Rococo & Parachains",
-    rpcUrl: "wss://rococo-muse-rpc.polkadot.io",
+    rpcUrls: ["wss://rococo-muse-rpc.polkadot.io"],
     nativeCurrency: {
       name: "MUSE",
       symbol: "MUSE",
@@ -380,7 +423,7 @@ export const chains: Chain[] = [
     url: "rococo-neuro-web",
     chainId: "",
     chainType: "Rococo & Parachains",
-    rpcUrl: "wss://parachain-testnet-rpc.origin-trail.network/",
+    rpcUrls: ["wss://parachain-testnet-rpc.origin-trail.network/"],
     nativeCurrency: {
       name: "NEURO",
       symbol: "NEURO",
@@ -395,7 +438,7 @@ export const chains: Chain[] = [
     url: "rococo-ewx",
     chainId: "",
     chainType: "Rococo & Parachains",
-    rpcUrl: "wss://public-rpc.testnet.energywebx.com/",
+    rpcUrls: ["wss://public-rpc.testnet.energywebx.com/"],
     nativeCurrency: {
       name: "VT",
       symbol: "VT",
@@ -410,7 +453,7 @@ export const chains: Chain[] = [
     url: "rococo-phala",
     chainId: "",
     chainType: "Rococo & Parachains",
-    rpcUrl: "wss://rhala-node.phala.network/ws",
+    rpcUrls: ["wss://rhala-node.phala.network/ws"],
     nativeCurrency: {
       name: "PHA",
       symbol: "PHA",
@@ -425,7 +468,7 @@ export const chains: Chain[] = [
     url: "rococo-kilt",
     chainId: "",
     chainType: "Rococo & Parachains",
-    rpcUrl: "wss://rilt.kilt.io",
+    rpcUrls: ["wss://rilt.kilt.io"],
     nativeCurrency: {
       name: "RILT",
       symbol: "RILT",
@@ -440,7 +483,7 @@ export const chains: Chain[] = [
     url: "rococo-subsocial",
     chainId: "",
     chainType: "Rococo & Parachains",
-    rpcUrl: "wss://rco-para.subsocial.network",
+    rpcUrls: ["wss://rco-para.subsocial.network"],
     nativeCurrency: {
       name: "SOON",
       symbol: "SOON",
@@ -455,7 +498,7 @@ export const chains: Chain[] = [
     url: "rococo-sora",
     chainId: "",
     chainType: "Rococo & Parachains",
-    rpcUrl: "wss://ws.parachain-collator-1.c1.stg1.sora2.soramitsu.co.jp",
+    rpcUrls: ["wss://ws.parachain-collator-1.c1.stg1.sora2.soramitsu.co.jp"],
     nativeCurrency: {
       name: "XOR",
       symbol: "XOR",
@@ -465,29 +508,29 @@ export const chains: Chain[] = [
     type: "substrate",
     threshold: 10,
   },
-  /* RPC is down
-  {
-    name: "",
-    url: "t0rn",
-    chainId: "",
-    chainType: "Rococo & Parachains",
-    rpcUrl: "wss://rpc.t0rn.io",
-    nativeCurrency: {
-      name: "",
-      symbol: "",
-      decimals: ,
-    },
-    prefix: ,
-    type: "substrate",
-    threshold: ,
-  },
-  */
+  // /* RPC is down
+  // {
+  //   name: "",
+  //   url: "t0rn",
+  //   chainId: "",
+  //   chainType: "Rococo & Parachains",
+  //   rpcUrls: "wss://rpc.t0rn.io",
+  //   nativeCurrency: {
+  //     name: "",
+  //     symbol: "",
+  //     decimals: ,
+  //   },
+  //   prefix: ,
+  //   type: "substrate",
+  //   threshold: ,
+  // },
+  // */
   {
     name: "Watr Testnet",
     url: "rococo-watr",
     chainId: "",
     chainType: "Rococo & Parachains",
-    rpcUrl: "wss://rpc.dev.watr.org",
+    rpcUrls: ["wss://rpc.dev.watr.org"],
     nativeCurrency: {
       name: "WATRD",
       symbol: "WATRD",
@@ -502,7 +545,7 @@ export const chains: Chain[] = [
     url: "rococo-yerba",
     chainId: "",
     chainType: "Rococo & Parachains",
-    rpcUrl: "wss://rpc.dev.yerba.network",
+    rpcUrls: ["wss://rpc.dev.yerba.network"],
     nativeCurrency: {
       name: "ROC",
       symbol: "ROC",
@@ -517,7 +560,7 @@ export const chains: Chain[] = [
     url: "rococo-zeitgeist",
     chainId: "",
     chainType: "Rococo & Parachains",
-    rpcUrl: "wss://bsr.zeitgeist.pm",
+    rpcUrls: ["wss://bsr.zeitgeist.pm"],
     nativeCurrency: {
       name: "ZBS",
       symbol: "ZBS",
@@ -532,7 +575,13 @@ export const chains: Chain[] = [
     url: "paseo",
     chainId: "",
     chainType: "Paseo & Parachains",
-    rpcUrl: "wss://paseo.rpc.amforc.com",
+    rpcUrls: [
+      "wss://paseo.rpc.amforc.com",
+      "wss://paseo-rpc.dwellir.com",
+      "wss://rpc.ibp.network/paseo",
+      "wss://rpc.dotters.network/paseo",
+      "wss://pas-rpc.stakeworld.io",
+    ],
     nativeCurrency: {
       name: "PAS",
       symbol: "PAS",
@@ -547,7 +596,12 @@ export const chains: Chain[] = [
     url: "paseo-asset-hub",
     chainId: "",
     chainType: "Paseo & Parachains",
-    rpcUrl: "wss://asset-hub-paseo-rpc.dwellir.com",
+    rpcUrls: [
+      "wss://asset-hub-paseo-rpc.dwellir.com",
+      "wss://sys.ibp.network/asset-hub-paseo",
+      "wss://sys.dotters.network/asset-hub-paseo",
+      "wss://pas-rpc.stakeworld.io/assethub",
+    ],
     nativeCurrency: {
       name: "PAS",
       symbol: "PAS",
@@ -562,7 +616,7 @@ export const chains: Chain[] = [
     url: "ajuna-paseo",
     chainId: "",
     chainType: "Paseo & Parachains",
-    rpcUrl: "wss://rpc-paseo.ajuna.network",
+    rpcUrls: ["wss://rpc-paseo.ajuna.network"],
     nativeCurrency: {
       name: "AJUN",
       symbol: "AJUN",
@@ -577,7 +631,7 @@ export const chains: Chain[] = [
     url: "bajun-paseo",
     chainId: "",
     chainType: "Paseo & Parachains",
-    rpcUrl: "wss://rpc-paseo.bajun.network",
+    rpcUrls: ["wss://rpc-paseo.bajun.network"],
     nativeCurrency: {
       name: "BAJU",
       symbol: "BAJU",
@@ -592,7 +646,7 @@ export const chains: Chain[] = [
     url: "bifrost-paseo",
     chainId: "",
     chainType: "Paseo & Parachains",
-    rpcUrl: "wss://bifrost-rpc.paseo.liebi.com/ws",
+    rpcUrls: ["wss://bifrost-rpc.paseo.liebi.com/ws"],
     nativeCurrency: {
       name: "BNC",
       symbol: "BNC",
@@ -607,7 +661,7 @@ export const chains: Chain[] = [
     url: "darwinia-koi",
     chainId: "",
     chainType: "Paseo & Parachains",
-    rpcUrl: "wss://koi-rpc.darwinia.network",
+    rpcUrls: ["wss://koi-rpc.darwinia.network"],
     nativeCurrency: {
       name: "KRING",
       symbol: "KRING",
@@ -622,7 +676,7 @@ export const chains: Chain[] = [
     url: "frequency-paseo",
     chainId: "",
     chainType: "Paseo & Parachains",
-    rpcUrl: "wss://0.rpc.testnet.amplica.io",
+    rpcUrls: ["wss://0.rpc.testnet.amplica.io"],
     nativeCurrency: {
       name: "XRQCY",
       symbol: "XRQCY",
@@ -637,7 +691,7 @@ export const chains: Chain[] = [
     url: "hyperbridge",
     chainId: "",
     chainType: "Paseo & Parachains",
-    rpcUrl: "wss://hyperbridge-paseo-rpc.blockops.network",
+    rpcUrls: ["wss://hyperbridge-paseo-rpc.blockops.network"],
     nativeCurrency: {
       name: "tNAND",
       symbol: "tNAND",
@@ -652,7 +706,7 @@ export const chains: Chain[] = [
     url: "integritee",
     chainId: "",
     chainType: "Paseo & Parachains",
-    rpcUrl: "wss://paseo.api.integritee.network",
+    rpcUrls: ["wss://paseo.api.integritee.network"],
     nativeCurrency: {
       name: "TEER",
       symbol: "TEER",
@@ -667,7 +721,7 @@ export const chains: Chain[] = [
     url: "kilt",
     chainId: "",
     chainType: "Paseo & Parachains",
-    rpcUrl: "wss://peregrine.kilt.io/parachain-public-ws/",
+    rpcUrls: ["wss://peregrine.kilt.io/parachain-public-ws/"],
     nativeCurrency: {
       name: "PILT",
       symbol: "PILT",
@@ -682,7 +736,7 @@ export const chains: Chain[] = [
     url: "laos-omega",
     chainId: "",
     chainType: "Paseo & Parachains",
-    rpcUrl: "wss://rpc.laosomega.laosfoundation.io",
+    rpcUrls: ["wss://rpc.laosomega.laosfoundation.io"],
     nativeCurrency: {
       name: "OMEGA",
       symbol: "OMEGA",
@@ -697,7 +751,9 @@ export const chains: Chain[] = [
     chainId: "",
     chainType: "Paseo & Parachains",
     url: "nodle-paradis",
-    rpcUrl: "wss://node-6957502816543653888.lh.onfinality.io/ws?apikey=09b04494-3139-4b57-a5d1-e1c4c18748ce",
+    rpcUrls: [
+      "wss://node-6957502816543653888.lh.onfinality.io/ws?apikey=09b04494-3139-4b57-a5d1-e1c4c18748ce",
+    ],
     nativeCurrency: {
       name: "notNODL",
       symbol: "notNODL",
@@ -712,7 +768,11 @@ export const chains: Chain[] = [
     url: "pop-network",
     chainId: "",
     chainType: "Paseo & Parachains",
-    rpcUrl: "wss://rpc1.paseo.popnetwork.xyz",
+    rpcUrls: [
+      "wss://rpc1.paseo.popnetwork.xyz",
+      "wss://rpc2.paseo.popnetwork.xyz",
+      "wss://rpc3.paseo.popnetwork.xyz",
+    ],
     nativeCurrency: {
       name: "PAS",
       symbol: "PAS",
@@ -727,7 +787,10 @@ export const chains: Chain[] = [
     url: "aleph-testnet",
     chainId: "",
     chainType: "Solochains",
-    rpcUrl: "wss://ws.test.azero.dev",
+    rpcUrls: [
+      "wss://ws.test.azero.dev",
+      "wss://aleph-zero-testnet-rpc.dwellir.com",
+    ],
     nativeCurrency: {
       name: "TZERO",
       symbol: "TZERO",
@@ -742,7 +805,7 @@ export const chains: Chain[] = [
     url: "analog-testnet",
     chainId: "",
     chainType: "Solochains",
-    rpcUrl: "wss://rpc.testnet.analog.one",
+    rpcUrls: ["wss://rpc.testnet.analog.one"],
     nativeCurrency: {
       name: "TANLOG",
       symbol: "TANLOG",
@@ -757,7 +820,7 @@ export const chains: Chain[] = [
     url: "beresheet",
     chainId: "",
     chainType: "Solochains",
-    rpcUrl: "wss://beresheet.jelliedowl.net",
+    rpcUrls: ["wss://beresheet.jelliedowl.net"],
     nativeCurrency: {
       name: "tEDG",
       symbol: "tEDG",
@@ -772,7 +835,10 @@ export const chains: Chain[] = [
     url: "thebifrost-testnet",
     chainId: "",
     chainType: "Solochains",
-    rpcUrl: "wss://public-01.testnet.bifrostnetwork.com/wss",
+    rpcUrls: [
+      "wss://public-01.testnet.bifrostnetwork.com/wss",
+      "wss://public-02.testnet.bifrostnetwork.com/wss",
+    ],
     nativeCurrency: {
       name: "BFC",
       symbol: "BFC",
@@ -787,7 +853,7 @@ export const chains: Chain[] = [
     url: "chainflip",
     chainId: "",
     chainType: "Solochains",
-    rpcUrl: "wss://archive.perseverance.chainflip.io",
+    rpcUrls: ["wss://archive.perseverance.chainflip.io"],
     nativeCurrency: {
       name: "FLIP",
       symbol: "FLIP",
@@ -802,7 +868,7 @@ export const chains: Chain[] = [
     url: "creditcoin-classic-testnet",
     chainId: "",
     chainType: "Solochains",
-    rpcUrl: "wss://rpc.testnet.creditcoin.network/ws",
+    rpcUrls: ["wss://rpc.testnet.creditcoin.network/ws"],
     nativeCurrency: {
       name: "CTC",
       symbol: "CTC",
@@ -817,7 +883,7 @@ export const chains: Chain[] = [
     url: "creditcoin-testnet",
     chainId: "",
     chainType: "Solochains",
-    rpcUrl: "wss://rpc.cc3-testnet.creditcoin.network/ws",
+    rpcUrls: ["wss://rpc.cc3-testnet.creditcoin.network/ws"],
     nativeCurrency: {
       name: "CTC",
       symbol: "CTC",
@@ -832,7 +898,7 @@ export const chains: Chain[] = [
     url: "dancebox",
     chainId: "",
     chainType: "Solochains",
-    rpcUrl: "wss://dancebox.tanssi-api.network",
+    rpcUrls: ["wss://dancebox.tanssi-api.network"],
     nativeCurrency: {
       name: "DANCE",
       symbol: "DANCE",
@@ -847,7 +913,7 @@ export const chains: Chain[] = [
     url: "encointer",
     chainId: "",
     chainType: "Solochains",
-    rpcUrl: "wss://gesell.encointer.org",
+    rpcUrls: ["wss://gesell.encointer.org"],
     nativeCurrency: {
       name: "ERT",
       symbol: "ERT",
@@ -862,7 +928,7 @@ export const chains: Chain[] = [
     url: "harmonie",
     chainId: "",
     chainType: "Solochains",
-    rpcUrl: "wss://harmonie-endpoint-02.allfeat.io",
+    rpcUrls: ["wss://harmonie-endpoint-02.allfeat.io"],
     nativeCurrency: {
       name: "HMY",
       symbol: "HMY",
@@ -877,7 +943,7 @@ export const chains: Chain[] = [
     url: "interlay-testnet",
     chainId: "",
     chainType: "Solochains",
-    rpcUrl: "wss://api-testnet.interlay.io/parachain/",
+    rpcUrls: ["wss://api-testnet.interlay.io/parachain/"],
     nativeCurrency: {
       name: "INTR",
       symbol: "INTR",
@@ -892,7 +958,7 @@ export const chains: Chain[] = [
     url: "jur",
     chainId: "",
     chainType: "Solochains",
-    rpcUrl: "wss://testnet.jur.io",
+    rpcUrls: ["wss://testnet.jur.io"],
     nativeCurrency: {
       name: "JUR",
       symbol: "JUR",
@@ -907,7 +973,7 @@ export const chains: Chain[] = [
     url: "kintsugi-testnet",
     chainId: "",
     chainType: "Solochains",
-    rpcUrl: "wss://api-dev-kintsugi.interlay.io/parachain",
+    rpcUrls: ["wss://api-dev-kintsugi.interlay.io/parachain"],
     nativeCurrency: {
       name: "KINT",
       symbol: "KINT",
@@ -922,7 +988,7 @@ export const chains: Chain[] = [
     url: "liberland",
     chainId: "",
     chainType: "Solochains",
-    rpcUrl: "wss://testchain.liberland.org",
+    rpcUrls: ["wss://testchain.liberland.org"],
     nativeCurrency: {
       name: "LDN",
       symbol: "LDN",
@@ -937,7 +1003,7 @@ export const chains: Chain[] = [
     url: "logion",
     chainId: "",
     chainType: "Solochains",
-    rpcUrl: "wss://test-para-rpc01.logion.network",
+    rpcUrls: ["wss://test-para-rpc01.logion.network"],
     nativeCurrency: {
       name: "LGNTT",
       symbol: "LGNTT",
@@ -952,7 +1018,13 @@ export const chains: Chain[] = [
     url: "moonbase-alpha",
     chainId: "",
     chainType: "Solochains",
-    rpcUrl: "wss://moonbase-alpha.public.blastapi.io",
+    rpcUrls: [
+      "wss://moonbase-alpha.public.blastapi.io",
+      "wss://moonbase-rpc.dwellir.com",
+      "wss://wss.api.moonbase.moonbeam.network",
+      "wss://moonbeam-alpha.api.onfinality.io/public-ws",
+      "wss://moonbase.unitedbloc.com",
+    ],
     nativeCurrency: {
       name: "DEV",
       symbol: "DEV",
@@ -967,7 +1039,12 @@ export const chains: Chain[] = [
     url: "opal",
     chainId: "",
     chainType: "Solochains",
-    rpcUrl: "wss://ws-opal.unique.network",
+    rpcUrls: [
+      "wss://ws-opal.unique.network",
+      "wss://us-ws-opal.unique.network",
+      "wss://asia-ws-opal.unique.network",
+      "wss://eu-ws-opal.unique.network",
+    ],
     nativeCurrency: {
       name: "OPL",
       symbol: "OPL",
@@ -982,7 +1059,7 @@ export const chains: Chain[] = [
     url: "phala",
     chainId: "",
     chainType: "Solochains",
-    rpcUrl: "wss://poc6.phala.network/ws",
+    rpcUrls: ["wss://poc6.phala.network/ws"],
     nativeCurrency: {
       name: "PHA",
       symbol: "PHA",
@@ -998,7 +1075,7 @@ export const chains: Chain[] = [
     url: "polymesh",
     chainId: "",
     chainType: "Solochains",
-    rpcUrl: "wss://testnet-rpc.polymesh.live",
+    rpcUrls: "wss://testnet-rpc.polymesh.live",
     nativeCurrency: {
       name: "",
       symbol: "",
@@ -1014,7 +1091,10 @@ export const chains: Chain[] = [
     url: "shibuya",
     chainId: "",
     chainType: "Solochains",
-    rpcUrl: "wss://rpc.shibuya.astar.network",
+    rpcUrls: [
+      "wss://rpc.shibuya.astar.network",
+      "wss://shibuya-rpc.dwellir.com",
+    ],
     nativeCurrency: {
       name: "SBY",
       symbol: "SBY",
@@ -1029,7 +1109,12 @@ export const chains: Chain[] = [
     url: "sora-substrate",
     chainId: "",
     chainType: "Solochains",
-    rpcUrl: "wss://ws.framenode-1.s1.stg1.sora2.soramitsu.co.jp",
+    rpcUrls: [
+      "wss://ws.framenode-1.s1.stg1.sora2.soramitsu.co.jp",
+      "wss://ws.framenode-2.s1.stg1.sora2.soramitsu.co.jp",
+      "wss://ws.framenode-3.s2.stg1.sora2.soramitsu.co.jp",
+      "wss://ws.framenode-4.s2.stg1.sora2.soramitsu.co.jp",
+    ],
     nativeCurrency: {
       name: "XOR",
       symbol: "XOR",
@@ -1044,7 +1129,7 @@ export const chains: Chain[] = [
     url: "subspace-gemini-1",
     chainId: "",
     chainType: "Solochains",
-    rpcUrl: "wss://eu.gemini-1b.subspace.network/ws",
+    rpcUrls: ["wss://eu.gemini-1b.subspace.network/ws"],
     nativeCurrency: {
       name: "tSSC",
       symbol: "tSSC",
@@ -1059,7 +1144,7 @@ export const chains: Chain[] = [
     url: "subspace-gemini-2a",
     chainId: "",
     chainType: "Solochains",
-    rpcUrl: "wss://eu-0.gemini-2a.subspace.network/ws",
+    rpcUrls: ["wss://eu-0.gemini-2a.subspace.network/ws"],
     nativeCurrency: {
       name: "tSSC",
       symbol: "tSSC",
@@ -1074,7 +1159,7 @@ export const chains: Chain[] = [
     url: "subspace-gemini-3f",
     chainId: "",
     chainType: "Solochains",
-    rpcUrl: "wss://rpc-1.gemini-3f.subspace.network/ws",
+    rpcUrls: ["wss://rpc-1.gemini-3f.subspace.network/ws"],
     nativeCurrency: {
       name: "tSSC",
       symbol: "tSSC",
@@ -1089,7 +1174,10 @@ export const chains: Chain[] = [
     url: "subspace-gemini-3g",
     chainId: "",
     chainType: "Solochains",
-    rpcUrl: "wss://rpc-1.gemini-3g.subspace.network/ws",
+    rpcUrls: [
+      "wss://rpc-1.gemini-3g.subspace.network/ws",
+      "wss://rpc-0.gemini-3g.subspace.network/ws",
+    ],
     nativeCurrency: {
       name: "tSSC",
       symbol: "tSSC",
@@ -1104,7 +1192,7 @@ export const chains: Chain[] = [
     url: "subspace-gemini-3g-nova",
     chainId: "",
     chainType: "Solochains",
-    rpcUrl: "wss://nova.gemini-3g.subspace.network/ws",
+    rpcUrls: ["wss://nova.gemini-3g.subspace.network/ws"],
     nativeCurrency: {
       name: "tSSC",
       symbol: "tSSC",
@@ -1119,7 +1207,10 @@ export const chains: Chain[] = [
     url: "subspace-gemini-3h",
     chainId: "",
     chainType: "Solochains",
-    rpcUrl: "wss://rpc-0.gemini-3h.subspace.network/ws",
+    rpcUrls: [
+      "wss://rpc-0.gemini-3h.subspace.network/ws",
+      "wss://rpc-1.gemini-3h.subspace.network/ws",
+    ],
     nativeCurrency: {
       name: "tSSC",
       symbol: "tSSC",
@@ -1134,7 +1225,10 @@ export const chains: Chain[] = [
     url: "subspace-gemini-3h-nova",
     chainId: "",
     chainType: "Solochains",
-    rpcUrl: "wss://nova-0.gemini-3h.subspace.network/ws",
+    rpcUrls: [
+      "wss://nova-0.gemini-3h.subspace.network/ws",
+      "wss://nova-1.gemini-3h.subspace.network/ws",
+    ],
     nativeCurrency: {
       name: "tSSC",
       symbol: "tSSC",
@@ -1149,7 +1243,7 @@ export const chains: Chain[] = [
     url: "ternoa-alphanet",
     chainId: "",
     chainType: "Solochains",
-    rpcUrl: "wss://alphanet.ternoa.com",
+    rpcUrls: ["wss://alphanet.ternoa.com"],
     nativeCurrency: {
       name: "CAPS",
       symbol: "CAPS",
@@ -1164,7 +1258,7 @@ export const chains: Chain[] = [
     url: "vara-testnet",
     chainId: "",
     chainType: "Solochains",
-    rpcUrl: "wss://testnet.vara.network",
+    rpcUrls: ["wss://testnet.vara.network"],
     nativeCurrency: {
       name: "TVARA",
       symbol: "TVARA",
@@ -1179,7 +1273,7 @@ export const chains: Chain[] = [
     url: "zero-alphaville",
     chainId: "",
     chainType: "Solochains",
-    rpcUrl: "wss://rpc.dev.gamedao.net",
+    rpcUrls: ["wss://rpc.dev.gamedao.net"],
     nativeCurrency: {
       name: "ZERO",
       symbol: "ZERO",
@@ -1194,7 +1288,7 @@ export const chains: Chain[] = [
     url: "beresheet-bereevm",
     chainId: "2022",
     chainType: "Solochains",
-    rpcUrl: "https://beresheet-evm.jelliedowl.net",
+    rpcUrls: ["https://beresheet-evm.jelliedowl.net"],
     nativeCurrency: {
       name: "tEDG",
       symbol: "tEDG",
@@ -1208,7 +1302,7 @@ export const chains: Chain[] = [
     url: "thebifrost-testnet-evm",
     chainType: "Solochains",
     chainId: "49088",
-    rpcUrl: "https://public-01.testnet.bifrostnetwork.com/rpc",
+    rpcUrls: ["https://public-01.testnet.bifrostnetwork.com/rpc"],
     nativeCurrency: {
       name: "BFC",
       symbol: "BFC",
@@ -1222,7 +1316,7 @@ export const chains: Chain[] = [
     url: "moonbase-alpha-evm",
     chainId: "1287",
     chainType: "Solochains",
-    rpcUrl: "https://rpc.testnet.moonbeam.network",
+    rpcUrls: ["https://rpc.testnet.moonbeam.network"],
     nativeCurrency: {
       name: "DEV",
       symbol: "DEV",
@@ -1236,7 +1330,7 @@ export const chains: Chain[] = [
     url: "tangle-testnet-evm",
     chainId: "3799",
     chainType: "Solochains",
-    rpcUrl: "https://testnet-rpc.tangle.tools",
+    rpcUrls: ["https://testnet-rpc.tangle.tools"],
     nativeCurrency: {
       name: "tTNT",
       symbol: "tTNT",

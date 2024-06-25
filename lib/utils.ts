@@ -2,7 +2,11 @@ import { ApiPromise, Keyring, WsProvider } from "@polkadot/api";
 import { mnemonicToSeedSync } from "bip39";
 import { hdkey } from "ethereumjs-wallet";
 import Web3 from "web3";
-import { cryptoWaitReady, decodeAddress, encodeAddress } from "@polkadot/util-crypto"
+import {
+  cryptoWaitReady,
+  decodeAddress,
+  encodeAddress,
+} from "@polkadot/util-crypto";
 import { AccountInfo } from "@polkadot/types/interfaces";
 import { AxiosError } from "axios";
 import { Chain } from "@/constants/config";
@@ -23,17 +27,20 @@ export type DisburseChain = {
 
 export function loadFaucetAccount() {
   const seed = process.env.FAUCET_ACCOUNT_SEED!;
-  console.log(seed)
+  console.log(seed);
   if (!seed) {
     throw new Error("Faucet account seed not set");
-  };
+  }
   const mnemonic = mnemonicToSeedSync(seed);
   const hd = hdkey.fromMasterSeed(mnemonic);
-  const privateKey = hd.derivePath("m/44'/60'/0'/0/0").getWallet().getPrivateKey();
-  const substrateAccount = new Keyring({ type: 'sr25519' }).addFromUri(seed);
+  const privateKey = hd
+    .derivePath("m/44'/60'/0'/0/0")
+    .getWallet()
+    .getPrivateKey();
+  const substrateAccount = new Keyring({ type: "sr25519" }).addFromUri(seed);
 
-  return { substrateAccount, privateKey: `0x${privateKey.toString('hex')}` };
-};
+  return { substrateAccount, privateKey: `0x${privateKey.toString("hex")}` };
+}
 
 export async function disburseSubstrateToken(chain: DisburseChain) {
   await cryptoWaitReady();
@@ -43,35 +50,49 @@ export async function disburseSubstrateToken(chain: DisburseChain) {
 
     await api.isReady;
 
-    const transferAmount = chain.amount * 10 ** (chain.nativeCurrency.decimals);
-    const faucetBalance = Number((await api.query.system.account(process.env.FAUCET_SUBSTRATE_PUBLIC_KEY!) as AccountInfo).data.free.toString());
+    const transferAmount = chain.amount * 10 ** chain.nativeCurrency.decimals;
+    const faucetBalance = Number(
+      (
+        (await api.query.system.account(
+          process.env.FAUCET_SUBSTRATE_PUBLIC_KEY!
+        )) as AccountInfo
+      ).data.free.toString()
+    );
 
     console.log(`${chain.chain}:`, faucetBalance, transferAmount);
 
-    if(faucetBalance > 0 && faucetBalance > transferAmount){
-      const transfer = api.tx.balances.transferKeepAlive(chain.address, transferAmount.toString());
-      const hash = await transfer.signAndSend(loadFaucetAccount().substrateAccount);
+    if (faucetBalance > 0 && faucetBalance > transferAmount) {
+      const transfer = api.tx.balances.transferKeepAlive(
+        chain.address,
+        transferAmount.toString()
+      );
+      const hash = await transfer.signAndSend(
+        loadFaucetAccount().substrateAccount
+      );
 
       return `${hash}`;
-
     } else {
       return -1;
-
-    };
-
+    }
   } catch (error) {
-    console.log((error instanceof AxiosError) ? error.response?.data.message : "");
+    console.log(
+      error instanceof AxiosError ? error.response?.data.message : ""
+    );
     return null;
-
-  };
-};
+  }
+}
 
 export async function disburseEvmToken(chain: DisburseChain) {
   await cryptoWaitReady();
   try {
     const web3 = new Web3(chain.rpc);
 
-    const faucetBalance = Number(web3.utils.fromWei(await web3.eth.getBalance(process.env.FAUCET_EVM_ADDRESS!), 'ether'));
+    const faucetBalance = Number(
+      web3.utils.fromWei(
+        await web3.eth.getBalance(process.env.FAUCET_EVM_ADDRESS!),
+        "ether"
+      )
+    );
     const transferAmount = chain.amount;
 
     console.log(`${chain.chain}:`, faucetBalance, transferAmount);
@@ -80,84 +101,119 @@ export async function disburseEvmToken(chain: DisburseChain) {
       const tx = {
         from: process.env.FAUCET_EVM_ADDRESS!,
         to: chain.address,
-        value: web3.utils.toWei(transferAmount.toString(), 'ether'),
+        value: web3.utils.toWei(transferAmount.toString(), "ether"),
         gas: 21000,
         gasPrice: await web3.eth.getGasPrice(),
-        nonce: await web3.eth.getTransactionCount(process.env.FAUCET_EVM_ADDRESS!)
+        nonce: await web3.eth.getTransactionCount(
+          process.env.FAUCET_EVM_ADDRESS!
+        ),
       };
 
       console.log(tx);
 
-      const signedTx = await web3.eth.accounts.signTransaction(tx, loadFaucetAccount().privateKey);
-      const receipt = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
+      const signedTx = await web3.eth.accounts.signTransaction(
+        tx,
+        loadFaucetAccount().privateKey
+      );
+      const receipt = await web3.eth.sendSignedTransaction(
+        signedTx.rawTransaction
+      );
       console.log(receipt.transactionHash);
 
       return `${receipt.transactionHash}`;
-
     } else {
       return -1;
-
-    };
-
-  } catch(error) {
-    console.log((error instanceof AxiosError) ? error.response?.data.message : "");
+    }
+  } catch (error) {
+    console.log(
+      error instanceof AxiosError ? error.response?.data.message : ""
+    );
     return null;
-
   }
-};
+}
 
 export async function getEvmBalances(chain: Chain) {
   console.log(`Connecting to ${chain.name}...`);
   await cryptoWaitReady();
-  
-  const web3 = new Web3(chain.rpcUrl);
-  const faucetAccountAddress = process.env.FAUCET_EVM_ADDRESS!;
-  const balance = web3.utils.fromWei(await web3.eth.getBalance(faucetAccountAddress), "wei");
-  console.log(`${chain.name}: ${balance}`);
-  return balance;
-};
 
-const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
+  const faucetAccountAddress = process.env.FAUCET_EVM_ADDRESS!;
+  for (const rpcUrl of chain.rpcUrls) {
+    try {
+      const web3 = new Web3(rpcUrl);
+      const balance = web3.utils.fromWei(
+        await web3.eth.getBalance(faucetAccountAddress),
+        "wei"
+      );
+      console.log(`${chain.name} on ${rpcUrl}: ${balance}`);
+      return balance;
+    } catch (error) {
+      console.log(`Failed to connect to ${rpcUrl} for ${chain.name}: ${error}`);
+    }
+  }
+  return null;
+}
 
 export async function getSubstrateBalances(chain: Chain) {
   console.log(`Connecting to ${chain.name}...`);
   await cryptoWaitReady();
 
-  try {
-    const wsProvider = new WsProvider(chain.rpcUrl);
+  for (const rpcUrl of chain.rpcUrls) {
+    try {
+      const wsProvider = new WsProvider(rpcUrl);
 
-    await delay(5000);
+      const api = await ApiPromise.create({ provider: wsProvider });
+      await api.isReadyOrError;
 
-    if (!wsProvider.isConnected) throw `WebSocket Error for ${chain.name}`;
-    
-    const api = await ApiPromise.create({ provider: wsProvider });
-    
-    await api.isReadyOrError;
-  
-  
-    const faucetPublicKey = process.env.FAUCET_SUBSTRATE_PUBLIC_KEY!;
-    const account = (await api.query.system.account(faucetPublicKey) as AccountInfo);
-    const balance = BigNumber(account.data.free.toString());
-    await api.disconnect();
-    console.log(`${chain.name}: ${balance}`);
-    return balance;
+      const faucetPublicKey = process.env.FAUCET_SUBSTRATE_PUBLIC_KEY!;
+      const account = (await api.query.system.account(
+        faucetPublicKey
+      )) as AccountInfo;
+      const balance = BigNumber(account.data.free.toString());
+      await api.disconnect();
+      console.log(`${chain.name} on ${rpcUrl}: ${balance}`);
+      return balance;
+    } catch (error) {
+      console.log(`Failed to connect to ${rpcUrl} for ${chain.name}: ${error}`);
+    }
+  }
+  return null;
+}
 
-  } catch (error) {
-    console.log(`getSubstrateBalances Worker: failed for reason: `, error);
-    return null;
-  };
-};
-
-export function disburse(toggle: boolean, address: string, amount: string, chain: Chain | undefined, chains: Chain[]){
-  if(toggle){
-    if (chain) return [{chain: chain.name, address: address, amount: Number(amount), type: chain.type, rpc: chain.rpcUrl, nativeCurrency: chain.nativeCurrency}]
-
+export function disburse(
+  toggle: boolean,
+  address: string,
+  amount: string,
+  chain: Chain | undefined,
+  chains: Chain[]
+) {
+  if (toggle) {
+    if (chain)
+      return [
+        {
+          chain: chain.name,
+          address: address,
+          amount: Number(amount),
+          type: chain.type,
+          rpc: chain.rpcUrls[0],
+          nativeCurrency: chain.nativeCurrency,
+        },
+      ];
   } else {
     const data = chains.map((chain) => {
       // INFO: For now, we use 0.1% of the threshold as the amount
-      return {chain: chain.name, address: chain.type === "substrate" ? encodeAddress(decodeAddress(address), chain.prefix) : address, amount:chain.threshold * 0.001, type: chain.type, rpc: chain.rpcUrl, nativeCurrency: chain.nativeCurrency}
-    })
+      return {
+        chain: chain.name,
+        address:
+          chain.type === "substrate"
+            ? encodeAddress(decodeAddress(address), chain.prefix)
+            : address,
+        amount: chain.threshold * 0.001,
+        type: chain.type,
+        rpc: chain.rpcUrls[0],
+        nativeCurrency: chain.nativeCurrency,
+      };
+    });
 
-    return data
-  };
-};
+    return data;
+  }
+}
