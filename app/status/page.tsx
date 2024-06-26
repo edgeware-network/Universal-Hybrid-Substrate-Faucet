@@ -23,10 +23,39 @@ export default function Status() {
   const [isLoading, setLoading] = useState(false);
   const [faucetBalance, setFaucetBalance] = useState<FaucetChain[]>([]);
 
+  async function fetchBalancesInBatches(chains: Chain[], batchSize: number) {
+  const batches = [];
+  for (let i = 0; i < chains.length; i += batchSize) {
+    batches.push(chains.slice(i, i + batchSize));
+  }
+
+  const results = [];
+  for (const batch of batches) {
+    const response = await fetch('/api/balance', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ chains: batch }),
+    });
+
+    const result = await response.json();
+    results.push(...result.data);
+  }
+
+  return results;
+  }
+
+  const chains = [...]; // your array of chains
+  const batchSize = 10; // Adjust the batch size as needed
+  fetchBalancesInBatches(chains, batchSize).then((results) => {
+    console.log('All balances:', results);
+  });
+
   useEffect(() => {
     async function getFaucetBalance() {
       setLoading(true);
-      const res = await axios.post("/api/balance", JSON.stringify({ chains }));
+      const res = await fetchBalancesInBatches();
       if (res.data) {
         console.log(res.data.data);
         setFaucetBalance(res.data.data);
