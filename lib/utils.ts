@@ -56,7 +56,7 @@ export async function disburseSubstrateToken(chain: DisburseChain) {
       return -1;
     }
   } catch (error) {
-    console.log((error instanceof AxiosError) ? error.response?.data.message : "");
+    console.log((error instanceof AxiosError) ? error.response?.data.message : error.message);
     return null;
   }
 }
@@ -92,7 +92,7 @@ export async function disburseEvmToken(chain: DisburseChain) {
       return -1;
     }
   } catch (error) {
-    console.log((error instanceof AxiosError) ? error.response?.data.message : "");
+    console.log((error instanceof AxiosError) ? error.response?.data.message : error.message);
     return null;
   }
 }
@@ -100,12 +100,41 @@ export async function disburseEvmToken(chain: DisburseChain) {
 export async function getEvmBalances(chain: Chain) {
   console.log(`Connecting to ${chain.name}...`);
   await cryptoWaitReady();
-  
-  const web3 = new Web3(chain.rpcUrl);
-  const faucetAccountAddress = process.env.FAUCET_EVM_ADDRESS!;
-  const balance = web3.utils.fromWei(await web3.eth.getBalance(faucetAccountAddress), "wei");
-  console.log(`${chain.name}: ${balance}`);
-  return balance;
+
+  try {
+    const web3 = new Web3(chain.rpcUrl);
+    const faucetAccountAddress = process.env.FAUCET_EVM_ADDRESS!;
+    const balance = web3.utils.fromWei(await web3.eth.getBalance(faucetAccountAddress), "wei");
+    console.log(`${chain.name}: ${balance}`);
+    return balance;
+  } catch (error) {
+    console.log(`getEvmBalances Worker: failed for reason: `, error);
+    return null;
+  }
+}
+
+async function createSubstrateApiWithRetry(rpcUrl: string, retries: number = 3, delayMs: number = 5000) {
+  let attempts = 0;
+  while (attempts < retries) {
+    try {
+      const wsProvider = new WsProvider(rpcUrl);
+      const api = await ApiPromise.create({ provider: wsProvider });
+      await api.isReadyOrError;
+
+      if (wsProvider.isConnected) {
+        return api;
+      } else {
+        throw new Error('WebSocket not connected');
+      }
+    } catch (error) {
+      attempts += 1;
+      if (attempts >= retries) {
+        throw new Error(`Failed to connect to Substrate API after ${retries} attempts: ${error.message}`);
+      }
+      console.log(`Retrying connection (${attempts}/${retries})...`);
+      await new Promise(res => setTimeout(res, delayMs));
+    }
+  }
 }
 
 export async function getSubstrateBalances(chain: Chain) {
@@ -113,15 +142,7 @@ export async function getSubstrateBalances(chain: Chain) {
   await cryptoWaitReady();
 
   try {
-    const wsProvider = new WsProvider(chain.rpcUrl);
-
-    // Wait until the WebSocket is connected
-    await wsProvider.isConnected;
-
-    const api = await ApiPromise.create({ provider: wsProvider });
-    
-    await api.isReadyOrError;
-
+    const api = await createSubstrateApiWithRetry(chain.rpcUrl);
     const faucetPublicKey = process.env.FAUCET_SUBSTRATE_PUBLIC_KEY!;
     const account = (await api.query.system.account(faucetPublicKey) as AccountInfo);
     const balance = new BigNumber(account.data.free.toString());
