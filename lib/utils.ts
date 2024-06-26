@@ -55,7 +55,7 @@ export async function disburseSubstrateToken(chain: DisburseChain) {
     } else {
       return -1;
     }
-  } catch (error) {
+  } catch (error: any) {
     console.log((error instanceof AxiosError) ? error.response?.data.message : error.message);
     return null;
   }
@@ -91,7 +91,7 @@ export async function disburseEvmToken(chain: DisburseChain) {
     } else {
       return -1;
     }
-  } catch (error) {
+  } catch (error: any) {
     console.log((error instanceof AxiosError) ? error.response?.data.message : error.message);
     return null;
   }
@@ -107,7 +107,7 @@ export async function getEvmBalances(chain: Chain) {
     const balance = web3.utils.fromWei(await web3.eth.getBalance(faucetAccountAddress), "wei");
     console.log(`${chain.name}: ${balance}`);
     return balance;
-  } catch (error) {
+  } catch (error: any) {
     console.log(`getEvmBalances Worker: failed for reason: `, error);
     return null;
   }
@@ -126,7 +126,7 @@ async function createSubstrateApiWithRetry(rpcUrl: string, retries: number = 3, 
       } else {
         throw new Error('WebSocket not connected');
       }
-    } catch (error) {
+    } catch (error: any) {
       attempts += 1;
       if (attempts >= retries) {
         throw new Error(`Failed to connect to Substrate API after ${retries} attempts: ${error.message}`);
@@ -149,7 +149,7 @@ export async function getSubstrateBalances(chain: Chain) {
     await api.disconnect();
     console.log(`${chain.name}: ${balance}`);
     return balance;
-  } catch (error) {
+  } catch (error: any) {
     console.log(`getSubstrateBalances Worker: failed for reason: `, error);
     return null;
   }
