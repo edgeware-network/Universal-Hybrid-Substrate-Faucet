@@ -172,21 +172,3 @@ export function disburse(toggle: boolean, address: string, amount: string, chain
     return data;
   }
 }
-
-export async function getAllBalances(chains: Chain[]) {
-  const balancePromises = chains.map(chain => 
-    limit(() => chain.type === 'evm' ? getEvmBalances(chain) : getSubstrateBalances(chain))
-  );
-
-  const results = await Promise.allSettled(balancePromises);
-
-  const balances = results.map((result, index) => {
-    if (result.status === 'fulfilled') {
-      return { chain: chains[index].name, balance: result.value };
-    } else {
-      return { chain: chains[index].name, balance: null, error: result.reason };
-    }
-  });
-
-  return balances;
-}
