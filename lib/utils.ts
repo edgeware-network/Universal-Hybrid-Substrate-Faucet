@@ -113,8 +113,9 @@ export async function getEvmBalances(chain: Chain) {
   }
 }
 
-async function createSubstrateApiWithRetry(rpcUrl: string, retries: number = 3, delayMs: number = 5000): Promise<ApiPromise> {
+async function createSubstrateApiWithRetry(rpcUrl: string, retries: number = 3): Promise<ApiPromise> {
   let attempts = 0;
+  const delayMs = 1000; // Reduced delay for faster retries
   while (attempts < retries) {
     try {
       const wsProvider = new WsProvider(rpcUrl);
