@@ -113,7 +113,7 @@ export async function getEvmBalances(chain: Chain) {
   }
 }
 
-async function createSubstrateApiWithRetry(rpcUrl: string, retries: number = 3, delayMs: number = 5000) {
+async function createSubstrateApiWithRetry(rpcUrl: string, retries: number = 3, delayMs: number = 5000): Promise<ApiPromise> {
   let attempts = 0;
   while (attempts < retries) {
     try {
@@ -135,6 +135,7 @@ async function createSubstrateApiWithRetry(rpcUrl: string, retries: number = 3, 
       await new Promise(res => setTimeout(res, delayMs));
     }
   }
+  throw new Error('Unable to create Substrate API');
 }
 
 export async function getSubstrateBalances(chain: Chain) {
