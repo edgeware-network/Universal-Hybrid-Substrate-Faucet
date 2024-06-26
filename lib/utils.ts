@@ -7,6 +7,7 @@ import { AccountInfo } from "@polkadot/types/interfaces";
 import { AxiosError } from "axios";
 import { Chain } from "@/constants/config";
 import BigNumber from "bignumber.js";
+import pLimit from "p-limit";
 
 export type DisburseChain = {
   chain: string;
@@ -20,6 +21,8 @@ export type DisburseChain = {
     decimals: number;
   };
 };
+
+const limit = pLimit(10); // Limit concurrency to 10
 
 export function loadFaucetAccount() {
   const seed = process.env.FAUCET_ACCOUNT_SEED!;
@@ -168,4 +171,22 @@ export function disburse(toggle: boolean, address: string, amount: string, chain
 
     return data;
   }
+}
+
+export async function getAllBalances(chains: Chain[]) {
+  const balancePromises = chains.map(chain => 
+    limit(() => chain.type === 'evm' ? getEvmBalances(chain) : getSubstrateBalances(chain))
+  );
+
+  const results = await Promise.allSettled(balancePromises);
+
+  const balances = results.map((result, index) => {
+    if (result.status === 'fulfilled') {
+      return { chain: chains[index].name, balance: result.value };
+    } else {
+      return { chain: chains[index].name, balance: null, error: result.reason };
+    }
+  });
+
+  return balances;
 }
