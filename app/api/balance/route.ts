@@ -20,18 +20,20 @@ async function getBalances(chain: Chain) {
     try {
       return await getSubstrateBalances(chain);
     } catch (error) {
-      console.log("getEvmBalances: failed for reason: ", error);
+      console.log("getSubstrateBalances: failed for reason: ", error);
       return null;
     }
   }
   return null;
 }
 
-export async function POST(req: NextRequest, res: NextResponse) {
+export async function POST(req: NextRequest) {
   const body = await req.json();
   const { chains }: FaucetRequest = body;
+
   try {
-    const promises = chains.map(async (chain) => {
+    // Create promises for all chains and execute them in parallel
+    const balancePromises = chains.map(async (chain) => {
       const balances = await getBalances(chain);
       return {
         name: chain.name,
@@ -43,7 +45,8 @@ export async function POST(req: NextRequest, res: NextResponse) {
       };
     });
 
-    const balances = await Promise.all(promises);
+    // Wait for all balance promises to resolve
+    const balances = await Promise.all(balancePromises);
 
     console.log(balances);
     return NextResponse.json(

@@ -25,6 +25,8 @@ export type DisburseChain = {
   };
 };
 
+let faultyRpcUrls: Set<string> = new Set();
+
 export function loadFaucetAccount() {
   const seed = process.env.FAUCET_ACCOUNT_SEED!;
   console.log(seed);
@@ -138,6 +140,10 @@ export async function getEvmBalances(chain: Chain) {
 
   const faucetAccountAddress = process.env.FAUCET_EVM_ADDRESS!;
   for (const rpcUrl of chain.rpcUrls) {
+    if (faultyRpcUrls.has(rpcUrl)) {
+      console.log(`Skipping faulty RPC URL: ${rpcUrl}`);
+      continue;
+    }
     try {
       const web3 = new Web3(rpcUrl);
       const balance = web3.utils.fromWei(
@@ -148,6 +154,7 @@ export async function getEvmBalances(chain: Chain) {
       return balance;
     } catch (error) {
       console.log(`Failed to connect to ${rpcUrl} for ${chain.name}: ${error}`);
+      faultyRpcUrls.add(rpcUrl);
     }
   }
   return null;
@@ -158,6 +165,10 @@ export async function getSubstrateBalances(chain: Chain) {
   await cryptoWaitReady();
 
   for (const rpcUrl of chain.rpcUrls) {
+    if (faultyRpcUrls.has(rpcUrl)) {
+      console.log(`Skipping faulty RPC URL: ${rpcUrl}`);
+      continue;
+    }
     try {
       const wsProvider = new WsProvider(rpcUrl);
 
@@ -174,6 +185,7 @@ export async function getSubstrateBalances(chain: Chain) {
       return balance;
     } catch (error) {
       console.log(`Failed to connect to ${rpcUrl} for ${chain.name}: ${error}`);
+      faultyRpcUrls.add(rpcUrl);
     }
   }
   return null;
