@@ -630,7 +630,7 @@ export const chains: Chain[] = [
     },
     prefix: 42,
     type: "substrate",
-    threshold: 150000,
+    threshold: 5000,
   },
   {
     name: "Hyperbridge (Gargantua)",
@@ -660,7 +660,7 @@ export const chains: Chain[] = [
     },
     prefix: 13,
     type: "substrate",
-    threshold: 100,
+    threshold: 10,
   },
   {
     name: "KILT Peregrine",
@@ -990,7 +990,7 @@ export const chains: Chain[] = [
     },
     prefix: 30,
     type: "substrate",
-    threshold: 200000,
+    threshold: 1000,
   },
   /* Custom integration for the permissioned chain is pending
   {
@@ -1142,7 +1142,7 @@ export const chains: Chain[] = [
     },
     prefix: 2254,
     type: "substrate",
-    threshold: 12000,
+    threshold: 0.22,
   },
   {
     name: "Ternoa Alphanet",
@@ -1172,7 +1172,7 @@ export const chains: Chain[] = [
     },
     prefix: 137,
     type: "substrate",
-    threshold: 1000000,
+    threshold: 1000,
   },
   {
     name: "ZERO Alphaville (Subzero)",
