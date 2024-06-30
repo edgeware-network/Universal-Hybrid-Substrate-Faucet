@@ -103,59 +103,46 @@ export async function disburseEvmToken(chain: DisburseChain) {
 export async function getEvmBalances(chain: Chain) {
   console.log(`Connecting to ${chain.name}...`);
   await cryptoWaitReady();
-
-  try {
-    const web3 = new Web3(chain.rpcUrl);
-    const faucetAccountAddress = process.env.FAUCET_EVM_ADDRESS!;
-    const balance = web3.utils.fromWei(await web3.eth.getBalance(faucetAccountAddress), "wei");
-    console.log(`${chain.name}: ${balance}`);
-    return balance;
-  } catch (error: any) {
-    console.log(`getEvmBalances Worker: failed for reason: `, error);
-    return null;
-  }
-}
-
-async function createSubstrateApiWithRetry(rpcUrl: string, retries: number = 3): Promise<ApiPromise> {
-  let attempts = 0;
-  const delayMs = 1000; // Reduced delay for faster retries
-  while (attempts < retries) {
-    try {
-      const wsProvider = new WsProvider(rpcUrl);
-      const api = await ApiPromise.create({ provider: wsProvider });
-      await api.isReadyOrError;
-
-      if (wsProvider.isConnected) {
-        return api;
-      } else {
-        throw new Error('WebSocket not connected');
-      }
-    } catch (error: any) {
-      attempts += 1;
-      if (attempts >= retries) {
-        throw new Error(`Failed to connect to Substrate API after ${retries} attempts: ${error.message}`);
-      }
-      console.log(`Retrying connection (${attempts}/${retries})...`);
-      await new Promise(res => setTimeout(res, delayMs));
-    }
-  }
-  throw new Error('Unable to create Substrate API');
-}
+  
+  const web3 = new Web3(chain.rpcUrl);
+  const faucetAccountAddress = process.env.FAUCET_EVM_ADDRESS!;
+  const balance = web3.utils.fromWei(await web3.eth.getBalance(faucetAccountAddress), "wei");
+  console.log(`${chain.name}: ${balance}`);
+  return balance;
+};
 
 export async function getSubstrateBalances(chain: Chain) {
   console.log(`Connecting to ${chain.name}...`);
   await cryptoWaitReady();
 
   try {
-    const api = await createSubstrateApiWithRetry(chain.rpcUrl);
+    const wsProvider = new WsProvider(chain.rpcUrl, false);
+
+    await new Promise<void>((resolve, reject) => {
+      wsProvider.on("connected", () => {
+        console.log(`Connected to ${chain.name}`);
+        resolve();
+      });
+      wsProvider.on("error", (error) => {
+        console.log(`Error connecting to ${chain.name}: ${error}`);
+        reject(error);
+      });
+      wsProvider.on("disconnected", () => null);
+      wsProvider.connect();
+    });
+    
+    const api = await ApiPromise.create({ provider: wsProvider });
+    
+    await api.isReady;
+  
     const faucetPublicKey = process.env.FAUCET_SUBSTRATE_PUBLIC_KEY!;
     const account = (await api.query.system.account(faucetPublicKey) as AccountInfo);
-    const balance = new BigNumber(account.data.free.toString());
-    await api.disconnect();
+    const balance = account.data.free.toString();
     console.log(`${chain.name}: ${balance}`);
     return balance;
-  } catch (error: any) {
-    console.log(`getSubstrateBalances Worker: failed for reason: `, error);
+
+  } catch (error) {
+    console.log(`getSubstrateBalances Worker: failed for ${chain.name} reason: `, error);
     return null;
   }
 }

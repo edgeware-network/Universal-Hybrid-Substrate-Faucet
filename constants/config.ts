@@ -50,7 +50,7 @@ export const chains: Chain[] = [
     url: "westend-bridge-hub",
     chainId: "",
     chainType: "Westend & Parachains",
-    rpcUrl: "wss://westend-bridge-hub-rpc.dwellir.com",
+    rpcUrl: "wss://bridge-hub-westend-rpc.dwellir.com",
     nativeCurrency: {
       name: "WND",
       symbol: "WND",
@@ -65,7 +65,7 @@ export const chains: Chain[] = [
     url: "westend-collectives",
     chainId: "",
     chainType: "Westend & Parachains",
-    rpcUrl: "wss://westend-collectives-rpc.dwellir.com",
+    rpcUrl: "wss://collectives-westend-rpc.dwellir.com",
     nativeCurrency: {
       name: "WND",
       symbol: "WND",
@@ -140,7 +140,7 @@ export const chains: Chain[] = [
     url: "rococo-bridge-hub",
     chainId: "",
     chainType: "Rococo & Parachains",
-    rpcUrl: "wss://rococo-bridge-hub-rpc.dwellir.com",
+    rpcUrl: "wss://bridge-hub-rococo-rpc.dwellir.com",
     nativeCurrency: {
       name: "ROC",
       symbol: "ROC",
@@ -230,7 +230,7 @@ export const chains: Chain[] = [
     url: "rococo-aventus",
     chainId: "",
     chainType: "Rococo & Parachains",
-    rpcUrl: "wss://public-rpc.public-testnet.aventus.io",
+    rpcUrl: "wss://public-rpc.testnet.aventus.network",
     nativeCurrency: {
       name: "AVT",
       symbol: "AVT",

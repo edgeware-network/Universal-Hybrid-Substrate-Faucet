@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Suspense } from "react";
 import { FaucetProvider } from "@/context";
+import HashLoader from "react-spinners/HashLoader";
 
 const space_mono = Space_Mono({ weight: ["400", "700"], subsets: ["latin"] });
 
@@ -26,8 +27,15 @@ export default function RootLayout({
         <FaucetProvider>
           <Suspense
             fallback={
-              <div className=" text-white bg-[#000]/30 flex items-center justify-center z-50">
-                Loading...
+              <div className=" text-white w-[100vw] min-h-screen bg-black/30 flex items-center justify-center z-50">
+                <HashLoader
+                  color="#FC72FF"
+                  loading={true}
+                  size={50}
+                  speedMultiplier={1}
+                  aria-label="Loading Spinner"
+                  data-testid="loader"
+                />
               </div>
             }
           >
