@@ -1,6 +1,6 @@
 import React from "react";
 import { FaXTwitter } from "react-icons/fa6";
-import { FaGithub, FaHeartbeat } from "react-icons/fa";
+import { FaGithub, FaHeart } from "react-icons/fa";
 import Link from "next/link";
 import Image from "next/image";
 import PolkaAssemblyLogo from "../public/polkaassembly_logo.svg";
@@ -8,14 +8,14 @@ import SubSquareLogo from "../public/subsquare_logo.svg";
 
 const Footer = (): React.JSX.Element => {
   return (
-    <div className="max-w-[1204px] w-[90vw] fixed bottom-5 h-14 flex justify-center items-center bg-[#1b1b1b] font-medium rounded-[10px]">
+    <div className="max-w-[1204px] w-[90vw] fixed bottom-1 h-14 flex justify-center items-center bg-[#1b1b1b] font-medium rounded-[10px]">
       <div className="flex flex-col items-center">
         <p className="text-xs font-medium text-[#656565] flex items-center justify-center">
-          Made with&nbsp;
+          Made with
           <span className="text-pink-600 animate-pulse text-lg">
-            <FaHeartbeat />
+            <FaHeart className="mx-2"/>
           </span>
-          &nbsp;by Edgeware contributors
+          by Edgeware contributors
         </p>
         <p className="text-xs text-[#E6007A] font-bold">
           Funded by Polkadot Treasury - {new Date().getFullYear()}
@@ -28,7 +28,7 @@ const Footer = (): React.JSX.Element => {
         >
           <FaGithub className="h-6 w-6 hover:text-[#E6007A]" />
         </Link>
-        <Link href="/" title="Twitter">
+        <Link href="https://x.com/Edgeware4People" title="Twitter / X">
           <FaXTwitter className="h-6 w-6 hover:text-[#E6007A]" />
         </Link>
         <Link
