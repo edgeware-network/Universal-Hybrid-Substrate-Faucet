@@ -6,6 +6,7 @@ import { useEffect, useState, useCallback } from "react";
 import { RiLoader4Line } from "react-icons/ri";
 import { FaCheckCircle, FaAngleDoubleDown } from "react-icons/fa";
 import Loading from "./Loading";
+import { CSSProperties } from "react";
 
 type FaucetBalance = {
   name: string;
@@ -90,7 +91,7 @@ export default function Balance() {
     return new BigNumber(amount).shiftedBy(-decimals).toNumber();
   };
 
-  const getSliderStyles = (balance: number, threshold: number) => {
+  const getSliderStyles = (balance: number, threshold: number): CSSProperties => {
     const maxBalance = 2 * threshold;
     const widthPercentage = (balance / maxBalance) * 100;
     let backgroundColor = "#FF0000"; // Red for empty balance
@@ -102,17 +103,17 @@ export default function Balance() {
     return {
       width: `${Math.min(widthPercentage, 100)}%`,
       backgroundColor,
-      position: 'relative',
+      position: "relative",
     };
   };
 
-  const getDotStyles = (balance: number) => {
+  const getDotStyles = (balance: number): CSSProperties => {
     if (balance === 0) {
       return {
-        height: '100%',
-        width: '100%',
-        backgroundColor: 'red',
-        borderRadius: '50%',
+        height: "100%",
+        width: "100%",
+        backgroundColor: "red",
+        borderRadius: "50%",
       };
     }
     return {};
@@ -128,7 +129,7 @@ export default function Balance() {
       <div className="grid auto-rows-auto overflow-y-auto w-[80vw] gap-3 grid-cols-3">
         {faucetBalances.map((chain, index) => {
           // Find the matching chain from config.ts
-          const configChain = chains.find(c => c.name === chain.name);
+          const configChain = chains.find((c) => c.name === chain.name);
 
           const balance = formatBalances(chain.balance, chain.nativeCurrency.decimals);
           const threshold = configChain ? configChain.threshold : 0;
@@ -165,14 +166,21 @@ export default function Balance() {
       </div>
       <div className="mb-16 h-10"></div>
       {faucetBalances.length > 0 && !initialLoad && (
-        <div className={`fixed mb-16 bottom-0 right-14 px-4 py-2 bg-gray-900 rounded-full inline-flex text-[#9b9b9b] ${showLoadMore ? 'block' : 'hidden'}`} aria-live="polite">
+        <div
+          className={`fixed mb-16 bottom-0 right-14 px-4 py-2 bg-gray-900 rounded-full inline-flex text-[#9b9b9b] ${
+            showLoadMore ? "block" : "hidden"
+          }`}
+          aria-live="polite"
+        >
           {loading ? (
             <div className="flex items-center">
-              <RiLoader4Line className="animate-spin mr-2" aria-hidden="true" /> {currentMessage}
+              <RiLoader4Line className="animate-spin mr-2" aria-hidden="true" />{" "}
+              {currentMessage}
             </div>
           ) : allLoaded ? (
             <div className="flex items-center text-white">
-              <FaCheckCircle className="mr-2" aria-hidden="true" /> All chains loaded
+              <FaCheckCircle className="mr-2" aria-hidden="true" /> All chains
+              loaded
             </div>
           ) : (
             <button
@@ -180,7 +188,8 @@ export default function Balance() {
               className="flex items-center text-[#9b9b9b] bg-gray-900 rounded"
               aria-label="Click to load more balances"
             >
-              <FaAngleDoubleDown className="mr-2" aria-hidden="true" /> Click to load more...
+              <FaAngleDoubleDown className="mr-2" aria-hidden="true" /> Click to
+              load more...
             </button>
           )}
         </div>
