@@ -308,7 +308,7 @@ export default function Home() {
   return (
     <main className="relative">
       <ParticlesComponent />
-      <div className="relative min-h-[80vh] top-16 items-center grid justify-center">
+      <div className="relative min-h-[90vh] items-center grid justify-center">
         <Toaster position="bottom-right" />
         {isLoading ? (
           <Loading />

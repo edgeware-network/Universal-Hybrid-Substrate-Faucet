@@ -3,7 +3,8 @@ import { Chain, chains } from "@/constants/config";
 import axios from "axios";
 import BigNumber from "bignumber.js";
 import { useEffect, useState, useCallback } from "react";
-import { FiLoader, FiArrowDown, FiCheck } from "react-icons/fi";
+import { RiLoader4Line } from "react-icons/ri";
+import { FaCheckCircle, FaAngleDoubleDown } from "react-icons/fa";
 import Loading from "./Loading";
 
 type FaucetBalance = {
@@ -20,12 +21,13 @@ type FaucetBalance = {
 };
 
 const loadingMessages = [
-  "Hodling tight...",
-  "Mining some data...",
-  "Fetching the moon...",
-  "Calculating crypto magic...",
-  "Blockchain wizardry in progress...",
+  "Hodling tight... 💎🙌",
+  "Mining some data... ⛏️💰",
+  "Fetching the moon... 🚀🌕",
+  "Calculating crypto magic... ✨🔮",
+  "Blockchain wizardry in progress... 🧙‍♂️🔗",
 ];
+
 
 export default function Balance() {
   const [start, setStart] = useState(0);
@@ -114,27 +116,27 @@ export default function Balance() {
               {formatBalances(chain.balance, chain.nativeCurrency.decimals)}{" "}
               {chain.nativeCurrency.symbol}
             </h3>
-            <div className="h-[6px] w-[60%] bg-[#202020] rounded-md"></div>
+            <div className="slider h-[6px] w-[60%] bg-[#202020] rounded-md"></div>
           </div>
         ))}
       </div>
       <div className="mb-16 h-10"></div>
       {faucetBalances.length > 0 && !initialLoad && (
-        <div className={`fixed mb-16 bottom-0 right-14 px-4 py-2 bg-[#333] rounded-full inline-flex text-[#9b9b9b] ${showLoadMore ? 'block' : 'hidden'}`}>
+        <div className={`fixed mb-16 bottom-0 right-14 px-4 py-2 bg-gray-900 rounded-full inline-flex text-[#9b9b9b] ${showLoadMore ? 'block' : 'hidden'}`}>
           {loading ? (
             <div className="flex items-center">
-              <FiLoader className="animate-spin mr-2" /> {currentMessage}
+              <RiLoader4Line  className="animate-spin mr-2" /> {currentMessage}
             </div>
           ) : allLoaded ? (
             <div className="flex items-center text-white">
-              <FiCheck className="mr-2" /> All Chains Loaded
+              <FaCheckCircle className="mr-2" /> All chains loaded
             </div>
           ) : (
             <button
               onClick={fetchFaucetBalances}
-              className="flex items-center text-[#9b9b9b] bg-[#333] rounded"
+              className="flex items-center text-[#9b9b9b] bg-gray-900 rounded"
             >
-              <FiArrowDown className="mr-2" /> Click to load more...
+              <FaAngleDoubleDown className="mr-2" /> Click to load more...
             </button>
           )}
         </div>
