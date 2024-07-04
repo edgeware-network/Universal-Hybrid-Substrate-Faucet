@@ -391,6 +391,21 @@ export const chains: Chain[] = [
     threshold: 500000,
   },
   {
+    name: "RegionX Cocos",
+    url: "regionx-cocos",
+    chainId: "",
+    chainType: "Rococo & Parachains",
+    rpcUrl: "wss://cocos-node.regionx.tech/",
+    nativeCurrency: {
+      name: "COCOS",
+      symbol: "COCOS",
+      decimals: 12,
+    },
+    prefix: 42,
+    type: "substrate",
+    threshold: 2000,
+  },
+  {
     name: "Energy Web X Rococo",
     url: "rococo-ewx",
     chainId: "",
