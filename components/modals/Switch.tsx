@@ -30,8 +30,7 @@ export default function Switch({ selectorMode, setSelectorMode, switcherMode, se
 
   useEffect(() => {
     localStorage.setItem("SET_SELECTED_CHAINS", JSON.stringify(selectorMode));
-
-  },[selectorMode])
+  }, [selectorMode]);
 
   const handleClose = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target instanceof HTMLDivElement && e.target.id === "switch_modal")
@@ -48,17 +47,22 @@ export default function Switch({ selectorMode, setSelectorMode, switcherMode, se
   };
 
   const queryChains = chains.filter((chain) => {
+    const lowerCaseQuery = queryChain.toLowerCase();
+    const lowerCaseName = chain.name.toLowerCase();
+
     if (state.ethereumConnected && chain.type === "evm") {
-      return chain.name.toLowerCase().startsWith(queryChain.toLowerCase());
+      return lowerCaseName.includes(lowerCaseQuery);
     }
 
     if (state.polkadotConnected && chain.type === "substrate") {
-      return chain.name.toLowerCase().startsWith(queryChain.toLowerCase());
+      return lowerCaseName.includes(lowerCaseQuery);
     }
 
     if (!state.ethereumConnected && !state.polkadotConnected) {
-      return chain.name.toLowerCase().startsWith(queryChain.toLowerCase());
+      return lowerCaseName.includes(lowerCaseQuery);
     }
+
+    return false;
   });
 
   const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -67,7 +71,7 @@ export default function Switch({ selectorMode, setSelectorMode, switcherMode, se
       setSelectorMode([])
       localStorage.removeItem("SET_TYPE");
     } else {
-      setSwitcherMode(undefined); 
+      setSwitcherMode(undefined);
     };
   };
 
@@ -128,4 +132,4 @@ export default function Switch({ selectorMode, setSelectorMode, switcherMode, se
       </div>
     </div>
   );
-};
+}

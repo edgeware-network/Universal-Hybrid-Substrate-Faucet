@@ -122,7 +122,7 @@ export default function Balance() {
   return (
     <div className="flex flex-col top-10 relative gap-[20px] min-h-[80vh]">
       {initialLoad && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50">
+        <div className="fixed inset-0 flex items-center justify-center ">
           <Loading />
         </div>
       )}

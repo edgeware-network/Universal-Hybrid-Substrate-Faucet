@@ -25,15 +25,17 @@ const Footer = (): React.JSX.Element => {
         <Link
           href="https://github.com/edgeware-network/Universal-Hybrid-Substrate-Faucet"
           title="GitHub"
+          target="_blank" rel="noopener noreferrer"
         >
           <FaGithub className="h-6 w-6 hover:text-[#E6007A]" />
         </Link>
-        <Link href="https://x.com/Edgeware4People" title="Twitter / X">
+        <Link href="https://x.com/Edgeware4People" title="Twitter / X" target="_blank" rel="noopener noreferrer">
           <FaXTwitter className="h-6 w-6 hover:text-[#E6007A]" />
         </Link>
         <Link
           href="https://polkadot.polkassembly.io/referenda/541"
           title="Universal Hybrid Substrate Faucet Proposal"
+          target="_blank" rel="noopener noreferrer"
         >
           <Image
             src={PolkaAssemblyLogo}
@@ -44,6 +46,7 @@ const Footer = (): React.JSX.Element => {
         <Link
           href="https://polkadot.subsquare.io/referenda/904"
           title="Top Up Request"
+          target="_blank" rel="noopener noreferrer"
         >
           <Image src={SubSquareLogo} alt="Subsquare Logo" className="h-6 w-6" />
         </Link>
