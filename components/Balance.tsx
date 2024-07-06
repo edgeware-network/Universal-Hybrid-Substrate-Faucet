@@ -9,7 +9,6 @@ import { TbCopy, TbCopyCheck } from "react-icons/tb";
 import Loading from "./Loading";
 import { CSSProperties } from "react";
 import { encodeAddress } from "@polkadot/util-crypto";
-import { Tooltip } from "react-tooltip";
 
 type FaucetBalance = {
   name: string;
@@ -35,8 +34,8 @@ const loadingMessages = [
   "Blockchain wizardry in progress... 🧙‍♂️🔗",
 ];
 
-const FAUCET_EVM_ADDRESS = process.env.NEXT_PUBLIC_FAUCET_EVM_ADDRESS;
-const FAUCET_SUBSTRATE_PUBLIC_KEY = process.env.NEXT_PUBLIC_FAUCET_SUBSTRATE_PUBLIC_KEY;
+const FAUCET_EVM_ADDRESS = process.env.NEXT_PUBLIC_FAUCET_EVM_ADDRESS ?? "";
+const FAUCET_SUBSTRATE_PUBLIC_KEY = process.env.NEXT_PUBLIC_FAUCET_SUBSTRATE_PUBLIC_KEY ?? "";
 
 export default function Balance() {
   const [start, setStart] = useState(0);
