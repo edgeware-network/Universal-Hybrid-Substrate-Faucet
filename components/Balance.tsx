@@ -5,8 +5,11 @@ import BigNumber from "bignumber.js";
 import { useEffect, useState, useCallback } from "react";
 import { RiLoader4Line } from "react-icons/ri";
 import { FaCheckCircle, FaAngleDoubleDown } from "react-icons/fa";
+import { TbCopy, TbCopyCheck } from "react-icons/tb";
 import Loading from "./Loading";
 import { CSSProperties } from "react";
+import { encodeAddress } from "@polkadot/util-crypto";
+import { Tooltip } from "react-tooltip";
 
 type FaucetBalance = {
   name: string;
@@ -32,6 +35,9 @@ const loadingMessages = [
   "Blockchain wizardry in progress... 🧙‍♂️🔗",
 ];
 
+const FAUCET_EVM_ADDRESS = process.env.NEXT_PUBLIC_FAUCET_EVM_ADDRESS;
+const FAUCET_SUBSTRATE_PUBLIC_KEY = process.env.NEXT_PUBLIC_FAUCET_SUBSTRATE_PUBLIC_KEY;
+
 export default function Balance() {
   const [start, setStart] = useState(0);
   const [faucetBalances, setFaucetBalances] = useState<FaucetBalance[]>([]);
@@ -40,6 +46,7 @@ export default function Balance() {
   const [initialLoad, setInitialLoad] = useState(true);
   const [currentMessage, setCurrentMessage] = useState(loadingMessages[0]);
   const [showLoadMore, setShowLoadMore] = useState(false);
+  const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
 
   const fetchFaucetBalances = useCallback(async () => {
     setLoading(true);
@@ -94,10 +101,10 @@ export default function Balance() {
   const getSliderStyles = (balance: number, threshold: number): CSSProperties => {
     const maxBalance = 2 * threshold;
     const widthPercentage = (balance / maxBalance) * 100;
-    let backgroundColor = "#FF0000"; // Red for empty balance
+    let backgroundColor = "#FF0000";
 
     if (balance > 0) {
-      backgroundColor = balance < threshold ? "#FFA500" : "#00FF00"; // Orange if below threshold, green if above
+      backgroundColor = balance < threshold ? "#FFA500" : "#00FF00";
     }
 
     return {
@@ -119,8 +126,20 @@ export default function Balance() {
     return {};
   };
 
+  const handleCopyAddress = (index: number, address: string, prefix: number | undefined) => {
+    const encodedAddress = prefix !== undefined ? encodeAddress(address, prefix) : address;
+    navigator.clipboard.writeText(encodedAddress)
+      .then(() => {
+        setCopiedIndex(index);
+        setTimeout(() => setCopiedIndex(null), 4000);
+      })
+      .catch((err) => {
+        console.error("Failed to copy: ", err);
+      });
+  };
+
   return (
-    <div className="flex flex-col top-10 relative gap-[20px] min-h-[80vh]">
+    <div className="flex flex-col top-12 relative gap-[20px] min-h-[80vh]">
       {initialLoad && (
         <div className="fixed inset-0 flex items-center justify-center ">
           <Loading />
@@ -128,16 +147,19 @@ export default function Balance() {
       )}
       <div className="grid auto-rows-auto overflow-y-auto w-[80vw] gap-3 grid-cols-3">
         {faucetBalances.map((chain, index) => {
-          // Find the matching chain from config.ts
           const configChain = chains.find((c) => c.name === chain.name);
 
           const balance = formatBalances(chain.balance, chain.nativeCurrency.decimals);
           const threshold = configChain ? configChain.threshold : 0;
 
+          const address = chain.type === "substrate"
+            ? FAUCET_SUBSTRATE_PUBLIC_KEY
+            : FAUCET_EVM_ADDRESS;
+
           return (
             <div
               key={index}
-              className={`flex flex-col items-center justify-center p-4 gap-3 ${
+              className={`relative flex flex-col items-center justify-center p-4 gap-3 ${
                 chain.balance === null ? "bg-[#4d1526]" : "bg-black"
               } rounded-md text-center flex-wrap`}
             >
@@ -160,6 +182,17 @@ export default function Balance() {
                   </div>
                 )}
               </div>
+              <div className="absolute top-2 right-2">
+                {copiedIndex === index ? (
+                  <TbCopyCheck className="text-green-500" />
+                ) : (
+                  <TbCopy
+                    className="text-[#eaeaea] cursor-pointer"
+                    onClick={() => handleCopyAddress(index, address, configChain?.prefix)}
+                    title={`Copy ${chain.name} address`} 
+                  />
+                )}
+              </div>
             </div>
           );
         })}
@@ -167,7 +200,7 @@ export default function Balance() {
       <div className="mb-16 h-10"></div>
       {faucetBalances.length > 0 && !initialLoad && (
         <div
-          className={`fixed mb-16 bottom-0 right-14 px-4 py-2 bg-gray-900 rounded-full inline-flex text-[#9b9b9b] ${
+          className={`fixed mb-16 bottom-0 right-20 px-4 py-2 bg-gray-900 rounded-full inline-flex text-[#9b9b9b] ${
             showLoadMore ? "block" : "hidden"
           }`}
           aria-live="polite"
