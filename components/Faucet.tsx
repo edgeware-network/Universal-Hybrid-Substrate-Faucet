@@ -46,7 +46,7 @@ function FaucetForm(
       return;
     }
 
-    if (!user.chain || !user.address || !user.amount) {
+    if (!user.address || !user.amount) {
       toast.error("Please fill in all the required fields.");
       return;
     }
