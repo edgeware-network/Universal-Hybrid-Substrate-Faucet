@@ -3,6 +3,7 @@ import React from "react";
 import ConnectWallet from "./ConnectWallet";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { chains } from "@/constants/config";
 
 const Navbar = (): React.JSX.Element => {
 	const path = usePathname();
@@ -17,7 +18,7 @@ const Navbar = (): React.JSX.Element => {
 			</Link>
 				<ul className="sm:flex text-sm flex-row hidden items-center justify-between space-x-5">
 					<li
-						className={`${path === "/" ? "text-[#EAEAEA] underline underline-offset-8" : "text-[#606060]"}`}
+						className={`${path === "/" ? "text-[#EAEAEA] underline underline-offset-8" : "text-[#606060]"} cursor-pointer`}
 					>
 						<Link href="/">
 							<p>Faucet</p>
@@ -26,12 +27,13 @@ const Navbar = (): React.JSX.Element => {
 					<li
 						className={`${
 							path === "/status" ? "text-[#EAEAEA] underline underline-offset-8" : "text-[#606060]"
-						}`}
+						} cursor-pointer`}
 					>
 						<Link href="/status">
 							<p>Status</p>
 						</Link>
 					</li>
+					{path && path !== "/" && path !== "/status" && <li className="text-[#EAEAEA] underline underline-offset-8 cursor-pointer"><p>{chains.find((c) => c.url === path.split("/")[1])?.name}</p></li>}
 				</ul>
 			</div>
 			<ConnectWallet />
