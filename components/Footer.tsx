@@ -8,7 +8,7 @@ import SubSquareLogo from "../public/subsquare_logo.svg";
 
 const Footer = (): React.JSX.Element => {
   return (
-    <div className="max-w-[1204px] w-[90vw] fixed bottom-1 h-14 flex justify-center items-center bg-[#1b1b1b] font-medium rounded-[10px]">
+    <div className="max-w-[1204px] w-[90vw] z-0 fixed bottom-1 h-14 flex justify-center items-center bg-[#1b1b1b] font-medium rounded-[10px]">
       <div className="flex flex-col items-center">
         <p className="text-xs font-medium text-[#656565] flex items-center justify-center">
           Made with
