@@ -47,8 +47,7 @@ export default function Balance() {
   const [showLoadMore, setShowLoadMore] = useState(false);
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
 
-  const LOCAL_STORAGE_KEY = "faucetBalances";
-  const REFRESH_FLAG_KEY = "pageRefreshFlag";
+  const SESSION_STORAGE_KEY = "faucetBalances";
 
   const fetchFaucetBalances = useCallback(async () => {
     setLoading(true);
@@ -61,34 +60,29 @@ export default function Balance() {
     try {
       const res = await axios.post("/api/balance", { chains: batch });
       const data = res.data.data;
-      setFaucetBalances((prev) => [...prev, ...data]);
+      setFaucetBalances((prev) => {
+        const newBalances = [...prev, ...data];
+        sessionStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(newBalances));
+        return newBalances;
+      });
       setStart((prev) => prev + BATCH_SIZE);
-      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify([...faucetBalances, ...data]));
     } catch (error) {
       console.error("Failed to fetch balances:", error);
     } finally {
       setLoading(false);
       setInitialLoad(false);
     }
-  }, [start, faucetBalances]);
+  }, [start]);
 
   useEffect(() => {
-    const storedBalances = localStorage.getItem(LOCAL_STORAGE_KEY);
-    const refreshFlag = localStorage.getItem(REFRESH_FLAG_KEY);
+    const storedBalances = sessionStorage.getItem(SESSION_STORAGE_KEY);
 
-    if (refreshFlag === "true") {
-      // Clear localStorage and reset the refresh flag
-      localStorage.removeItem(LOCAL_STORAGE_KEY);
-      localStorage.setItem(REFRESH_FLAG_KEY, "false");
-    } else if (storedBalances) {
+    if (storedBalances) {
       setFaucetBalances(JSON.parse(storedBalances));
       setInitialLoad(false);
     } else {
       fetchFaucetBalances();
     }
-
-    // Set the refresh flag on initial load
-    localStorage.setItem(REFRESH_FLAG_KEY, "true");
   }, [fetchFaucetBalances]);
 
   useEffect(() => {
