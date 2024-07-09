@@ -963,21 +963,6 @@ export const chains: Chain[] = [
     threshold: 100000,
   },
   {
-    name: "Moonbase Alpha",
-    url: "moonbase-alpha",
-    chainId: "",
-    chainType: "Solochains",
-    rpcUrl: "wss://moonbase-alpha.public.blastapi.io",
-    nativeCurrency: {
-      name: "DEV",
-      symbol: "DEV",
-      decimals: 18,
-    },
-    prefix: 1287,
-    type: "substrate",
-    threshold: 90000,
-  },
-  {
     name: "OPAL by UNIQUE",
     url: "opal",
     chainId: "",
@@ -1158,7 +1143,7 @@ export const chains: Chain[] = [
   },
   {
     name: "Moonbase Alpha",
-    url: "moonbase-alpha-evm",
+    url: "moonbase-alpha",
     chainId: "1287",
     chainType: "Solochains",
     rpcUrl: "https://rpc.testnet.moonbeam.network",
