@@ -8,7 +8,7 @@ import { MouseEvent, useRef, useState, useEffect, KeyboardEvent } from "react";
 import { LuChevronsUpDown, LuCheckSquare } from "react-icons/lu";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 import axios, { AxiosError } from "axios";
-import { Toaster, toast } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import Loading from "@/components/Loading";
 import ParticlesComponent from "@/components/ParticlesComponent";
 import SyncLoader from "react-spinners/SyncLoader";
@@ -16,7 +16,7 @@ import Toast from "@/components/Toast";
 import { TbAlertSquareRounded } from "react-icons/tb";
 import { disburse } from "@/lib/utils";
 
-type Disburse = {
+export type Disburse = {
   chain: string;
   address: string;
   amount: number;
@@ -49,7 +49,6 @@ export default function Home() {
     }, 1000);
   }, []);
 
-  // console.log(switcherMode, selectorMode, user);
   const handleShowSwitchModal = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     setShowSwitchModal(true);
@@ -204,7 +203,7 @@ export default function Home() {
     setIsSubmitting(false);
   };
 
-  const onVerify = async (captchaCode: string | null) => {
+const onVerify = async (captchaCode: string | null) => {
     setIsSubmitting(true);
     setButtonText("Please Wait");
     if (!captchaCode) {
@@ -309,7 +308,6 @@ export default function Home() {
     <main className="relative">
       <ParticlesComponent />
       <div className="relative min-h-[90vh] items-center grid justify-center">
-        <Toaster position="bottom-right" />
         {isLoading ? (
           <Loading />
         ) : (

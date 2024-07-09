@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import { Suspense } from "react";
 import { FaucetProvider } from "@/context";
 import HashLoader from "react-spinners/HashLoader";
+import { Toaster } from "react-hot-toast";
 
 const space_mono = Space_Mono({ weight: ["400", "700"], subsets: ["latin"] });
 
@@ -42,6 +43,7 @@ export default function RootLayout({
             <Navbar />
             {children}
           </Suspense>
+          <Toaster position="bottom-right" />
           <Footer />
         </FaucetProvider>
       </body>
