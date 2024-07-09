@@ -14,6 +14,7 @@ import { Chain, chains } from "@/constants/config";
 import { decodeAddress, encodeAddress } from "@polkadot/util-crypto";
 import ConnectingPopup from "@/components/widgets/ConnectingPopup";
 import BigNumber from "bignumber.js";
+import { usePathname } from "next/navigation";
 
 export type Account = {
   address: string;
@@ -92,6 +93,7 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
   const [ethereumAccounts, setEthereumAccounts] = useState<Account[]>([]);
   const [switcherMode, setSwitcherMode] = useState<Chain | undefined>();
   const [selectorMode, setSelectorMode] = useState<Chain[]>([]);
+  const path = usePathname().split("/")[1];
 
   const [user, setUser] = useState<User>({
     chain: "",
@@ -326,7 +328,7 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
     setLoading(true);
     async function connect() {
       if(type === "polkadot") {
-        const chain = chains.find((chain) => chain.url === "beresheet")!;
+        const chain = path ? chains.find((chain) => chain.url === path)! : chains.find((chain) => chain.url === "beresheet")!;
         const res = await connectToPolkadot(chain);
         if(res) {
           setPolkadotConnected(true);
@@ -334,7 +336,7 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
         };
       } else {
         const currentEvmChain = await setChainId();
-        const defaultEvmChain = chains.find((chain) => chain.url === "beresheet-bereevm")!;
+        const defaultEvmChain = path ? chains.find((chain) => chain.url === path)! : chains.find((chain) => chain.url === "beresheet-bereevm")!;
         const chain = (currentEvmChain) ? currentEvmChain: defaultEvmChain;
         const res = await connectToEthereum(chain);
         if(res) {
