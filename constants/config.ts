@@ -1158,7 +1158,7 @@ export const chains: Chain[] = [
   },
   {
     name: "Moonbase Alpha",
-    url: "moonbase-alpha",
+    url: "moonbase-alpha-evm",
     chainId: "1287",
     chainType: "Solochains",
     rpcUrl: "https://rpc.testnet.moonbeam.network",
