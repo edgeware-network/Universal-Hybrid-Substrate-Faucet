@@ -47,8 +47,6 @@ export default function Balance() {
   const [showLoadMore, setShowLoadMore] = useState(false);
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
 
-  const SESSION_STORAGE_KEY = "faucetBalances";
-
   const fetchFaucetBalances = useCallback(async () => {
     setLoading(true);
     const batch = chains.slice(start, start + BATCH_SIZE);
@@ -60,11 +58,7 @@ export default function Balance() {
     try {
       const res = await axios.post("/api/balance", { chains: batch });
       const data = res.data.data;
-      setFaucetBalances((prev) => {
-        const newBalances = [...prev, ...data];
-        sessionStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(newBalances));
-        return newBalances;
-      });
+      setFaucetBalances((prev) => [...prev, ...data]);
       setStart((prev) => prev + BATCH_SIZE);
     } catch (error) {
       console.error("Failed to fetch balances:", error);
@@ -75,14 +69,7 @@ export default function Balance() {
   }, [start]);
 
   useEffect(() => {
-    const storedBalances = sessionStorage.getItem(SESSION_STORAGE_KEY);
-
-    if (storedBalances) {
-      setFaucetBalances(JSON.parse(storedBalances));
-      setInitialLoad(false);
-    } else {
-      fetchFaucetBalances();
-    }
+    fetchFaucetBalances();
   }, [fetchFaucetBalances]);
 
   useEffect(() => {
@@ -179,7 +166,7 @@ export default function Balance() {
               <h3 className="text-[#9b9b9b] text-sm">
                 {balance.toFixed(2)} {chain.nativeCurrency.symbol}
               </h3>
-              <div className={`slider h-[6px] w-[60%] ${balance == 0 ? "border border-red-500" : "bg-[#202020]"} rounded-md relative`}>
+              <div className={`slider h-[6px] w-[60%] ${balance < 1 ? "bg-red-500" : "bg-[#202020]"} rounded-md relative`}>
                 {configChain && (
                   <div
                     className="h-full rounded-md"
@@ -201,7 +188,7 @@ export default function Balance() {
                   <TbCopy
                     className="text-[#eaeaea] cursor-pointer"
                     onClick={() => handleCopyAddress(index, address, configChain?.prefix)}
-                    title={`Copy ${chain.name} address`}
+                    title={`Copy ${chain.name} address`} 
                   />
                 )}
               </div>
