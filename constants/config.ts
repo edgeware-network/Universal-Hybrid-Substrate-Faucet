@@ -992,23 +992,21 @@ export const chains: Chain[] = [
     type: "substrate",
     threshold: 1000000,
   },
-  /* Custom integration for the permissioned chain is pending
   {
-    name: "",
+    name: "Polymesh Testnet",
     url: "polymesh",
     chainId: "",
     chainType: "Solochains",
     rpcUrl: "wss://testnet-rpc.polymesh.live",
     nativeCurrency: {
-      name: "",
-      symbol: "",
-      decimals: ,
+      name: "POLYX",
+      symbol: "POLYX",
+      decimals: 6,
     },
-    prefix: ,
+    prefix: 42,
     type: "substrate",
-    threshold: ,
+    threshold: 500000,
   },
-  */
   {
     name: "Shibuya Testnet",
     url: "shibuya",

@@ -650,6 +650,11 @@
     tslib "^2.6.2"
     ws "^8.15.1"
 
+"@polymeshassociation/polymesh-types@^5.11.1":
+  version "5.11.1"
+  resolved "https://registry.yarnpkg.com/@polymeshassociation/polymesh-types/-/polymesh-types-5.11.1.tgz#b90166f5027297d9d1cc9215353713f72310dcce"
+  integrity sha512-+WrETgE1z8fRq/FX6hPN0ChCHoTeUi4musPNSI6Q8U7IaGaAK+jZCdcgF46q6NttEKi2WPlVM+rNeTetQ+XC3g==
+
 "@radix-ui/number@1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@radix-ui/number/-/number-1.0.1.tgz#644161a3557f46ed38a042acf4a770e826021674"
@@ -4342,6 +4347,7 @@ streamsearch@^1.1.0:
   integrity sha512-Mcc5wHehp9aXz1ax6bZUyY5afg9u2rv5cqQI3mRrYkGC8rW2hM02jWuwjtL++LS5qinSyhj2QfLyNsuc+VsExg==
 
 "string-width-cjs@npm:string-width@^4.2.0", string-width@^4.1.0:
+  name string-width-cjs
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/string-width/-/string-width-4.2.3.tgz#269c7117d27b05ad2e536830a8ec895ef9c6d010"
   integrity sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==
