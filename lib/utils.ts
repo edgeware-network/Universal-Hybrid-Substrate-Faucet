@@ -7,9 +7,7 @@ import { AccountInfo } from "@polkadot/types/interfaces";
 import { AxiosError } from "axios";
 import { Chain } from "@/constants/config";
 import pLimit from "p-limit";
-import { typesBundle } from '@polymeshassociation/polymesh-types';
-import type  { Option } from  "@polkadot/types-codec";
-import { CddStatus, PolymeshPrimitivesSecondaryKeyKeyRecord } from "@/types/polymesh";
+import { PolyxFaucet } from "./polymesh";
 
 export type DisburseChain = {
   chain: string;
@@ -42,57 +40,10 @@ export function loadFaucetAccount() {
 export async function disburseSubstrateToken(chain: DisburseChain) {
   await cryptoWaitReady();
   try {
-    const wsProvider = new WsProvider(chain.rpc);
-    if(chain.chain === "Polymesh Testnet") {
-      const api = await ApiPromise.create({ provider: wsProvider, typesBundle, noInitWarn: true });
-      const keyRecords = (await api.query.identity.keyRecords(chain.address)) as Option<PolymeshPrimitivesSecondaryKeyKeyRecord>;
-    
-      if (keyRecords.isNone) {
-        const tx = api.tx.identity.cddRegisterDidWithCdd(chain.address, [], null);
-        const hash = await tx.signAndSend(loadFaucetAccount().substrateAccount);
-    
-        return `${hash}`;
 
-      } else {
-  
-        let did;
-        const unwrappedRecord = keyRecords.unwrap();
-        if (unwrappedRecord.isPrimaryKey) {
-          did = unwrappedRecord.asPrimaryKey;
-        } else if (unwrappedRecord.isSecondaryKey) {
-          did = unwrappedRecord.asSecondaryKey[0];
-        } else if (unwrappedRecord.isMultiSigSignerKey) {
-          throw new Error('Multisig signer keys cannot receive POLYX tokens');
-        };
-      
-        if (!did) throw new Error('DID not found in key records');
-      
-        const cddValidity = (await api.call.identityApi.isIdentityHasValidCdd(did, undefined)) as CddStatus;
-      
-        if (cddValidity.isOk) {
-          const addCddClaimTx = api.tx.identity.addClaim(
-            did,
-            { CustomerDueDiligence: null },
-            null,
-          );
-          await addCddClaimTx.signAndSend(loadFaucetAccount().substrateAccount);
-        };
-      
-        const transferAmount = chain.amount * 10 ** chain.nativeCurrency.decimals;
-        const faucetBalance = Number((await api.query.system.account(process.env.FAUCET_SUBSTRATE_PUBLIC_KEY!) as AccountInfo).data.free.toString());
-      
-        if (faucetBalance > 0 && faucetBalance > transferAmount) {
-          const transferPolyxTx = api.tx.balances.transfer(chain.address, transferAmount.toString());
-          const transferHash = await transferPolyxTx.signAndSend(loadFaucetAccount().substrateAccount);
-      
-          return `${transferHash}`;
-      
-        } else {
-          return -1;
-      
-        };
-      };
-    };
+    if(chain.chain === "Polymesh Testnet") return await PolyxFaucet(chain);
+
+    const wsProvider = new WsProvider(chain.rpc);
     const api = await ApiPromise.create({ provider: wsProvider, noInitWarn: true });
 
     await api.isReady;
