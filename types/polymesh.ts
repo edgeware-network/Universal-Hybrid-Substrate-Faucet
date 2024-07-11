@@ -1,4 +1,3 @@
-
 import type  { Enum, U8aFixed, Struct, BTreeSet, Bytes, u64 } from  "@polkadot/types-codec";
 import type { ITuple } from "@polkadot/types-codec/types";
 import { AccountId32 } from "@polkadot/types/interfaces";
@@ -88,4 +87,3 @@ export interface CddStatus extends Enum {
   readonly asErr: Bytes;
   readonly type: 'Ok' | 'Err';
 };
-
