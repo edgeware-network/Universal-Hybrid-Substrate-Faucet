@@ -705,7 +705,7 @@ export const chains: Chain[] = [
     },
     prefix: 42,
     type: "substrate",
-    threshold: 1000000,
+    threshold: 2000,
   },
   {
     name: "Parachain Hades (Nodle)",
