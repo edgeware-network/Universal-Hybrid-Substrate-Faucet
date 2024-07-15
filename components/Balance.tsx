@@ -166,7 +166,7 @@ export default function Balance() {
               <h3 className="text-[#9b9b9b] text-sm">
                 {balance.toFixed(2)} {chain.nativeCurrency.symbol}
               </h3>
-              <div className={`slider h-[6px] w-[60%] ${balance < 1 ? "bg-red-500" : "bg-[#202020]"} rounded-md relative`}>
+              <div className={`slider h-[6px] w-[60%] ${balance == 0 ? "border border-red-500" : "bg-[#202020]"} rounded-md relative`}>
                 {configChain && (
                   <div
                     className="h-full rounded-md"
