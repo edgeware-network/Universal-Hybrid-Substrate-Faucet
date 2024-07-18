@@ -695,16 +695,15 @@ export const chains: Chain[] = [
   {
     name: "Laos Omega Testnet",
     url: "laos-omega",
-    chainId: "",
+    chainId: "62831",
     chainType: "Paseo & Parachains",
-    rpcUrl: "wss://rpc.laosomega.laosfoundation.io",
+    rpcUrl: "https://rpc.laosomega.laosfoundation.io",
     nativeCurrency: {
       name: "OMEGA",
       symbol: "OMEGA",
       decimals: 18,
     },
-    prefix: 42,
-    type: "substrate",
+    type: "evm",
     threshold: 1000,
   },
   {
