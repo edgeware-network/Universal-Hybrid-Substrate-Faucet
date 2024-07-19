@@ -20,7 +20,7 @@ export const chains: Chain[] = [
     url: "westend",
     chainType: "Westend & Parachains",
     chainId: "",
-    rpcUrl: "wss://westend-rpc.polkadot.io",
+    rpcUrl: "wss://westend-rpc.dwellir.com",
     nativeCurrency: {
       name: "WND",
       symbol: "WND",
@@ -547,7 +547,7 @@ export const chains: Chain[] = [
     url: "paseo",
     chainId: "",
     chainType: "Paseo & Parachains",
-    rpcUrl: "wss://paseo.rpc.amforc.com",
+    rpcUrl: "wss://paseo-rpc.dwellir.com",
     nativeCurrency: {
       name: "PAS",
       symbol: "PAS",
