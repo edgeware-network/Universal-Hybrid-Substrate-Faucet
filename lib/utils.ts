@@ -55,7 +55,7 @@ export async function disburseSubstrateToken(chain: DisburseChain) {
 
     if (faucetBalance > 0 && faucetBalance > transferAmount) {
       const transfer = api.tx.balances.transferKeepAlive(chain.address, transferAmount.toString());
-      const hash = await transfer.signAndSend(loadFaucetAccount().substrateAccount);
+      const hash = await transfer.signAndSend(loadFaucetAccount().substrateAccount, { withSignedTransaction: true });
 
       return `${hash}`;
     } else {
