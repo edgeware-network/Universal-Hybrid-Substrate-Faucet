@@ -54,7 +54,7 @@ export async function PolyxFaucet(chain: DisburseChain) {
       const nonce = (await api.rpc.system.accountNextIndex(process.env.FAUCET_SUBSTRATE_PUBLIC_KEY!));
       console.log(`Nonce: ${nonce}`);
       const transferPolyxTx = api.tx.balances.transfer(chain.address, transferAmount.toString());
-      const transferHash = await transferPolyxTx.signAndSend(loadFaucetAccount().substrateAccount, { nonce });
+      const transferHash = await transferPolyxTx.signAndSend(loadFaucetAccount().substrateAccount, { nonce, withSignedTransaction: true });
       
       console.log(`Transfer: ${transferHash}`);
   
