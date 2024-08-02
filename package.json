@@ -23,7 +23,7 @@
     "@tsparticles/engine": "^3.4.0",
     "@tsparticles/react": "^3.0.0",
     "@tsparticles/slim": "^3.4.0",
-    "axios": "^1.6.8",
+    "axios": "^1.7.3",
     "bignumber.js": "^9.1.2",
     "bip39": "^3.1.0",
     "dotenv": "^16.4.5",
