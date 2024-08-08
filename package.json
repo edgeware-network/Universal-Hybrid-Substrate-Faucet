@@ -10,7 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@hcaptcha/react-hcaptcha": "^1.10.2",
+    "@hcaptcha/react-hcaptcha": "^1.10.3",
     "@headlessui/react": "^2.1.2",
     "@polkadot/api": "^12.2.3",
     "@polkadot/extension-dapp": "^0.50.1",
