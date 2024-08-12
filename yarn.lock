@@ -682,7 +682,7 @@
     "@polkadot/util" "^13.0.2"
     tslib "^2.6.2"
 
-"@polkadot/types@12.2.3", "@polkadot/types@^12.2.3":
+"@polkadot/types@12.2.3":
   version "12.2.3"
   resolved "https://registry.yarnpkg.com/@polkadot/types/-/types-12.2.3.tgz#0e48dae653df42d069e5c709c36e08b4cc8a07e6"
   integrity sha512-p6y3WdZBvdgT5+m+gvPaHXUaei1DQjMI9BxhzHS5FfOvDMSDf0uBacamtRmkdII5bJuUgGBYG9BjHic8yWu0/g==
