@@ -886,9 +886,9 @@ export const chains: Chain[] = [
     threshold: 1000,
   },
   {
-    name: "Harmonie Testnet Live",
-    url: "harmonie",
-    chainId: "",
+    name: "Harmonie Testnet",
+    url: "allfeat-testnet",
+    chainId: "441",
     chainType: "Solochains",
     rpcUrl: "wss://harmonie-endpoint-02.allfeat.io",
     nativeCurrency: {
@@ -896,9 +896,8 @@ export const chains: Chain[] = [
       symbol: "HMY",
       decimals: 18,
     },
-    prefix: 441,
-    type: "substrate",
-    threshold: 50000,
+    type: "evm",
+    threshold: 100000,
   },
   {
     name: "Interlay Testnet",
