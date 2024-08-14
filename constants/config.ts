@@ -890,7 +890,7 @@ export const chains: Chain[] = [
     url: "allfeat-testnet",
     chainId: "441",
     chainType: "Solochains",
-    rpcUrl: "wss://harmonie-endpoint-02.allfeat.io",
+    rpcUrl: "https://harmonie-endpoint-02.allfeat.io",
     nativeCurrency: {
       name: "HMY",
       symbol: "HMY",
