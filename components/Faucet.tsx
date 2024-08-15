@@ -10,15 +10,18 @@ import axios, { AxiosError } from "axios";
 import { LuCheckSquare } from "react-icons/lu";
 import { useFaucetContext } from "@/context";
 import { Disburse } from "@/app/page";
+import { set } from "mongoose";
 
 function FaucetForm(
   { url,
+    address,
     buttonText,
     setButtonText,
     setIsSubmitting,
     isSubmitting
    }: {
     url: string;
+    address: string;
     buttonText: string;
     setButtonText: (text: string) => void;
     setIsSubmitting: (submitting: boolean) => void;
@@ -245,6 +248,10 @@ function FaucetForm(
     }
   };
 
+  useEffect(() => {
+    if (address) setUser({ ...user, address: address });
+  })
+
   return(
     <form onSubmit={handleSubmit} className="sm:flex hidden flex-col items-center justify-center gap-[8px] p-[4px] bg-[#131313] rounded-[12px]">
       <div className="flex flex-col gap-[8px] items-center justify-center">
@@ -327,7 +334,7 @@ function FaucetForm(
     </form>
   );
 };
-export default function Faucet({ url }: { url: string }) {
+export default function Faucet({ url, address }: { url: string, address: string }) {
   const [isLoading, setLoading] = useState(true);
   const [buttonText, setButtonText] = useState("Request Tokens");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -342,7 +349,7 @@ export default function Faucet({ url }: { url: string }) {
       {isLoading ? (
         <Loading />
       ) : (
-        <FaucetForm url={url} buttonText={buttonText} setButtonText={setButtonText} setIsSubmitting={setIsSubmitting} isSubmitting={isSubmitting}  />
+        <FaucetForm address={address} url={url} buttonText={buttonText} setButtonText={setButtonText} setIsSubmitting={setIsSubmitting} isSubmitting={isSubmitting}  />
       )}
     </div>
   );
