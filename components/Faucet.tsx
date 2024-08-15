@@ -10,7 +10,6 @@ import axios, { AxiosError } from "axios";
 import { LuCheckSquare } from "react-icons/lu";
 import { useFaucetContext } from "@/context";
 import { Disburse } from "@/app/page";
-import { set } from "mongoose";
 
 function FaucetForm(
   { url,
@@ -297,8 +296,8 @@ function FaucetForm(
               onKeyDown={checkAmount}
               inputMode="decimal"
               onChange={(e) => setUser({ ...user, amount: e.target.value.replace(",", ".") })} />
-            <button 
-              onClick={getMaxAmount} 
+            <button
+              onClick={getMaxAmount}
               className="w-1/2 h-full p-2 flex gap-2 items-center justify-center bg-[rgba(0,102,255,0.1)] text-base text-[#0066FF] font-medium rounded-[8px] outline-none"
             > Max
             </button>
