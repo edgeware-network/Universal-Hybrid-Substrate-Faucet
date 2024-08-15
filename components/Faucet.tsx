@@ -247,10 +247,6 @@ function FaucetForm(
     }
   };
 
-  useEffect(() => {
-    if (address) setUser({ ...user, address: address });
-  })
-
   return(
     <form onSubmit={handleSubmit} className="sm:flex hidden flex-col items-center justify-center gap-[8px] p-[4px] bg-[#131313] rounded-[12px]">
       <div className="flex flex-col gap-[8px] items-center justify-center">
