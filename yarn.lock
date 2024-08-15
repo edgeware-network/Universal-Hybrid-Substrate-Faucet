@@ -403,20 +403,20 @@
     rxjs "^7.8.1"
     tslib "^2.6.2"
 
-"@polkadot/extension-dapp@^0.51.1":
-  version "0.51.1"
-  resolved "https://registry.yarnpkg.com/@polkadot/extension-dapp/-/extension-dapp-0.51.1.tgz#be049bc9f87df0e3f3d8d9b7162b12793b86f508"
-  integrity sha512-A9I7dtHeTtgjjsuVfeBxW+iDIenQ2URY3TG0ZgJgylyxAmZAnXlXAlP3GAjAquHWuAR3+U42SQ0BanemFBpArw==
+"@polkadot/extension-dapp@^0.52.1":
+  version "0.52.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/extension-dapp/-/extension-dapp-0.52.1.tgz#3bb5a360bb80af0621c31c3c9bd3409eb3d65709"
+  integrity sha512-0O20EFLpvJjax+ndvd6MsitpjutT5P45UJW+Trv9BeVVo8NDYyAmL1NJgqA9FHSgWRukPUAMbiqH3byH8OgFkw==
   dependencies:
-    "@polkadot/extension-inject" "0.51.1"
+    "@polkadot/extension-inject" "0.52.1"
     "@polkadot/util" "^13.0.2"
     "@polkadot/util-crypto" "^13.0.2"
     tslib "^2.6.2"
 
-"@polkadot/extension-inject@0.51.1":
-  version "0.51.1"
-  resolved "https://registry.yarnpkg.com/@polkadot/extension-inject/-/extension-inject-0.51.1.tgz#aacab05d0fe177f0675dd3d0c3bef1549a01d7fc"
-  integrity sha512-9b6mNw+ELkKOBxDARs3mfbFOzgOiV1brCY6OizXpGb1UAN6I77QcueUBC4zqvGo0NP7/pAlp2Aqxo7u9XuRi7w==
+"@polkadot/extension-inject@0.52.1":
+  version "0.52.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/extension-inject/-/extension-inject-0.52.1.tgz#2ed37600f4dbd73b99edbd819fdbeceefca74ff1"
+  integrity sha512-c3+uzQDUMSMfMgLrewM+ePI8ZnAnr29vV0Wd0qPGV96P/5wGgpWNsON2I0lkzXRMrUX/Wv/aMoXvEOsBSbgSww==
   dependencies:
     "@polkadot/api" "^12.3.1"
     "@polkadot/rpc-provider" "^12.3.1"
