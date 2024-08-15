@@ -94,10 +94,11 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
   const [switcherMode, setSwitcherMode] = useState<Chain | undefined>();
   const [selectorMode, setSelectorMode] = useState<Chain[]>([]);
   const path = usePathname().split("/")[1];
+  const address = usePathname().split("/")[2];
 
   const [user, setUser] = useState<User>({
     chain: "",
-    address: "",
+    address: address || "",
     amount: "",
   });
   const [toggle, setToggle] = useState<boolean>(true);
@@ -147,16 +148,25 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
             symbol: chain.nativeCurrency.symbol,
           };
         }));
-        // console.log("polkadot accounts", balances);
+        console.log("polkadot accounts", balances);
         setPolkadotAccounts(balances);
-        setSelectedPolkadotAccount(encodeAddress(decodeAddress(sessionStorage.getItem("selectedAccount") || balances[0].address), chain.prefix));
-        setUser((previous) => ({ ...previous, address: encodeAddress(decodeAddress(sessionStorage.getItem("selectedAccount") || balances[0].address), chain.prefix), chain: sessionStorage.getItem("selectedChain") || balances[0].chain }));
+        if(address) {
+          balances.forEach(balance => {
+            if (balance.address === address) {
+              setSelectedPolkadotAccount(encodeAddress(decodeAddress(balance.address), chain.prefix));
+              setUser((previous) => ({ ...previous, address: encodeAddress(decodeAddress(balance.address), chain.prefix), chain: balance.chain }));
+            }
+          });
+        } else {
+          setSelectedPolkadotAccount(encodeAddress(decodeAddress(sessionStorage.getItem("selectedAccount") || balances[0].address), chain.prefix));
+          setUser((previous) => ({ ...previous, address: encodeAddress(decodeAddress(sessionStorage.getItem("selectedAccount") || balances[0].address), chain.prefix), chain: sessionStorage.getItem("selectedChain") || balances[0].chain }));
+        }
         return true;
       };
     } catch (err) {
       console.log(err);
     }
-  }, [setSelectedPolkadotAccount]);
+  }, [setSelectedPolkadotAccount, address]);
 
   const updateEthereumBalances = useCallback(async (chain: Chain) => {
     console.log(`Updating ${chain.name} balances...`);
@@ -388,7 +398,6 @@ export const FaucetProvider = ({ children }: { children: React.ReactNode }) => {
     async function connectSubstrateOnReload() {
       const isSubstrateConnected = sessionStorage.getItem("isSubstrateConnected");
       const chain = chains.find((chain) => chain.name === sessionStorage.getItem("selectedChain"))!;
-      console.log(chain);
       if (isSubstrateConnected === "true") {
         const res = await updatePolkadotBalances(chain);
         if (res) {

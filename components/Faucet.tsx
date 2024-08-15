@@ -13,12 +13,14 @@ import { Disburse } from "@/app/page";
 
 function FaucetForm(
   { url,
+    address,
     buttonText,
     setButtonText,
     setIsSubmitting,
     isSubmitting
    }: {
     url: string;
+    address: string;
     buttonText: string;
     setButtonText: (text: string) => void;
     setIsSubmitting: (submitting: boolean) => void;
@@ -290,8 +292,8 @@ function FaucetForm(
               onKeyDown={checkAmount}
               inputMode="decimal"
               onChange={(e) => setUser({ ...user, amount: e.target.value.replace(",", ".") })} />
-            <button 
-              onClick={getMaxAmount} 
+            <button
+              onClick={getMaxAmount}
               className="w-1/2 h-full p-2 flex gap-2 items-center justify-center bg-[rgba(0,102,255,0.1)] text-base text-[#0066FF] font-medium rounded-[8px] outline-none"
             > Max
             </button>
@@ -327,7 +329,7 @@ function FaucetForm(
     </form>
   );
 };
-export default function Faucet({ url }: { url: string }) {
+export default function Faucet({ url, address }: { url: string, address: string }) {
   const [isLoading, setLoading] = useState(true);
   const [buttonText, setButtonText] = useState("Request Tokens");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -342,7 +344,7 @@ export default function Faucet({ url }: { url: string }) {
       {isLoading ? (
         <Loading />
       ) : (
-        <FaucetForm url={url} buttonText={buttonText} setButtonText={setButtonText} setIsSubmitting={setIsSubmitting} isSubmitting={isSubmitting}  />
+        <FaucetForm address={address} url={url} buttonText={buttonText} setButtonText={setButtonText} setIsSubmitting={setIsSubmitting} isSubmitting={isSubmitting}  />
       )}
     </div>
   );
