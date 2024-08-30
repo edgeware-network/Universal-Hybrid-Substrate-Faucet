@@ -841,7 +841,7 @@ export const chains: Chain[] = [
     threshold: 10000,
   },
   {
-    name: "Creditcoin Classic Testnet",
+    name: "CC Enterprise Testnet",
     url: "creditcoin-classic-testnet",
     chainId: "",
     chainType: "Solochains",
