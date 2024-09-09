@@ -255,6 +255,7 @@ export const chains: Chain[] = [
     type: "substrate",
     threshold: 30000,
   },
+  /* RPC is down
   {
     name: "Hyperbridge (Gargantua)",
     url: "rococo-hyperbridge",
@@ -270,6 +271,7 @@ export const chains: Chain[] = [
     type: "substrate",
     threshold: 100000,
   },
+  */
   {
     name: "Kinera Development",
     url: "rococo-kinera",
@@ -391,21 +393,6 @@ export const chains: Chain[] = [
     threshold: 50000,
   },
   {
-    name: "Energy Web X Rococo",
-    url: "rococo-ewx",
-    chainId: "",
-    chainType: "Rococo & Parachains",
-    rpcUrl: "wss://public-rpc.testnet.energywebx.com/",
-    nativeCurrency: {
-      name: "VT",
-      symbol: "VT",
-      decimals: 18,
-    },
-    prefix: 42,
-    type: "substrate",
-    threshold: 500,
-  },
-  {
     name: "Rhala (Phala)",
     url: "rococo-phala",
     chainId: "",
@@ -497,6 +484,7 @@ export const chains: Chain[] = [
     type: "substrate",
     threshold: 100000,
   },
+  /* RPC is down
   {
     name: "Yerba on Rococo",
     url: "rococo-yerba",
@@ -512,6 +500,7 @@ export const chains: Chain[] = [
     type: "substrate",
     threshold: 100000,
   },
+  */
   {
     name: "Zeitgeist Battery Station",
     url: "rococo-zeitgeist",
@@ -538,7 +527,7 @@ export const chains: Chain[] = [
       symbol: "PAS",
       decimals: 10,
     },
-    prefix: 42,
+    prefix: 0,
     type: "substrate",
     threshold: 100000,
   },
@@ -553,7 +542,37 @@ export const chains: Chain[] = [
       symbol: "PAS",
       decimals: 10,
     },
-    prefix: 42,
+    prefix: 0,
+    type: "substrate",
+    threshold: 100000,
+  },
+  {
+    name: "Paseo BridgeHub",
+    url: "paseo-bridge-hub",
+    chainId: "",
+    chainType: "Paseo & Parachains",
+    rpcUrl: "wss://sys.ibp.network/bridge-hub-paseo",
+    nativeCurrency: {
+      name: "PAS",
+      symbol: "PAS",
+      decimals: 10,
+    },
+    prefix: 0,
+    type: "substrate",
+    threshold: 100000,
+  },
+  {
+    name: "Paseo People",
+    url: "paseo-people",
+    chainId: "",
+    chainType: "Paseo & Parachains",
+    rpcUrl: "wss://people-paseo.rpc.amforc.com",
+    nativeCurrency: {
+      name: "PAS",
+      symbol: "PAS",
+      decimals: 10,
+    },
+    prefix: 0,
     type: "substrate",
     threshold: 100000,
   },
@@ -704,7 +723,7 @@ export const chains: Chain[] = [
       decimals: 18,
     },
     type: "evm",
-    threshold: 1000,
+    threshold: 100,
   },
   {
     name: "Muse (Mythos)",
@@ -751,6 +770,21 @@ export const chains: Chain[] = [
     threshold: 1000,
   },
   {
+    name: "Energy Web X Paseo",
+    url: "paseo-ewx",
+    chainId: "",
+    chainType: "Paseo & Parachains",
+    rpcUrl: "wss://public-rpc.testnet.energywebx.com/",
+    nativeCurrency: {
+      name: "VT",
+      symbol: "VT",
+      decimals: 18,
+    },
+    prefix: 42,
+    type: "substrate",
+    threshold: 500,
+  },
+  {
     name: "Pop Network",
     url: "pop-network",
     chainId: "",
@@ -794,6 +828,21 @@ export const chains: Chain[] = [
     prefix: 12850,
     type: "substrate",
     threshold: 100000,
+  },
+  {
+    name: "Argon",
+    url: "argon",
+    chainId: "",
+    chainType: "Solochains",
+    rpcUrl: "wss://rpc.testnet.argonprotocol.org",
+    nativeCurrency: {
+      name: "ARGON",
+      symbol: "ARGON",
+      decimals: 3,
+    },
+    prefix: 42,
+    type: "substrate",
+    threshold: 10,
   },
   {
     name: "Beresheet (Edgeware)",
