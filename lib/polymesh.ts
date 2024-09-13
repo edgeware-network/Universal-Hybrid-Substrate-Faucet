@@ -10,7 +10,7 @@ export async function PolyxFaucet(chain: DisburseChain) {
 
   const wsProvider = new WsProvider(chain.rpc);
   const api = await ApiPromise.create({ provider: wsProvider, typesBundle, noInitWarn: true });
-  const keyRecords = (await api.query.identity.keyRecords(chain.address)) as Option<PolymeshPrimitivesSecondaryKeyKeyRecord>;
+  const keyRecords = (await api.query.identity.keyRecords(chain.address)) as unknown as Option<PolymeshPrimitivesSecondaryKeyKeyRecord>;
 
   if (keyRecords.isNone) {
     const tx = api.tx.identity.cddRegisterDidWithCdd(chain.address, [], null);
