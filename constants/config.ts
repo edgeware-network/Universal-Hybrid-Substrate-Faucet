@@ -332,6 +332,7 @@ export const chains: Chain[] = [
     type: "substrate",
     threshold: 1000,
   },
+  /* RPC is down
   {
     name: "MD5 Testnet",
     url: "rococo-md5",
@@ -347,6 +348,7 @@ export const chains: Chain[] = [
     type: "substrate",
     threshold: 100000,
   },
+  */
   {
     name: "Muse (Mythos)",
     url: "rococo-muse",
@@ -667,6 +669,21 @@ export const chains: Chain[] = [
     threshold: 5000000,
   },
   {
+    name: "Hydration testnet",
+    url: "hydration",
+    chainId: "",
+    chainType: "Paseo & Parachains",
+    rpcUrl: "wss://paseo-rpc.play.hydration.cloud",
+    nativeCurrency: {
+      name: "HDX",
+      symbol: "HDX",
+      decimals: 12,
+    },
+    prefix: 63,
+    type: "substrate",
+    threshold: 1000000,
+  },
+  {
     name: "Hyperbridge",
     url: "hyperbridge",
     chainId: "",
@@ -798,6 +815,21 @@ export const chains: Chain[] = [
     prefix: 42,
     type: "substrate",
     threshold: 100000,
+  },
+  {
+    name: "DIP Xcavate consumer testnet",
+    url: "xcavate",
+    chainId: "",
+    chainType: "Paseo & Parachains",
+    rpcUrl: "wss://rpc-paseo.xcavate.io",
+    nativeCurrency: {
+      name: "XCAV",
+      symbol: "XCAV",
+      decimals: 12,
+    },
+    prefix: 101,
+    type: "substrate",
+    threshold: 10000,
   },
   {
     name: "Aleph Zero Testnet",
