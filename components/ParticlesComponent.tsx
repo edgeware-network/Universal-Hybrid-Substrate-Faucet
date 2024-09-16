@@ -62,16 +62,6 @@ const ParticlesComponent = () => {
                 height: 100,
               },
               {
-                src: "/images/rococo.svg",
-                width: 100,
-                height: 100,
-              },
-              {
-                src: "/images/tangle.svg",
-                width: 100,
-                height: 100,
-              },
-              {
                 src: "/images/westend.svg",
                 width: 100,
                 height: 100,
@@ -92,22 +82,12 @@ const ParticlesComponent = () => {
                 height: 100,
               },
               {
-                src: "/images/moonbase-alpha.svg",
+                src: "/images/rococo.svg",
                 width: 100,
                 height: 100,
               },
               {
-                src: "/images/rococo-assethub.svg",
-                width: 100,
-                height: 100,
-              },
-              {
-                src: "/images/nodle.svg",
-                width: 100,
-                height: 100,
-              },
-              {
-                src: "/images/bifrost.svg",
+                src: "/images/rococo-contracts.svg",
                 width: 100,
                 height: 100,
               },
