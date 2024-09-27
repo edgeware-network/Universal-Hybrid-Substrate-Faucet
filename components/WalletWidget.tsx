@@ -2,7 +2,7 @@ import React from "react";
 import type { Account, User } from "@/context";
 import { RiArrowDownSLine } from "react-icons/ri";
 import { FaPowerOff } from "react-icons/fa6";
-import { Listbox } from "@headlessui/react";
+import { Listbox, ListboxOption, ListboxButton, ListboxOptions } from "@headlessui/react";
 import Image from "next/image";
 
 type WalletProps = {
@@ -95,7 +95,7 @@ export const WalletWidget = ({
     <div className="flex items-center justify-between w-full">
       <div className="flex relative w-full h-20 bg-[#1b1b1b] flex-row items-center rounded-[12px] text-white p-4">
         <Listbox value={selectedAccount} onChange={setSelectedAccount}>
-          <Listbox.Button className="flex w-full items-center">
+          <ListboxButton className="flex w-full items-center">
             <span className="mr-4 h-2 w-2 shrink-0 rounded-full bg-green-500" />
             <span className="block grow text-left">
               <span className="flex items-center gap-1 w-full truncate">
@@ -115,10 +115,10 @@ export const WalletWidget = ({
             <RiArrowDownSLine
               className={`ml-2 h-6 w-6 shrink-0 fill-grey-600 active:scale-95`}
             />
-          </Listbox.Button>
-          <Listbox.Options className="absolute right-0 top-[72px] mt-3 w-full overflow-auto rounded-[12px] bg-[#1b1b1b]">
+          </ListboxButton>
+          <ListboxOptions className="absolute right-0 top-[72px] mt-3 w-full overflow-auto rounded-[12px] bg-[#1b1b1b]">
             {accounts.map((account) => (
-              <Listbox.Option
+              <ListboxOption
                 key={account.address}
                 value={account.address}
                 className="flex cursor-pointer flex-row items-center p-4 text-left hover:bg-grey-800"
@@ -135,9 +135,9 @@ export const WalletWidget = ({
                     {truncate(account.address)}
                   </span>
                 </span>
-              </Listbox.Option>
+              </ListboxOption>
             ))}
-          </Listbox.Options>
+          </ListboxOptions>
         </Listbox>
       </div>
       <button onClick={handleDisconnect}>
