@@ -1,5 +1,5 @@
 "use client";
-import { Chain, chains } from "@/constants/config";
+import { chains } from "@/constants/config";
 import axios from "axios";
 import BigNumber from "bignumber.js";
 import { useEffect, useState, useCallback } from "react";
@@ -27,7 +27,7 @@ const BATCH_SIZE = 12;
 const LOADING_INTERVAL_MS = 4000;
 
 const loadingMessages = [
-  "Hodling tight... 💎🙌",
+  "Holding tight... 💎🙌",
   "Mining some data... ⛏️💰",
   "Fetching the moon... 🚀🌕",
   "Calculating crypto magic... ✨🔮",
