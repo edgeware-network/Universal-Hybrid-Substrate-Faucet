@@ -1221,7 +1221,7 @@ export const chains: Chain[] = [
     },
     prefix: 42,
     type: "substrate",
-    threshold: 100000,
+    threshold: 10000,
   },
   {
     name: "Ternoa Alphanet",
@@ -1322,6 +1322,6 @@ export const chains: Chain[] = [
       decimals: 18,
     },
     type: "evm",
-    threshold: 100000,
+    threshold: 10000,
   },
 ];
