@@ -211,21 +211,6 @@ export const chains: Chain[] = [
     threshold: 100000,
   },
   {
-    name: "Foucoco (Amplitude)",
-    url: "rococo-amplitude",
-    chainId: "",
-    chainType: "Rococo & Parachains",
-    rpcUrl: "wss://rpc-foucoco.pendulumchain.tech",
-    nativeCurrency: {
-      name: "AMPE",
-      symbol: "AMPE",
-      decimals: 12,
-    },
-    prefix: 57,
-    type: "substrate",
-    threshold: 100000,
-  },
-  {
     name: "Basilisk testnet",
     url: "rococo-basilisk",
     chainId: "",
@@ -379,6 +364,7 @@ export const chains: Chain[] = [
     type: "substrate",
     threshold: 500000,
   },
+  /* RPC is down
   {
     name: "RegionX Cocos",
     url: "regionx-cocos",
@@ -394,6 +380,8 @@ export const chains: Chain[] = [
     type: "substrate",
     threshold: 50000,
   },
+  */
+  /* RPC is down
   {
     name: "Rhala (Phala)",
     url: "rococo-phala",
@@ -409,6 +397,7 @@ export const chains: Chain[] = [
     type: "substrate",
     threshold: 1000,
   },
+  */
   {
     name: "RILT (Kilt)",
     url: "rococo-kilt",
@@ -538,7 +527,7 @@ export const chains: Chain[] = [
     url: "paseo-bridge-hub",
     chainId: "",
     chainType: "Paseo & Parachains",
-    rpcUrl: "wss://sys.ibp.network/bridge-hub-paseo",
+    rpcUrl: "wss://bridge-hub-paseo.dotters.network",
     nativeCurrency: {
       name: "PAS",
       symbol: "PAS",
@@ -591,7 +580,22 @@ export const chains: Chain[] = [
     },
     prefix: 1328,
     type: "substrate",
-    threshold: 115000,
+    threshold: 50000,
+  },
+  {
+    name: "Foucoco (Amplitude)",
+    url: "paseo-amplitude",
+    chainId: "",
+    chainType: "Paseo & Parachains",
+    rpcUrl: "wss://rpc-foucoco.pendulumchain.tech",
+    nativeCurrency: {
+      name: "AMPE",
+      symbol: "AMPE",
+      decimals: 12,
+    },
+    prefix: 57,
+    type: "substrate",
+    threshold: 100000,
   },
   {
     name: "AvN (Aventus)",
@@ -621,7 +625,7 @@ export const chains: Chain[] = [
     },
     prefix: 1337,
     type: "substrate",
-    threshold: 115000,
+    threshold: 50000,
   },
   {
     name: "Bifrost Paseo",
@@ -756,6 +760,21 @@ export const chains: Chain[] = [
     prefix: 29972,
     type: "substrate",
     threshold: 150000,
+  },
+  {
+    name: "Myriad Social Testnet",
+    url: "myriad",
+    chainId: "",
+    chainType: "Paseo & Parachains",
+    rpcUrl: "wss://ws-rpc.paseo.myriad.social",
+    nativeCurrency: {
+      name: "MYRIA",
+      symbol: "MYRIA",
+      decimals: 18,
+    },
+    prefix: 42,
+    type: "substrate",
+    threshold: 100000,
   },
   {
     name: "Niskala (Mandalachain)",
@@ -1188,6 +1207,21 @@ export const chains: Chain[] = [
     },
     type: "evm",
     threshold: 220,
+  },
+  {
+    name: "Tangle Testnet",
+    url: "tangle-testnet",
+    chainId: "",
+    chainType: "Solochains",
+    rpcUrl: "wss://testnet-rpc.tangle.tools",
+    nativeCurrency: {
+      name: "tTNT",
+      symbol: "tTNT",
+      decimals: 18,
+    },
+    prefix: 42,
+    type: "substrate",
+    threshold: 100000,
   },
   {
     name: "Ternoa Alphanet",
