@@ -13,7 +13,7 @@
     "@hcaptcha/react-hcaptcha": "^1.11.0",
     "@headlessui/react": "^2.1.10",
     "@polkadot/api": "^13.2.1",
-    "@polkadot/extension-dapp": "^0.53.1",
+    "@polkadot/extension-dapp": "^0.56.1",
     "@polkadot/types": "^13.2.1",
     "@polkadot/util": "^13.1.1",
     "@polkadot/util-crypto": "^13.1.1",
