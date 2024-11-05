@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@hcaptcha/react-hcaptcha": "^1.11.0",
-    "@headlessui/react": "^2.1.10",
+    "@headlessui/react": "^2.2.0",
     "@polkadot/api": "^13.2.1",
     "@polkadot/extension-dapp": "^0.56.1",
     "@polkadot/types": "^13.2.1",
