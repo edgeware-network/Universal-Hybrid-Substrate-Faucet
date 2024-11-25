@@ -18,7 +18,7 @@
     "@polkadot/util": "^13.2.3",
     "@polkadot/util-crypto": "^13.2.3",
     "@polymeshassociation/polymesh-types": "^5.14.0",
-    "@radix-ui/react-scroll-area": "^1.2.0",
+    "@radix-ui/react-scroll-area": "^1.2.1",
     "@tsparticles/all": "^3.4.0",
     "@tsparticles/engine": "^3.4.0",
     "@tsparticles/react": "^3.0.0",
