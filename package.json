@@ -20,7 +20,7 @@
     "@polymeshassociation/polymesh-types": "^5.14.0",
     "@radix-ui/react-scroll-area": "^1.2.1",
     "@tsparticles/all": "^3.4.0",
-    "@tsparticles/engine": "^3.4.0",
+    "@tsparticles/engine": "^3.7.1",
     "@tsparticles/react": "^3.0.0",
     "@tsparticles/slim": "^3.4.0",
     "axios": "^1.7.7",
