@@ -1318,10 +1318,10 @@
   dependencies:
     "@tsparticles/engine" "^3.5.0"
 
-"@tsparticles/engine@^3.4.0", "@tsparticles/engine@^3.5.0":
-  version "3.5.0"
-  resolved "https://registry.yarnpkg.com/@tsparticles/engine/-/engine-3.5.0.tgz#5de20741cc17193bc7a0b84e81dfd831c3d39364"
-  integrity sha512-RCwrJ2SvSYdhXJ24oUCjSUKEZQ9lXwObOWMvfMC9vS6/bk+Qo0N7Xx8AfumqzP/LebB1YJdlCvuoJMauAon0Pg==
+"@tsparticles/engine@^3.5.0", "@tsparticles/engine@^3.8.1":
+  version "3.8.1"
+  resolved "https://registry.yarnpkg.com/@tsparticles/engine/-/engine-3.8.1.tgz#1dc538cdb043757c8b8a90bd03b1069c1801cc1e"
+  integrity sha512-S8h10nuZfElY7oih//NUHnT5qf4v3/dnsU8CMs7dz5lBEGr3amrYrXk0V+YKPTIQwfdmJHUaSBoAqFiv4aEGIA==
 
 "@tsparticles/interaction-external-attract@^3.5.0":
   version "3.5.0"
