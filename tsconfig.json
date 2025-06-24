@@ -1,26 +1,40 @@
 {
-  "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "noEmit": true,
-    "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "bundler",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "preserve",
-    "incremental": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
-    "paths": {
-      "@/*": ["./*"]
-    }
-  },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "components/ParticlesComponent.tsx"],
-  "exclude": ["node_modules"]
+	"compilerOptions": {
+		"target": "ES2020",
+		"lib": ["dom", "dom.iterable", "esnext"],
+		"allowJs": true,
+		"skipLibCheck": true,
+		"strict": true,
+		"noEmit": true,
+		"esModuleInterop": true,
+		"module": "esnext",
+		"moduleResolution": "bundler",
+		"resolveJsonModule": true,
+		"isolatedModules": true,
+		"jsx": "preserve",
+		"incremental": true,
+		"plugins": [
+			{
+				"name": "next"
+			}
+		],
+		"baseUrl": "./",
+		"paths": {
+			"@/*": ["./*"],
+			"@/app/*": ["./app/*"],
+			"@/components/*": ["./components/*"],
+			"@/hooks/*": ["./hooks/*"],
+			"@/lib/*": ["./lib/*"],
+			"@/types/*": ["./types/*"],
+			"@/use-cases/*": ["./use-cases/*"],
+			"@/entities/*": ["./entities/*"],
+			"@/data-access/*": ["./data-access/*"],
+			"@/db/*": ["./db/*"],
+			"@/config/*": ["./config/*"],
+			"@/constants/*": ["./constants/*"],
+			"@/providers/*": ["./providers/*"]
+		}
+	},
+	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+	"exclude": ["node_modules"]
 }
