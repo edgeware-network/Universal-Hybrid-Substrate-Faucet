@@ -1,3 +1,5 @@
+import { Footer } from "@/app/footer";
+import { Header } from "@/app/header";
 import {
 	geist,
 	manrope,
@@ -36,9 +38,11 @@ export default function RootLayout({
 				)}
 			>
 				<div className="flex flex-col place-items-center min-h-dvh w-full px-2 pt-1 pb-2">
+					<Header />
 					<main className="flex flex-col flex-1 items-center justify-items-center font-geist-sans w-full p-2 text-center gap-2">
 						{children}
 					</main>
+					<Footer />
 				</div>
 				<Toaster theme="dark" position="bottom-right" />
 			</body>
