@@ -1,0 +1,1308 @@
+import { Chains } from "@/constants/types";
+
+export const groups: string[] = [
+	"Westend & Parachains",
+	"Rococo & Parachains",
+	"Paseo & Parachains",
+	"Solochains",
+];
+
+export const chains: Chains = [
+	{
+		name: "Westend",
+		url: "westend",
+		rpc: "wss://westend-rpc.polkadot.io",
+		threshold: 10000,
+		nativeCurrency: {
+			name: "WND",
+			symbol: "WND",
+			decimals: 12,
+		},
+		type: "substrate",
+		prefix: 42,
+		group: "Westend & Parachains",
+	},
+	{
+		name: "Westend AssetHub",
+		url: "westend-asset-hub",
+		rpc: "wss://asset-hub-westend-rpc.dwellir.com",
+		threshold: 10000,
+		nativeCurrency: {
+			name: "WND",
+			symbol: "WND",
+			decimals: 12,
+		},
+		type: "substrate",
+		prefix: 42,
+		group: "Westend & Parachains",
+	},
+	{
+		name: "Westend BridgeHub",
+		url: "westend-bridge-hub",
+		rpc: "wss://bridge-hub-westend-rpc.dwellir.com",
+		threshold: 10000,
+		nativeCurrency: {
+			name: "WND",
+			symbol: "WND",
+			decimals: 12,
+		},
+		type: "substrate",
+		prefix: 42,
+		group: "Westend & Parachains",
+	},
+	{
+		name: "Westend Collectives",
+		url: "westend-collectives",
+		rpc: "wss://collectives-westend-rpc.dwellir.com",
+		threshold: 10000,
+		nativeCurrency: {
+			name: "WND",
+			symbol: "WND",
+			decimals: 12,
+		},
+		type: "substrate",
+		prefix: 42,
+		group: "Westend & Parachains",
+	},
+	{
+		name: "Westend Coretime",
+		url: "westend-coretime",
+		rpc: "wss://sys.ibp.network/coretime-westend",
+		threshold: 10000,
+		nativeCurrency: {
+			name: "WND",
+			symbol: "WND",
+			decimals: 12,
+		},
+		type: "substrate",
+		prefix: 42,
+		group: "Westend & Parachains",
+	},
+	{
+		name: "Westend People",
+		url: "westend-people",
+		rpc: "wss://sys.ibp.network/people-westend",
+		threshold: 10000,
+		nativeCurrency: {
+			name: "WND",
+			symbol: "WND",
+			decimals: 12,
+		},
+		type: "substrate",
+		prefix: 42,
+		group: "Westend & Parachains",
+	},
+	{
+		name: "Rococo",
+		url: "rococo",
+		rpc: "wss://rococo-rpc.polkadot.io",
+		threshold: 100000,
+		nativeCurrency: {
+			name: "ROC",
+			symbol: "ROC",
+			decimals: 12,
+		},
+		type: "substrate",
+		prefix: 42,
+		group: "Rococo & Parachains",
+	},
+	{
+		name: "Rococo Asset Hub",
+		url: "rococo-asset-hub",
+		rpc: "wss://rococo-asset-hub-rpc.polkadot.io",
+		threshold: 100000,
+		nativeCurrency: {
+			name: "ROC",
+			symbol: "ROC",
+			decimals: 12,
+		},
+		type: "substrate",
+		prefix: 42,
+		group: "Rococo & Parachains",
+	},
+	{
+		name: "Rococo Bridge Hub",
+		url: "rococo-bridge-hub",
+		rpc: "wss://bridge-hub-rococo-rpx.dwellir.com",
+		threshold: 100000,
+		nativeCurrency: {
+			name: "ROC",
+			symbol: "ROC",
+			decimals: 12,
+		},
+		type: "substrate",
+		prefix: 42,
+		group: "Rococo & Parachains",
+	},
+	{
+		name: "Rococo Contracts",
+		url: "rococo-contracts",
+		rpc: "wss://rococo-contracts-rpc.polkadot.io",
+		threshold: 100000,
+		nativeCurrency: {
+			name: "ROC",
+			symbol: "ROC",
+			decimals: 12,
+		},
+		type: "substrate",
+		prefix: 42,
+		group: "Rococo & Parachains",
+	},
+	{
+		name: "Rococo Coretime",
+		url: "rococo-coretime",
+		rpc: "wss://rococo-coretime-rpc.polkadot.io",
+		threshold: 100000,
+		nativeCurrency: {
+			name: "ROC",
+			symbol: "ROC",
+			decimals: 12,
+		},
+		type: "substrate",
+		prefix: 42,
+		group: "Rococo & Parachains",
+	},
+	{
+		name: "Encointer",
+		url: "rococo-encointer",
+		group: "Rococo & Parachains",
+		rpc: "wss://rococo.api.encointer.org",
+		nativeCurrency: {
+			name: "ROC",
+			symbol: "ROC",
+			decimals: 12,
+		},
+		prefix: 42,
+		type: "substrate",
+		threshold: 100000,
+	},
+	{
+		name: "Rococo People",
+		url: "rococo-people",
+
+		group: "Rococo & Parachains",
+		rpc: "wss://rococo-people-rpc.polkadot.io",
+		nativeCurrency: {
+			name: "ROC",
+			symbol: "ROC",
+			decimals: 12,
+		},
+		prefix: 42,
+		type: "substrate",
+		threshold: 100000,
+	},
+	{
+		name: "Basilisk testnet",
+		url: "rococo-basilisk",
+
+		group: "Rococo & Parachains",
+		rpc: "wss://basilisk-rococo-rpc.play.hydration.cloud",
+		nativeCurrency: {
+			name: "BSX",
+			symbol: "BSX",
+			decimals: 12,
+		},
+		prefix: 10041,
+		type: "substrate",
+		threshold: 200000,
+	},
+	{
+		name: "Curio Rococo",
+		url: "rococo-curio",
+
+		group: "Rococo & Parachains",
+		rpc: "wss://testnet.parachain.curioinvest.com/",
+		nativeCurrency: {
+			name: "CGT",
+			symbol: "CGT",
+			decimals: 18,
+		},
+		prefix: 777,
+		type: "substrate",
+		threshold: 30000,
+	},
+	/* RPC is down
+  {
+    name: "Hyperbridge (Gargantua)",
+    url: "rococo-hyperbridge",
+
+    group: "Rococo & Parachains",
+    rpc: "wss://hyperbridge-gargantua-rpc.blockops.network",
+    nativeCurrency: {
+      name: "tNAND",
+      symbol: "tNAND",
+      decimals: 12,
+    },
+    prefix: 42,
+    type: "substrate",
+    threshold: 100000,
+  },
+  */
+	{
+		name: "Kinera Development",
+		url: "rococo-kinera",
+
+		group: "Rococo & Parachains",
+		rpc: "wss://node.kinera.network",
+		nativeCurrency: {
+			name: "UNIT",
+			symbol: "UNIT",
+			decimals: 12,
+		},
+		prefix: 42,
+		type: "substrate",
+		threshold: 5000,
+	},
+	{
+		name: "Litentry-rococo",
+		url: "rococo-litentry",
+
+		group: "Rococo & Parachains",
+		rpc: "wss://rpc.rococo-parachain.litentry.io",
+		nativeCurrency: {
+			name: "LIT",
+			symbol: "LIT",
+			decimals: 12,
+		},
+		prefix: 42,
+		type: "substrate",
+		threshold: 500000,
+	},
+	{
+		name: "Magnet Rococo",
+		url: "rococo-magnet",
+
+		group: "Rococo & Parachains",
+		rpc: "wss://magnet-rpc.magport.io/ws",
+		nativeCurrency: {
+			name: "DOT",
+			symbol: "DOT",
+			decimals: 18,
+		},
+		prefix: 42,
+		type: "substrate",
+		threshold: 30,
+	},
+	{
+		name: "Mangata Public Testnet",
+		url: "rococo-mangata",
+
+		group: "Rococo & Parachains",
+		rpc: "wss://collator-01-ws-rococo.mangata.online",
+		nativeCurrency: {
+			name: "MGAT",
+			symbol: "MGAT",
+			decimals: 18,
+		},
+		prefix: 42,
+		type: "substrate",
+		threshold: 1000,
+	},
+	/* RPC is down
+  {
+    name: "MD5 Testnet",
+    url: "rococo-md5",
+
+    group: "Rococo & Parachains",
+    rpc: "wss://c1md5.hashed.network",
+    nativeCurrency: {
+      name: "MD5",
+      symbol: "MD5",
+      decimals: 18,
+    },
+    prefix: 5000,
+    type: "substrate",
+    threshold: 100000,
+  },
+  */
+	{
+		name: "Muse (Mythos)",
+		url: "rococo-muse",
+
+		group: "Rococo & Parachains",
+		rpc: "wss://rococo-muse-rpc.polkadot.io",
+		nativeCurrency: {
+			name: "MUSE",
+			symbol: "MUSE",
+			decimals: 18,
+		},
+		prefix: 29972,
+		type: "substrate",
+		threshold: 150000,
+	},
+	{
+		name: "Neuro Testnet",
+		url: "rococo-neuro-web",
+
+		group: "Rococo & Parachains",
+		rpc: "wss://parachain-testnet-rpc.origin-trail.network/",
+		nativeCurrency: {
+			name: "NEURO",
+			symbol: "NEURO",
+			decimals: 12,
+		},
+		prefix: 101,
+		type: "substrate",
+		threshold: 500000,
+	},
+	/* RPC is down
+  {
+    name: "RegionX Cocos",
+    url: "regionx-cocos",
+
+    group: "Rococo & Parachains",
+    rpc: "wss://cocos-node.regionx.tech/",
+    nativeCurrency: {
+      name: "COCOS",
+      symbol: "COCOS",
+      decimals: 12,
+    },
+    prefix: 42,
+    type: "substrate",
+    threshold: 50000,
+  },
+  */
+	/* RPC is down
+  {
+    name: "Rhala (Phala)",
+    url: "rococo-phala",
+
+    group: "Rococo & Parachains",
+    rpc: "wss://rhala-node.phala.network/ws",
+    nativeCurrency: {
+      name: "PHA",
+      symbol: "PHA",
+      decimals: 12,
+    },
+    prefix: 30,
+    type: "substrate",
+    threshold: 1000,
+  },
+  */
+	{
+		name: "RILT (Kilt)",
+		url: "rococo-kilt",
+
+		group: "Rococo & Parachains",
+		rpc: "wss://rilt.kilt.io",
+		nativeCurrency: {
+			name: "RILT",
+			symbol: "RILT",
+			decimals: 15,
+		},
+		prefix: 38,
+		type: "substrate",
+		threshold: 150000,
+	},
+	{
+		name: "SoonSocialX (Subsocial)",
+		url: "rococo-subsocial",
+
+		group: "Rococo & Parachains",
+		rpc: "wss://rco-para.subsocial.network",
+		nativeCurrency: {
+			name: "SOON",
+			symbol: "SOON",
+			decimals: 10,
+		},
+		prefix: 28,
+		type: "substrate",
+		threshold: 100000,
+	},
+	{
+		name: "SORA Rococo",
+		url: "rococo-sora",
+
+		group: "Rococo & Parachains",
+		rpc: "wss://ws.parachain-collator-1.c1.stg1.sora2.soramitsu.co.jp",
+		nativeCurrency: {
+			name: "XOR",
+			symbol: "XOR",
+			decimals: 18,
+		},
+		prefix: 420,
+		type: "substrate",
+		threshold: 10,
+	},
+	/* RPC is down
+  {
+    name: "",
+    url: "t0rn",
+
+    group: "Rococo & Parachains",
+    rpc: "wss://rpc.t0rn.io",
+    nativeCurrency: {
+      name: "",
+      symbol: "",
+      decimals: ,
+    },
+    prefix: ,
+    type: "substrate",
+    threshold: ,
+  },
+  */
+	{
+		name: "Watr Testnet",
+		url: "rococo-watr",
+
+		group: "Rococo & Parachains",
+		rpc: "wss://rpc.dev.watr.org",
+		nativeCurrency: {
+			name: "WATRD",
+			symbol: "WATRD",
+			decimals: 18,
+		},
+		prefix: 19,
+		type: "substrate",
+		threshold: 100000,
+	},
+	/* RPC is down
+  {
+    name: "Yerba on Rococo",
+    url: "rococo-yerba",
+
+    group: "Rococo & Parachains",
+    rpc: "wss://rpc.dev.yerba.network",
+    nativeCurrency: {
+      name: "ROC",
+      symbol: "ROC",
+      decimals: 12,
+    },
+    prefix: 42,
+    type: "substrate",
+    threshold: 100000,
+  },
+  */
+	{
+		name: "Paseo",
+		url: "paseo",
+
+		group: "Paseo & Parachains",
+		rpc: "wss://paseo.rpc.amforc.com",
+		nativeCurrency: {
+			name: "PAS",
+			symbol: "PAS",
+			decimals: 10,
+		},
+		prefix: 0,
+		type: "substrate",
+		threshold: 100000,
+	},
+	{
+		name: "Paseo AssetHub",
+		url: "paseo-asset-hub",
+
+		group: "Paseo & Parachains",
+		rpc: "wss://asset-hub-paseo-rpc.dwellir.com",
+		nativeCurrency: {
+			name: "PAS",
+			symbol: "PAS",
+			decimals: 10,
+		},
+		prefix: 0,
+		type: "substrate",
+		threshold: 100000,
+	},
+	{
+		name: "Paseo BridgeHub",
+		url: "paseo-bridge-hub",
+
+		group: "Paseo & Parachains",
+		rpc: "wss://bridge-hub-paseo.dotters.network",
+		nativeCurrency: {
+			name: "PAS",
+			symbol: "PAS",
+			decimals: 10,
+		},
+		prefix: 0,
+		type: "substrate",
+		threshold: 100000,
+	},
+	{
+		name: "Paseo Coretime",
+		url: "paseo-coretime",
+
+		group: "Paseo & Parachains",
+		rpc: "wss://paseo-coretime.paranodes.io",
+		nativeCurrency: {
+			name: "PAS",
+			symbol: "PAS",
+			decimals: 10,
+		},
+		prefix: 0,
+		type: "substrate",
+		threshold: 100000,
+	},
+	{
+		name: "Paseo People",
+		url: "paseo-people",
+
+		group: "Paseo & Parachains",
+		rpc: "wss://people-paseo.rpc.amforc.com",
+		nativeCurrency: {
+			name: "PAS",
+			symbol: "PAS",
+			decimals: 10,
+		},
+		prefix: 0,
+		type: "substrate",
+		threshold: 100000,
+	},
+	{
+		name: "Ajuna Paseo",
+		url: "ajuna-paseo",
+
+		group: "Paseo & Parachains",
+		rpc: "wss://rpc-paseo.ajuna.network",
+		nativeCurrency: {
+			name: "AJUN",
+			symbol: "AJUN",
+			decimals: 12,
+		},
+		prefix: 1328,
+		type: "substrate",
+		threshold: 50000,
+	},
+	{
+		name: "Foucoco (Amplitude)",
+		url: "paseo-amplitude",
+
+		group: "Paseo & Parachains",
+		rpc: "wss://rpc-foucoco.pendulumchain.tech",
+		nativeCurrency: {
+			name: "AMPE",
+			symbol: "AMPE",
+			decimals: 12,
+		},
+		prefix: 57,
+		type: "substrate",
+		threshold: 100000,
+	},
+	{
+		name: "AvN (Aventus)",
+		url: "paseo-aventus",
+
+		group: "Paseo & Parachains",
+		rpc: "wss://public-rpc.testnet.aventus.network",
+		nativeCurrency: {
+			name: "AVT",
+			symbol: "AVT",
+			decimals: 18,
+		},
+		prefix: 42,
+		type: "substrate",
+		threshold: 1000,
+	},
+	{
+		name: "Bajun Paseo",
+		url: "bajun-paseo",
+
+		group: "Paseo & Parachains",
+		rpc: "wss://rpc-paseo.bajun.network",
+		nativeCurrency: {
+			name: "BAJU",
+			symbol: "BAJU",
+			decimals: 12,
+		},
+		prefix: 1337,
+		type: "substrate",
+		threshold: 50000,
+	},
+	{
+		name: "Bifrost Paseo",
+		url: "bifrost-paseo",
+
+		group: "Paseo & Parachains",
+		rpc: "wss://bifrost-rpc.paseo.liebi.com/ws",
+		nativeCurrency: {
+			name: "BNC",
+			symbol: "BNC",
+			decimals: 12,
+		},
+		prefix: 6,
+		type: "substrate",
+		threshold: 5000,
+	},
+	{
+		name: "Darwinia Koi",
+		url: "darwinia-koi",
+
+		group: "Paseo & Parachains",
+		rpc: "wss://koi-rpc.darwinia.network",
+		nativeCurrency: {
+			name: "KRING",
+			symbol: "KRING",
+			decimals: 18,
+		},
+		prefix: 42,
+		type: "substrate",
+		threshold: 100000,
+	},
+	{
+		name: "Frequency Paseo",
+		url: "frequency-paseo",
+
+		group: "Paseo & Parachains",
+		rpc: "wss://0.rpc.testnet.amplica.io",
+		nativeCurrency: {
+			name: "XRQCY",
+			symbol: "XRQCY",
+			decimals: 8,
+		},
+		prefix: 42,
+		type: "substrate",
+		threshold: 5000000,
+	},
+	{
+		name: "Hydration testnet",
+		url: "hydration",
+
+		group: "Paseo & Parachains",
+		rpc: "wss://paseo-rpc.play.hydration.cloud",
+		nativeCurrency: {
+			name: "HDX",
+			symbol: "HDX",
+			decimals: 12,
+		},
+		prefix: 63,
+		type: "substrate",
+		threshold: 1000000,
+	},
+	{
+		name: "Hyperbridge",
+		url: "hyperbridge",
+
+		group: "Paseo & Parachains",
+		rpc: "wss://hyperbridge-paseo-rpc.blockops.network",
+		nativeCurrency: {
+			name: "tNAND",
+			symbol: "tNAND",
+			decimals: 12,
+		},
+		prefix: 42,
+		type: "substrate",
+		threshold: 100000,
+	},
+	{
+		name: "Integritee Testnet",
+		url: "integritee",
+
+		group: "Paseo & Parachains",
+		rpc: "wss://paseo.api.integritee.network",
+		nativeCurrency: {
+			name: "TEER",
+			symbol: "TEER",
+			decimals: 12,
+		},
+		prefix: 13,
+		type: "substrate",
+		threshold: 10000,
+	},
+	{
+		name: "KILT Peregrine",
+		url: "kilt",
+
+		group: "Paseo & Parachains",
+		rpc: "wss://peregrine.kilt.io/parachain-public-ws/",
+		nativeCurrency: {
+			name: "PILT",
+			symbol: "PILT",
+			decimals: 15,
+		},
+		prefix: 38,
+		type: "substrate",
+		threshold: 100000,
+	},
+	{
+		name: "Laos Sigma Testnet",
+		url: "laos-sigma",
+		chainId: 62850,
+		group: "Paseo & Parachains",
+		rpc: "https://rpc.laossigma.laosfoundation.io",
+		nativeCurrency: {
+			name: "SIGMA",
+			symbol: "SIGMA",
+			decimals: 18,
+		},
+		type: "evm",
+		threshold: 100,
+	},
+	{
+		name: "Muse (Mythos)",
+		url: "muse",
+
+		group: "Paseo & Parachains",
+		rpc: "wss://paseo-muse-rpc.polkadot.io",
+		nativeCurrency: {
+			name: "MUSE",
+			symbol: "MUSE",
+			decimals: 18,
+		},
+		prefix: 29972,
+		type: "substrate",
+		threshold: 150000,
+	},
+	{
+		name: "Myriad Social Testnet",
+		url: "myriad",
+
+		group: "Paseo & Parachains",
+		rpc: "wss://ws-rpc.paseo.myriad.social",
+		nativeCurrency: {
+			name: "MYRIA",
+			symbol: "MYRIA",
+			decimals: 18,
+		},
+		prefix: 42,
+		type: "substrate",
+		threshold: 100000,
+	},
+	{
+		name: "Niskala (Mandalachain)",
+		url: "niskala",
+		chainId: 6025,
+		group: "Paseo & Parachains",
+		rpc: "https://mlg2.mandalachain.io",
+		nativeCurrency: {
+			name: "KPGT",
+			symbol: "KPGT",
+			decimals: 18,
+		},
+		type: "evm",
+		threshold: 1000000,
+	},
+	{
+		name: "Parachain Hades (Nodle)",
+		url: "nodle-paradis",
+
+		group: "Paseo & Parachains",
+		rpc: "wss://node-6957502816543653888.lh.onfinality.io/ws?apikey=09b04494-3139-4b57-a5d1-e1c4c18748ce",
+		nativeCurrency: {
+			name: "notNODL",
+			symbol: "notNODL",
+			decimals: 11,
+		},
+		prefix: 37,
+		type: "substrate",
+		threshold: 1000,
+	},
+	{
+		name: "Energy Web X Paseo",
+		url: "paseo-ewx",
+
+		group: "Paseo & Parachains",
+		rpc: "wss://public-rpc.testnet.energywebx.com/",
+		nativeCurrency: {
+			name: "VT",
+			symbol: "VT",
+			decimals: 18,
+		},
+		prefix: 42,
+		type: "substrate",
+		threshold: 500,
+	},
+	{
+		name: "Pop Network",
+		url: "pop-network",
+
+		group: "Paseo & Parachains",
+		rpc: "wss://rpc1.paseo.popnetwork.xyz",
+		nativeCurrency: {
+			name: "PAS",
+			symbol: "PAS",
+			decimals: 10,
+		},
+		prefix: 42,
+		type: "substrate",
+		threshold: 100000,
+	},
+	{
+		name: "DIP Xcavate consumer testnet",
+		url: "xcavate",
+
+		group: "Paseo & Parachains",
+		rpc: "wss://rpc-paseo.xcavate.io",
+		nativeCurrency: {
+			name: "XCAV",
+			symbol: "XCAV",
+			decimals: 12,
+		},
+		prefix: 101,
+		type: "substrate",
+		threshold: 10000,
+	},
+	{
+		name: "Zeitgeist Battery Station",
+		url: "zeitgeist",
+
+		group: "Paseo & Parachains",
+		rpc: "wss://bsr.zeitgeist.pm",
+		nativeCurrency: {
+			name: "ZBS",
+			symbol: "ZBS",
+			decimals: 10,
+		},
+		prefix: 73,
+		type: "substrate",
+		threshold: 10000,
+	},
+	{
+		name: "Aleph Zero Testnet",
+		url: "aleph-testnet",
+
+		group: "Solochains",
+		rpc: "wss://ws.test.azero.dev",
+		nativeCurrency: {
+			name: "TZERO",
+			symbol: "TZERO",
+			decimals: 12,
+		},
+		prefix: 42,
+		type: "substrate",
+		threshold: 100000,
+	},
+	{
+		name: "Analog Testnet",
+		url: "analog-testnet",
+
+		group: "Solochains",
+		rpc: "wss://rpc.testnet.analog.one",
+		nativeCurrency: {
+			name: "TANLOG",
+			symbol: "TANLOG",
+			decimals: 12,
+		},
+		prefix: 12850,
+		type: "substrate",
+		threshold: 100000,
+	},
+	{
+		name: "Argon",
+		url: "argon",
+
+		group: "Solochains",
+		rpc: "wss://rpc.testnet.argonprotocol.org",
+		nativeCurrency: {
+			name: "ARGON",
+			symbol: "ARGON",
+			decimals: 3,
+		},
+		prefix: 42,
+		type: "substrate",
+		threshold: 10,
+	},
+	{
+		name: "Beresheet (Edgeware)",
+		url: "beresheet",
+
+		group: "Solochains",
+		rpc: "wss://beresheet.jelliedowl.net",
+		nativeCurrency: {
+			name: "tEDG",
+			symbol: "tEDG",
+			decimals: 18,
+		},
+		prefix: 7,
+		type: "substrate",
+		threshold: 200000,
+	},
+	{
+		name: "BIFROST Testnet",
+		url: "thebifrost-testnet",
+
+		group: "Solochains",
+		rpc: "wss://public-01.testnet.bifrostnetwork.com/wss",
+		nativeCurrency: {
+			name: "BFC",
+			symbol: "BFC",
+			decimals: 18,
+		},
+		prefix: 42,
+		type: "substrate",
+		threshold: 500000,
+	},
+	{
+		name: "Chainflip-Perseverance",
+		url: "chainflip",
+
+		group: "Solochains",
+		rpc: "wss://archive.perseverance.chainflip.io",
+		nativeCurrency: {
+			name: "FLIP",
+			symbol: "FLIP",
+			decimals: 18,
+		},
+		prefix: 2112,
+		type: "substrate",
+		threshold: 10000,
+	},
+	{
+		name: "CC Enterprise Testnet",
+		url: "creditcoin-classic-testnet",
+
+		group: "Solochains",
+		rpc: "wss://rpc.testnet.creditcoin.network/ws",
+		nativeCurrency: {
+			name: "CTC",
+			symbol: "CTC",
+			decimals: 18,
+		},
+		prefix: 42,
+		type: "substrate",
+		threshold: 50000,
+	},
+	{
+		name: "Creditcoin Testnet",
+		url: "creditcoin-testnet",
+
+		group: "Solochains",
+		rpc: "wss://rpc.cc3-testnet.creditcoin.network/ws",
+		nativeCurrency: {
+			name: "CTC",
+			symbol: "CTC",
+			decimals: 18,
+		},
+		prefix: 42,
+		type: "substrate",
+		threshold: 50000,
+	},
+	{
+		name: "Dancebox (Tanssi)",
+		url: "dancebox",
+
+		group: "Solochains",
+		rpc: "wss://dancebox.tanssi-api.network",
+		nativeCurrency: {
+			name: "DANCE",
+			symbol: "DANCE",
+			decimals: 12,
+		},
+		prefix: 42,
+		type: "substrate",
+		threshold: 50000,
+	},
+	{
+		name: "Encointer Testnet Gesell",
+		url: "encointer",
+
+		group: "Solochains",
+		rpc: "wss://gesell.encointer.org",
+		nativeCurrency: {
+			name: "ERT",
+			symbol: "ERT",
+			decimals: 12,
+		},
+		prefix: 42,
+		type: "substrate",
+		threshold: 1000,
+	},
+	{
+		name: "Harmonie Testnet",
+		url: "allfeat-testnet",
+		chainId: 441,
+		group: "Solochains",
+		rpc: "https://harmonie-endpoint-02.allfeat.io",
+		nativeCurrency: {
+			name: "HMY",
+			symbol: "HMY",
+			decimals: 18,
+		},
+		type: "evm",
+		threshold: 100000,
+	},
+	{
+		name: "Interlay Testnet",
+		url: "interlay-testnet",
+
+		group: "Solochains",
+		rpc: "wss://api-testnet.interlay.io/parachain/",
+		nativeCurrency: {
+			name: "INTR",
+			symbol: "INTR",
+			decimals: 10,
+		},
+		prefix: 2032,
+		type: "substrate",
+		threshold: 10000,
+	},
+	{
+		name: "Jur Testnet",
+		url: "jur",
+
+		group: "Solochains",
+		rpc: "wss://testnet.jur.io",
+		nativeCurrency: {
+			name: "JUR",
+			symbol: "JUR",
+			decimals: 18,
+		},
+		prefix: 42,
+		type: "substrate",
+		threshold: 100000,
+	},
+	{
+		name: "Kintsugi (Interlay) Testnet",
+		url: "kintsugi-testnet",
+
+		group: "Solochains",
+		rpc: "wss://api-dev-kintsugi.interlay.io/parachain",
+		nativeCurrency: {
+			name: "KINT",
+			symbol: "KINT",
+			decimals: 12,
+		},
+		prefix: 2092,
+		type: "substrate",
+		threshold: 10000,
+	},
+	{
+		name: "Bastiat (Liberland)",
+		url: "liberland",
+
+		group: "Solochains",
+		rpc: "wss://testchain.liberland.org",
+		nativeCurrency: {
+			name: "LDN",
+			symbol: "LDN",
+			decimals: 12,
+		},
+		prefix: 42,
+		type: "substrate",
+		threshold: 100000,
+	},
+	{
+		name: "Logion Testnet",
+		url: "logion",
+
+		group: "Solochains",
+		rpc: "wss://test-para-rpc01.logion.network",
+		nativeCurrency: {
+			name: "LGNTT",
+			symbol: "LGNTT",
+			decimals: 18,
+		},
+		prefix: 2021,
+		type: "substrate",
+		threshold: 100000,
+	},
+	{
+		name: "OPAL by UNIQUE",
+		url: "opal",
+
+		group: "Solochains",
+		rpc: "wss://ws-opal.unique.network",
+		nativeCurrency: {
+			name: "OPL",
+			symbol: "OPL",
+			decimals: 18,
+		},
+		prefix: 42,
+		type: "substrate",
+		threshold: 300000,
+	},
+	{
+		name: "Phala PoC-6",
+		url: "phala",
+
+		group: "Solochains",
+		rpc: "wss://poc6.phala.network/ws",
+		nativeCurrency: {
+			name: "PHA",
+			symbol: "PHA",
+			decimals: 12,
+		},
+		prefix: 30,
+		type: "substrate",
+		threshold: 1000000,
+	},
+	{
+		name: "Polymesh Testnet",
+		url: "polymesh",
+
+		group: "Solochains",
+		rpc: "wss://testnet-rpc.polymesh.live",
+		nativeCurrency: {
+			name: "POLYX",
+			symbol: "POLYX",
+			decimals: 6,
+		},
+		prefix: 42,
+		type: "substrate",
+		threshold: 500000,
+	},
+	{
+		name: "Shibuya Testnet",
+		url: "shibuya",
+
+		group: "Solochains",
+		rpc: "wss://rpc.shibuya.astar.network",
+		nativeCurrency: {
+			name: "SBY",
+			symbol: "SBY",
+			decimals: 18,
+		},
+		prefix: 5,
+		type: "substrate",
+		threshold: 120000,
+	},
+	{
+		name: "SORA-staging Testnet",
+		url: "sora-substrate",
+
+		group: "Solochains",
+		rpc: "wss://ws.framenode-8.s5.stg1.sora2.soramitsu.co.jp",
+		nativeCurrency: {
+			name: "XOR",
+			symbol: "XOR",
+			decimals: 18,
+		},
+		prefix: 69,
+		type: "substrate",
+		threshold: 1000000,
+	},
+	{
+		name: "Subspace Gemini 3h",
+		url: "subspace-gemini-3h",
+
+		group: "Solochains",
+		rpc: "wss://rpc-0.gemini-3h.subspace.network/ws",
+		nativeCurrency: {
+			name: "tSSC",
+			symbol: "tSSC",
+			decimals: 18,
+		},
+		prefix: 2254,
+		type: "substrate",
+		threshold: 220,
+	},
+	{
+		name: "Subspace Gemini 3h Nova",
+		url: "subspace-gemini-3h-nova",
+		chainId: 490000,
+		group: "Solochains",
+		rpc: "https://nova-0.gemini-3h.subspace.network/ws",
+		nativeCurrency: {
+			name: "tSSC",
+			symbol: "tSSC",
+			decimals: 18,
+		},
+		type: "evm",
+		threshold: 220,
+	},
+	{
+		name: "Tangle Testnet",
+		url: "tangle-testnet",
+
+		group: "Solochains",
+		rpc: "wss://testnet-rpc.tangle.tools",
+		nativeCurrency: {
+			name: "tTNT",
+			symbol: "tTNT",
+			decimals: 18,
+		},
+		prefix: 42,
+		type: "substrate",
+		threshold: 10000,
+	},
+	{
+		name: "Ternoa Alphanet",
+		url: "ternoa-alphanet",
+
+		group: "Solochains",
+		rpc: "wss://alphanet.ternoa.com",
+		nativeCurrency: {
+			name: "CAPS",
+			symbol: "CAPS",
+			decimals: 18,
+		},
+		prefix: 42,
+		type: "substrate",
+		threshold: 1500000,
+	},
+	{
+		name: "Vara Testnet",
+		url: "vara-testnet",
+
+		group: "Solochains",
+		rpc: "wss://testnet.vara.network",
+		nativeCurrency: {
+			name: "TVARA",
+			symbol: "TVARA",
+			decimals: 12,
+		},
+		prefix: 137,
+		type: "substrate",
+		threshold: 1000000,
+	},
+	{
+		name: "ZERO Alphaville (Subzero)",
+		url: "zero-alphaville",
+
+		group: "Solochains",
+		rpc: "wss://rpc.dev.gamedao.net",
+		nativeCurrency: {
+			name: "ZERO",
+			symbol: "ZERO",
+			decimals: 18,
+		},
+		prefix: 25,
+		type: "substrate",
+		threshold: 1000000,
+	},
+	{
+		name: "Beresheet BereEVM (Edgeware)",
+		url: "beresheet-bereevm",
+		chainId: 2022,
+		group: "Solochains",
+		rpc: "https://beresheet-evm.jelliedowl.net",
+		nativeCurrency: {
+			name: "tEDG",
+			symbol: "tEDG",
+			decimals: 18,
+		},
+		type: "evm",
+		threshold: 200000,
+	},
+	{
+		name: "Bifrost Solo testnet EVM",
+		url: "thebifrost-testnet-evm",
+		group: "Solochains",
+		chainId: 49088,
+		rpc: "https://public-01.testnet.bifrostnetwork.com/rpc",
+		nativeCurrency: {
+			name: "BFC",
+			symbol: "BFC",
+			decimals: 18,
+		},
+		type: "evm",
+		threshold: 5000,
+	},
+	{
+		name: "Moonbase Alpha",
+		url: "moonbase-alpha",
+		chainId: 1287,
+		group: "Solochains",
+		rpc: "https://rpc.testnet.moonbeam.network",
+		nativeCurrency: {
+			name: "DEV",
+			symbol: "DEV",
+			decimals: 18,
+		},
+		type: "evm",
+		threshold: 100000,
+	},
+	{
+		name: "Tangle EVM",
+		url: "tangle-testnet-evm",
+		chainId: 3799,
+		group: "Solochains",
+		rpc: "https://testnet-rpc.tangle.tools",
+		nativeCurrency: {
+			name: "tTNT",
+			symbol: "tTNT",
+			decimals: 18,
+		},
+		type: "evm",
+		threshold: 10000,
+	},
+];
