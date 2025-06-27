@@ -10,6 +10,7 @@ import {
 } from "@/lib/fonts";
 
 import { cn } from "@/lib/utils";
+import { Providers } from "@/providers";
 import type { Metadata } from "next";
 import { Toaster } from "sonner";
 import "./globals.css";
@@ -37,14 +38,16 @@ export default function RootLayout({
 					"antialiased bg-background text-foreground"
 				)}
 			>
-				<div className="flex flex-col place-items-center min-h-dvh w-full px-2 pt-1 pb-2">
-					<Header />
-					<main className="flex flex-col flex-1 items-center justify-items-center font-geist-sans w-full p-2 text-center gap-2">
-						{children}
-					</main>
-					<Footer />
-				</div>
-				<Toaster theme="dark" position="bottom-right" />
+				<Providers>
+					<div className="flex flex-col place-items-center min-h-dvh w-full px-2 pt-1 pb-2">
+						<Header />
+						<main className="flex flex-col flex-1 items-center justify-items-center font-geist-sans w-full p-2 text-center gap-2">
+							{children}
+						</main>
+						<Footer />
+					</div>
+					<Toaster richColors theme="dark" position="bottom-right" />
+				</Providers>
 			</body>
 		</html>
 	);

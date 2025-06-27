@@ -1,4 +1,4 @@
-import { Chains } from "@/constants/types";
+import { Chains } from "@/types/chains";
 
 export const groups: string[] = [
 	"Westend & Parachains",

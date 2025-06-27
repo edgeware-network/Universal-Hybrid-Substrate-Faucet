@@ -1,5 +1,6 @@
 import { chains } from "@/constants/chains";
 import { clsx, type ClassValue } from "clsx";
+import { detect } from "detect-browser";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -45,4 +46,20 @@ export function allowOnlyNumbers(event: React.KeyboardEvent<HTMLInputElement>) {
 export function getMaxAmount(name: string) {
 	const chain = chains.filter((chain) => chain.url === name)[0];
 	return `${chain.threshold * 0.001}`;
+}
+
+export function trimAddress(address: string, length?: number) {
+	if (!length) length = 4;
+	return `${address.slice(0, length)}...${address.slice(-length)}`;
+}
+
+export function checkIsMobile() {
+	const browser = detect();
+	if (!browser) return "";
+
+	return (
+		browser.os === "Android OS" ||
+		browser.os === "iOS" ||
+		browser.os === "Windows Mobile"
+	);
 }

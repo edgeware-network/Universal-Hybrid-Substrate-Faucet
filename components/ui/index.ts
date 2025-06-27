@@ -6,3 +6,5 @@ export * from "@/components/ui/input";
 export * from "@/components/ui/label";
 export * from "@/components/ui/multi-select";
 export * from "@/components/ui/sheet";
+export * from "@/components/ui/multi-view-dialog";
+export * from "@/components/ui/identicon";
