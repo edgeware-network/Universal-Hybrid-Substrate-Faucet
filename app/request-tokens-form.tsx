@@ -21,6 +21,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useLayoutEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 type RequestTokensType = {
 	chain?: string;
@@ -30,6 +31,7 @@ type RequestTokensType = {
 export function RequestTokensForm({ chain, address }: RequestTokensType) {
 	const form = useForm<FaucetSchemaType>({
 		resolver: zodResolver(faucetSchema),
+		mode: "onChange",
 		defaultValues: {
 			chains: chain ? [chain] : [],
 			address: address ? address : "",
@@ -67,7 +69,14 @@ export function RequestTokensForm({ chain, address }: RequestTokensType) {
 		setClearOptions(true);
 		form.reset();
 	}
-	console.log(clearOptions);
+
+	function handleMaxAmount(chain: string) {
+		if (chain) {
+			form.setValue("amount", getMaxAmount(form.watch("chains")[0]));
+		} else {
+			toast.error("Please select a chain");
+		}
+	}
 
 	return (
 		<Form {...form}>
@@ -141,8 +150,8 @@ export function RequestTokensForm({ chain, address }: RequestTokensType) {
 									<span>You&apos;re requesting</span>
 									<Button
 										type="button"
-										className="cursor-pointer rounded-md font-work-sans font-medium w-[120px] h-6 p-3 text-xs active:scale-95 transition-colors duration-100"
-										onClick={() => form.setValue("amount", getMaxAmount(form.watch("chains")[0]))}
+										className="cursor-pointer rounded-md font-work-sans font-medium w-[120px] h-6 p-3 text-xs active:scale-[0.98] transition-colors duration-100"
+										onClick={() => handleMaxAmount(form.watch("chains")[0])}
 									>
 										Max
 									</Button>
@@ -190,7 +199,7 @@ export function RequestTokensForm({ chain, address }: RequestTokensType) {
 				)}
 				<Button
 					variant="secondary"
-					className="cursor-pointer rounded-lg font-manrope font-medium w-full p-3 sm:text-base text-sm active:scale-95 transform transition-colors duration-100 drop-shadow-xs drop-shadow-primary"
+					className="cursor-pointer rounded-lg font-manrope font-medium w-full p-3 sm:text-base text-sm active:scale-[0.99] transform transition-colors duration-100 drop-shadow-xs drop-shadow-primary"
 					type="submit"
 				>
 					Make it rain!
