@@ -22,6 +22,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useLayoutEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { requestTokensAction } from "./_actions/request-tokens-action";
 
 type RequestTokensType = {
 	chain?: string;
@@ -64,8 +65,8 @@ export function RequestTokensForm({ chain, address }: RequestTokensType) {
 		}
 	}, [userAmount]);
 
-	function onSubmit(data: FaucetSchemaType) {
-		console.log(data);
+	async function onSubmit(data: FaucetSchemaType) {
+		await requestTokensAction(data);
 		setClearOptions(true);
 		form.reset();
 	}

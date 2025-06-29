@@ -63,3 +63,7 @@ export function checkIsMobile() {
 		browser.os === "Windows Mobile"
 	);
 }
+
+export function constructTxReq() {
+
+}
