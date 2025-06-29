@@ -100,6 +100,7 @@ export function RequestTokensForm({ chain, address }: RequestTokensType) {
 										value: cx.url,
 										icon: `/images/${cx.url}.svg`,
 										symbol: cx.nativeCurrency.symbol,
+										type: cx.type,
 									}))}
 									setClearOptions={setClearOptions}
 									clearOptions={clearOptions}

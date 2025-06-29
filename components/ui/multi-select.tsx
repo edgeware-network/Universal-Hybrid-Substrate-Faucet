@@ -66,6 +66,7 @@ interface MultiSelectProps
 		/** Optional icon component to display alongside the option. */
 		icon: string;
 		symbol: string;
+		type: string;
 	}[];
 
 	/**
@@ -312,35 +313,45 @@ export function MultiSelect({
 											key={option.value}
 											onSelect={() => toggleOption(option.value)}
 											className={cn(
-												"cursor-pointer h-12 rounded-xl",
+												"cursor-pointer h-12 rounded-xl flex justify-between items-center gap-2",
 												isSelected
 													? "bg-quaternary/10 text-quaternary data-[selected=true]:bg-quaternary/10 data-[selected=true]:text-quaternary"
 													: ""
 											)}
 										>
-											{option.icon && (
-												<Image
-													src={option.icon}
-													alt={option.label}
-													width={16}
-													height={16}
-													priority
-													className="h-8 w-8 mr-2"
-												/>
-											)}
-											<div className="flex flex-col">
-												<span
-													className={cn(
-														"font-medium font-work-sans text-base tracking-tight",
-														isSelected ? "text-quaternary" : "text-foreground"
-													)}
-												>
-													{option.label}
-												</span>
-												<span className="font-medium font-work-sans text-sm tracking-tight text-info">
-													{option.symbol}
-												</span>
+											<div className="flex items-center gap-1">
+												{option.icon && (
+													<Image
+														src={option.icon}
+														alt={option.label}
+														width={16}
+														height={16}
+														priority
+														className="h-8 w-8 mr-2"
+													/>
+												)}
+												<div className="flex flex-col">
+													<span
+														className={cn(
+															"font-medium font-work-sans text-base tracking-tight",
+															isSelected ? "text-quaternary" : "text-foreground"
+														)}
+													>
+														{option.label}
+													</span>
+													<span className="font-medium font-work-sans text-sm tracking-tight text-info">
+														{option.symbol}
+													</span>
+												</div>
 											</div>
+											<Image
+												src={option.type === "evm" ? "/evm.svg" : "/dot.svg"}
+												alt="logo"
+												width={24}
+												height={24}
+												priority
+												className="h-5 w-5"
+											/>
 										</CommandItem>
 									);
 								})}
