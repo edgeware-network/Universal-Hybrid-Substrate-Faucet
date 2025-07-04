@@ -3,13 +3,14 @@
 import { chains } from "@/constants/chains";
 import { requestToken } from "@/data-access/request-token/request-token.persistence";
 import { faucetSchema } from "@/db/schema";
-import { action } from "@/lib/safe-action";
+import { withRateLimit } from "@/lib/rate-limit";
+import { action, ActionError } from "@/lib/safe-action";
 import { getMaxAmount } from "@/lib/utils";
+import { verifyHCaptcha } from "@/lib/verify-hcaptcha";
 import { requestTokenUseCase } from "@/usecases/request-token.usecase";
+import { Context, Data, Result } from "@/usecases/types";
 import { headers } from "next/headers";
 import { addEntryAction } from "./add-entry-action";
-import { withRateLimit } from "@/lib/rate-limit";
-import { Context, Data, Result } from "@/usecases/types";
 
 async function getClientIP(): Promise<string> {
 	const h = await headers();
@@ -20,7 +21,9 @@ async function getClientIP(): Promise<string> {
 	);
 }
 
-const rateLimitedRequestTokenUseCase = withRateLimit<Context, Data, Result>(requestTokenUseCase);
+const rateLimitedRequestTokenUseCase = withRateLimit<Context, Data, Result>(
+	requestTokenUseCase
+);
 
 export const requestTokensAction = action
 	.inputSchema(faucetSchema)
@@ -28,6 +31,12 @@ export const requestTokensAction = action
 		// TODO: Captcha verification.
 
 		console.log(data.parsedInput);
+
+		const valid = await verifyHCaptcha(data.parsedInput.captchaToken);
+
+		if (!valid) {
+			throw new ActionError("Invalid CAPTCHA. Please try again.");
+		}
 
 		const isDot = data.parsedInput.chains.every((chain) =>
 			chains

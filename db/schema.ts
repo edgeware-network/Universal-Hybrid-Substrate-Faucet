@@ -11,6 +11,7 @@ export const baseSchema = z.object({
 		.nonempty("At least one chain is required"),
 	address: z.string().min(1, "Address is required"),
 	amount: z.string().optional(),
+	captchaToken: z.string().min(1, "CAPTCHA is required"),
 });
 
 export const faucetSchema = baseSchema.superRefine((data, ctx) => {

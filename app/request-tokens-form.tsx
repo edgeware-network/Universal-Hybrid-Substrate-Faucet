@@ -13,12 +13,14 @@ import {
 } from "@/components/ui";
 import { chains } from "@/constants/chains";
 import { faucetSchema, type FaucetSchemaType } from "@/db/schema";
+import { env } from "@/lib/env";
 import {
 	allowOnlyNumbers,
 	getChainType,
 	getMaxAmount,
 	getTokenSymbol,
 } from "@/lib/utils";
+import HCaptcha from "@hcaptcha/react-hcaptcha";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAction } from "next-safe-action/hooks";
 import { useLayoutEffect, useRef, useState } from "react";
@@ -40,6 +42,7 @@ export function RequestTokensForm({ chain, address }: RequestTokensType) {
 			amount: "",
 		},
 	});
+	const captchaRef = useRef<HCaptcha>(null);
 
 	const spanRef = useRef<HTMLSpanElement>(null);
 	const inputRef = useRef<HTMLInputElement>(null);
@@ -108,6 +111,13 @@ export function RequestTokensForm({ chain, address }: RequestTokensType) {
 	}, [userAmount]);
 
 	async function onSubmit(data: FaucetSchemaType) {
+		const token = captchaRef.current?.execute();
+		if (!token) {
+			toast.error("CAPTCHA verification failed.");
+			return;
+		}
+
+		data.captchaToken = token;
 		await executeAsync(data);
 		setClearOptions(true);
 		form.reset();
@@ -241,6 +251,11 @@ export function RequestTokensForm({ chain, address }: RequestTokensType) {
 						)}
 					/>
 				)}
+				<HCaptcha
+					sitekey={env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY}
+					size="invisible"
+					ref={captchaRef}
+				/>
 				<Button
 					variant="secondary"
 					className="cursor-pointer rounded-lg font-manrope font-medium w-full p-3 sm:text-base text-sm active:scale-[0.99] transform transition-colors duration-100 drop-shadow-xs drop-shadow-primary"
