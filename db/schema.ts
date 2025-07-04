@@ -1,7 +1,7 @@
 import { chains as allChains } from "@/constants/chains";
 import { hexToU8a, isHex } from "@polkadot/util";
 import { decodeAddress } from "@polkadot/util-crypto";
-import { isAddress } from "ethers/lib/utils";
+import { isAddress } from "web3-validator";
 import { z } from "zod";
 
 export const baseSchema = z.object({

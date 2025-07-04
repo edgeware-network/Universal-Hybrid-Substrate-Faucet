@@ -33,7 +33,6 @@
 		"cmdk": "^1.1.1",
 		"copy-to-clipboard": "^3.3.3",
 		"detect-browser": "^5.3.0",
-		"ethers": "5.8.0",
 		"framer-motion": "^12.19.1",
 		"gsap": "^3.13.0",
 		"lucide-react": "^0.523.0",
@@ -49,6 +48,7 @@
 		"tsparticles": "^3.8.1",
 		"vaul": "^1.1.2",
 		"web3": "^4.16.0",
+		"web3-validator": "^2.0.6",
 		"zod": "^3.25.67"
 	},
 	"devDependencies": {

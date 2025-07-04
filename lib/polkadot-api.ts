@@ -57,9 +57,9 @@ export async function getDotBalances(api: ApiPromise) {
 }
 
 export function convertAmount(amount: string, chain: string) {
-	const decimals = chains.filter((c) => c.url === chain)[0].nativeCurrency.decimals;
+	const decimals = chains.filter((c) => c.url === chain)[0].nativeCurrency
+		.decimals;
 	return (Number(amount) * Math.pow(10, decimals)).toString();
-
 }
 
 export async function transferDot(api: ApiPromise, data: Data) {
@@ -84,4 +84,76 @@ export function getEncodedAddress(address: string, chain: string) {
 
 	const prefix = dotChains.find((c) => c.url === chain)?.prefix;
 	return encodeAddress(decodeAddress(address), prefix);
+}
+
+export async function disburseDotTokens(
+	name: string,
+	address: string,
+	amount: string
+): Promise<{
+	status: string;
+	data: { address: string; amount: string; chain: string; txHash: string };
+}> {
+	const chain = chains
+		.filter((c) => c.type === "substrate")
+		.find((c) => c.url === name)!;
+
+	const data = {
+		address: getEncodedAddress(address, chain.url),
+		amount: convertAmount(amount, chain.url),
+	};
+
+	const api = await initDotAPI(chain.rpc);
+	const faucetBalance = await getDotBalances(api);
+	const transferAmount = convertAmount(amount, chain.url);
+
+	console.log(faucetBalance, transferAmount);
+
+	if (Number(faucetBalance) === 0) {
+		return {
+			status: "failed",
+			data: {
+				address: data.address,
+				amount: data.amount,
+				chain: chain.url,
+				txHash: "No funds available!",
+			},
+		};
+	}
+
+	if (Number(faucetBalance) && Number(faucetBalance) < Number(transferAmount)) {
+		return {
+			status: "failed",
+			data: {
+				address: data.address,
+				amount: data.amount,
+				chain: chain.url,
+				txHash: "Insufficient funds!",
+			},
+		};
+	}
+
+	try {
+		const txHash = await transferDot(api, data);
+		return {
+			status: txHash.status,
+			data: {
+				address: data.address,
+				amount: data.amount,
+				chain: chain.url,
+				txHash: txHash.data,
+			},
+		};
+	} catch (error) {
+		const err = error as Error;
+		return {
+			status: "failed",
+			data: {
+				address: data.address,
+				amount: data.amount,
+				chain: chain.url,
+				txHash: err.message,
+			},
+		};
+	}
 }

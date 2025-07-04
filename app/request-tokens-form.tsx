@@ -1,4 +1,5 @@
 "use client";
+import { requestTokensAction } from "@/app/_actions/request-tokens-action";
 import {
 	Button,
 	Form,
@@ -19,10 +20,10 @@ import {
 	getTokenSymbol,
 } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useAction } from "next-safe-action/hooks";
 import { useLayoutEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { requestTokensAction } from "./_actions/request-tokens-action";
 
 type RequestTokensType = {
 	chain?: string;
@@ -45,6 +46,47 @@ export function RequestTokensForm({ chain, address }: RequestTokensType) {
 	const userAmount = form.watch("amount");
 	const [clearOptions, setClearOptions] = useState(false);
 
+	const { executeAsync } = useAction(requestTokensAction, {
+		onSuccess: ({ data: results }) => {
+			const successes = results!.filter((r) => r.status === "success");
+			const failures = results!.filter((r) => r.status === "failed");
+			const rateLimits = results!.filter((r) => r.status === "rate-limit");
+
+			if (successes.length > 0) {
+				toast.success(
+					`Success on: ${successes.map((r) => r.data.chain).join(", ")}`
+				);
+			}
+
+			if (failures.length > 0) {
+				toast.error(
+					`Failed on: ${failures.map((r) => r.data.chain).join(", ")}`
+				);
+			}
+
+			if (rateLimits.length > 0) {
+				toast.error(
+					`Rate limit exceeded for: ${rateLimits
+						.map((r) => r.data.chain)
+						.join(", ")}`
+				);
+			}
+		},
+		onError: ({ error }) => {
+			const message =
+				error.serverError ||
+				(error.validationErrors &&
+					Object.keys(error.validationErrors).length > 0 &&
+					(error.validationErrors as Record<string, { message?: string }>)[
+						Object.keys(error.validationErrors)[0]
+					]?.message) ||
+				error.thrownError?.message ||
+				"An unexpected error occurred";
+
+			toast.error(message);
+		},
+	});
+
 	useLayoutEffect(() => {
 		if (chain) {
 			form.setValue("chains", [chain]);
@@ -66,7 +108,7 @@ export function RequestTokensForm({ chain, address }: RequestTokensType) {
 	}, [userAmount]);
 
 	async function onSubmit(data: FaucetSchemaType) {
-		await requestTokensAction(data);
+		await executeAsync(data);
 		setClearOptions(true);
 		form.reset();
 	}
