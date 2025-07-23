@@ -28,6 +28,7 @@
 		"@t3-oss/env-nextjs": "^0.13.8",
 		"@tsparticles/engine": "^3.8.1",
 		"@tsparticles/react": "^3.0.0",
+		"bip32": "^5.0.0-rc.0",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
 		"cmdk": "^1.1.1",
