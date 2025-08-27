@@ -536,25 +536,25 @@
     "@polkadot/x-global" "^13.2.3"
     tslib "^2.8.1"
 
-"@polkadot/keyring@^13.2.2":
-  version "13.2.2"
-  resolved "https://registry.yarnpkg.com/@polkadot/keyring/-/keyring-13.2.2.tgz#ec3b2e1d71e177accf6428ea6564569d73d35bdb"
-  integrity sha512-h4bPU92CALAAC+QOp6+zttuhI5H0GKOUzj1qwnmoPVoWxh21FoekLAXO1YJlsKxciTDdK5OhjdNPOIqcF0GCXA==
+"@polkadot/keyring@^13.2.2", "@polkadot/keyring@^13.2.3", "@polkadot/keyring@^13.5.6":
+  version "13.5.6"
+  resolved "https://registry.yarnpkg.com/@polkadot/keyring/-/keyring-13.5.6.tgz#b26d0cba323bb0520826211317701aa540428406"
+  integrity sha512-Ybe6Mflrh96FKR5tfEaf/93RxJD7x9UigseNOJW6Yd8LF+GesdxrqmZD7zh+53Hb7smGQWf/0FCfwhoWZVgPUQ==
   dependencies:
-    "@polkadot/util" "13.2.2"
-    "@polkadot/util-crypto" "13.2.2"
+    "@polkadot/util" "13.5.6"
+    "@polkadot/util-crypto" "13.5.6"
     tslib "^2.8.0"
 
-"@polkadot/keyring@^13.2.3":
-  version "13.2.3"
-  resolved "https://registry.yarnpkg.com/@polkadot/keyring/-/keyring-13.2.3.tgz#f974c2d61bc2aa009e2728ab53dfcc83f003d0da"
-  integrity sha512-pgTo6DXNXub0wGD+MnVHYhKxf80Jl+QMOCb818ioGdXz++Uw4mTueFAwtB+N7TGo0HafhChUiNJDxFdlDkcAng==
+"@polkadot/networks@13.5.6":
+  version "13.5.6"
+  resolved "https://registry.yarnpkg.com/@polkadot/networks/-/networks-13.5.6.tgz#fc74b556dc2aa03a49ee6543df0ae74a280da7a5"
+  integrity sha512-9HqUIBOHnz9x/ssPb0aOD/7XcU8vGokEYpLoNgexFNIJzqDgrDHXR197iFpkbMqA/+98zagrvYUyPYj1yYs9Jw==
   dependencies:
-    "@polkadot/util" "13.2.3"
-    "@polkadot/util-crypto" "13.2.3"
+    "@polkadot/util" "13.5.6"
+    "@substrate/ss58-registry" "^1.51.0"
     tslib "^2.8.0"
 
-"@polkadot/networks@13.2.2", "@polkadot/networks@^13.2.2":
+"@polkadot/networks@^13.2.2":
   version "13.2.2"
   resolved "https://registry.yarnpkg.com/@polkadot/networks/-/networks-13.2.2.tgz#6c8e6340fc718da925f5aab0c91c69f2971ca3f0"
   integrity sha512-di3dLB9BcLQ9ARcDe/nizl7jZZnQbQlxB8kXtAXqTIVFtshtKT+zYcji6dTX7xX9/O9tZB7qnrvuIuI0MkwJ5A==
@@ -563,7 +563,7 @@
     "@substrate/ss58-registry" "^1.51.0"
     tslib "^2.8.0"
 
-"@polkadot/networks@13.2.3", "@polkadot/networks@^13.2.3":
+"@polkadot/networks@^13.2.3":
   version "13.2.3"
   resolved "https://registry.yarnpkg.com/@polkadot/networks/-/networks-13.2.3.tgz#c9d63b7de7ae67cf0d776471287e67ed747940f7"
   integrity sha512-mG+zkXg/33AyPrkv2xBbAo3LBUwOwBn6qznBU/4jxiZPnVvCwMaxE7xHM22B5riItbNJ169FXv3wy0v6ZmkFbw==
@@ -678,6 +678,16 @@
     "@polkadot/util" "^13.2.3"
     tslib "^2.8.0"
 
+"@polkadot/types-augment@16.4.6":
+  version "16.4.6"
+  resolved "https://registry.yarnpkg.com/@polkadot/types-augment/-/types-augment-16.4.6.tgz#6b9f712dd755b6bc1d771b6238521698e4ff0261"
+  integrity sha512-ZFe6j+HHK+ST4D2MwV7oC4y6pyBMZV1b8ZZT2htTtWf03PE0W2ziQVM+Fg42iSHpgmCyJLSABU11QkGSGtRfyQ==
+  dependencies:
+    "@polkadot/types" "16.4.6"
+    "@polkadot/types-codec" "16.4.6"
+    "@polkadot/util" "^13.5.6"
+    tslib "^2.8.1"
+
 "@polkadot/types-codec@14.2.3":
   version "14.2.3"
   resolved "https://registry.yarnpkg.com/@polkadot/types-codec/-/types-codec-14.2.3.tgz#454be48602bb919ceb37bcef9980733554ea923e"
@@ -696,6 +706,15 @@
     "@polkadot/x-bigint" "^13.2.3"
     tslib "^2.8.0"
 
+"@polkadot/types-codec@16.4.6":
+  version "16.4.6"
+  resolved "https://registry.yarnpkg.com/@polkadot/types-codec/-/types-codec-16.4.6.tgz#54ef45a84b807c73054d739cf77cb21f62acb462"
+  integrity sha512-KCDDJNPTrScQV1HEMNjBIvtx12/J+DPV/niC+klb39wqeBAt7+wYNd8zSnFQzrLvx+n2eWlJjq0dxQiK+Ljc5A==
+  dependencies:
+    "@polkadot/util" "^13.5.6"
+    "@polkadot/x-bigint" "^13.5.6"
+    tslib "^2.8.1"
+
 "@polkadot/types-create@14.2.3":
   version "14.2.3"
   resolved "https://registry.yarnpkg.com/@polkadot/types-create/-/types-create-14.2.3.tgz#adf022aba785c4c6a07a5f7af843a67df7036678"
@@ -713,6 +732,15 @@
     "@polkadot/types-codec" "15.0.1"
     "@polkadot/util" "^13.2.3"
     tslib "^2.8.0"
+
+"@polkadot/types-create@16.4.6":
+  version "16.4.6"
+  resolved "https://registry.yarnpkg.com/@polkadot/types-create/-/types-create-16.4.6.tgz#55bf3178daeb82345f9e858c007aac0b4aa4974d"
+  integrity sha512-+ABF/SKX+xuCPyKvcHIFNybQYQID7bTfvQPkRhK1QxssMwdVtpYCb6RxYU7gYQhlMBAyEZUwele6/JwT/J5VqA==
+  dependencies:
+    "@polkadot/types-codec" "16.4.6"
+    "@polkadot/util" "^13.5.6"
+    tslib "^2.8.1"
 
 "@polkadot/types-known@14.2.3":
   version "14.2.3"
@@ -754,7 +782,7 @@
     "@polkadot/util" "^13.2.3"
     tslib "^2.8.0"
 
-"@polkadot/types@14.2.3", "@polkadot/types@^14.2.3":
+"@polkadot/types@14.2.3":
   version "14.2.3"
   resolved "https://registry.yarnpkg.com/@polkadot/types/-/types-14.2.3.tgz#87989eaccb24a81e72873a618e15048fd46a4b40"
   integrity sha512-IG5hs7+NYz3T/n4l7/94p/gqIWwHYgnnqDrTQ8RWPVwA9BaF4D7Wx7esD1jc0Igt1FhuG60uceVfYrBIGCJLyw==
@@ -782,35 +810,33 @@
     rxjs "^7.8.1"
     tslib "^2.8.0"
 
-"@polkadot/util-crypto@13.2.2":
-  version "13.2.2"
-  resolved "https://registry.yarnpkg.com/@polkadot/util-crypto/-/util-crypto-13.2.2.tgz#b3bc6554177952b5224cc4d71cb38efd35d4f163"
-  integrity sha512-C4vl07XC43vE6egd9LmSe0uOc7hAvBq6CIoILk5ZB95ABNBQSHOrS1pHugW4rJgVUiZgv8sdl+twmgisuSsSfg==
+"@polkadot/types@16.4.6", "@polkadot/types@^16.4.6":
+  version "16.4.6"
+  resolved "https://registry.yarnpkg.com/@polkadot/types/-/types-16.4.6.tgz#9594f6f80e249f270f9092016957860a4554de5e"
+  integrity sha512-vfZSOxs64oy1XOcMY3fAbSCBwqLeWvsUYSOhDkZaaC5zIbKdtimPQgbV1QA2fMli568rehmmpLXpZZtj2CNnmA==
   dependencies:
-    "@noble/curves" "^1.3.0"
-    "@noble/hashes" "^1.3.3"
-    "@polkadot/networks" "13.2.2"
-    "@polkadot/util" "13.2.2"
-    "@polkadot/wasm-crypto" "^7.4.1"
-    "@polkadot/wasm-util" "^7.4.1"
-    "@polkadot/x-bigint" "13.2.2"
-    "@polkadot/x-randomvalues" "13.2.2"
-    "@scure/base" "^1.1.7"
-    tslib "^2.8.0"
+    "@polkadot/keyring" "^13.5.6"
+    "@polkadot/types-augment" "16.4.6"
+    "@polkadot/types-codec" "16.4.6"
+    "@polkadot/types-create" "16.4.6"
+    "@polkadot/util" "^13.5.6"
+    "@polkadot/util-crypto" "^13.5.6"
+    rxjs "^7.8.1"
+    tslib "^2.8.1"
 
-"@polkadot/util-crypto@13.2.3", "@polkadot/util-crypto@^13.2.2", "@polkadot/util-crypto@^13.2.3":
-  version "13.2.3"
-  resolved "https://registry.yarnpkg.com/@polkadot/util-crypto/-/util-crypto-13.2.3.tgz#4e43a0554a5af2a79bade26c1cf623b7a4590645"
-  integrity sha512-5sbggmLbn5eiuVMyPROPlT5roHRqdKHOfSpioNbGvGIZ1qIWVoC1RfsK0NWJOVGDzy6DpQe0KYT/kgcU5Xsrzw==
+"@polkadot/util-crypto@13.5.6", "@polkadot/util-crypto@^13.2.2", "@polkadot/util-crypto@^13.2.3", "@polkadot/util-crypto@^13.5.6":
+  version "13.5.6"
+  resolved "https://registry.yarnpkg.com/@polkadot/util-crypto/-/util-crypto-13.5.6.tgz#aef44d6c201d7c47897288aa268532f396e4cd5f"
+  integrity sha512-1l+t5lVc9UWxvbJe7/3V+QK8CwrDPuQjDK6FKtDZgZCU0JRrjySOxV0J4PeDIv8TgXZtbIcQFVUhIsJTyKZZJQ==
   dependencies:
     "@noble/curves" "^1.3.0"
     "@noble/hashes" "^1.3.3"
-    "@polkadot/networks" "13.2.3"
-    "@polkadot/util" "13.2.3"
-    "@polkadot/wasm-crypto" "^7.4.1"
-    "@polkadot/wasm-util" "^7.4.1"
-    "@polkadot/x-bigint" "13.2.3"
-    "@polkadot/x-randomvalues" "13.2.3"
+    "@polkadot/networks" "13.5.6"
+    "@polkadot/util" "13.5.6"
+    "@polkadot/wasm-crypto" "^7.5.1"
+    "@polkadot/wasm-util" "^7.5.1"
+    "@polkadot/x-bigint" "13.5.6"
+    "@polkadot/x-randomvalues" "13.5.6"
     "@scure/base" "^1.1.7"
     tslib "^2.8.0"
 
@@ -827,7 +853,7 @@
     bn.js "^5.2.1"
     tslib "^2.8.0"
 
-"@polkadot/util@13.2.3", "@polkadot/util@^13.2.2", "@polkadot/util@^13.2.3":
+"@polkadot/util@13.2.3":
   version "13.2.3"
   resolved "https://registry.yarnpkg.com/@polkadot/util/-/util-13.2.3.tgz#2bdd753f920d466ca8fb1f812f913304471dd38c"
   integrity sha512-pioNnsig3qHXrfOKMe4Yqos8B8N3/EZUpS+WfTpWnn1VjYban/0GrTXeavPlAwggnY27b8fS6rBzQBhnVYDw8g==
@@ -840,56 +866,69 @@
     bn.js "^5.2.1"
     tslib "^2.8.0"
 
-"@polkadot/wasm-bridge@7.4.1":
-  version "7.4.1"
-  resolved "https://registry.yarnpkg.com/@polkadot/wasm-bridge/-/wasm-bridge-7.4.1.tgz#dd59ebb7c425657aad64b1430e8455d14d935059"
-  integrity sha512-tdkJaV453tezBxhF39r4oeG0A39sPKGDJmN81LYLf+Fihb7astzwju+u75BRmDrHZjZIv00un3razJEWCxze6g==
+"@polkadot/util@13.5.6", "@polkadot/util@^13.2.2", "@polkadot/util@^13.2.3", "@polkadot/util@^13.5.6":
+  version "13.5.6"
+  resolved "https://registry.yarnpkg.com/@polkadot/util/-/util-13.5.6.tgz#fceb7fe823724535516b304a5675566974cb60e6"
+  integrity sha512-V+CkW2VdhcMWvl7eXdmlCLGqLxrKvXZtXE76KBbPP5n0Z+8DqQ58IHNOE9xe2LOgqDwIzdLlOUwkyF9Zj19y+Q==
   dependencies:
-    "@polkadot/wasm-util" "7.4.1"
+    "@polkadot/x-bigint" "13.5.6"
+    "@polkadot/x-global" "13.5.6"
+    "@polkadot/x-textdecoder" "13.5.6"
+    "@polkadot/x-textencoder" "13.5.6"
+    "@types/bn.js" "^5.1.6"
+    bn.js "^5.2.1"
+    tslib "^2.8.0"
+
+"@polkadot/wasm-bridge@7.5.1":
+  version "7.5.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/wasm-bridge/-/wasm-bridge-7.5.1.tgz#f738858213a8a599ae8bf6a6c179b325dcf091f4"
+  integrity sha512-E+N3CSnX3YaXpAmfIQ+4bTyiAqJQKvVcMaXjkuL8Tp2zYffClWLG5e+RY15Uh+EWfUl9If4y6cLZi3D5NcpAGQ==
+  dependencies:
+    "@polkadot/wasm-util" "7.5.1"
     tslib "^2.7.0"
 
-"@polkadot/wasm-crypto-asmjs@7.4.1":
-  version "7.4.1"
-  resolved "https://registry.yarnpkg.com/@polkadot/wasm-crypto-asmjs/-/wasm-crypto-asmjs-7.4.1.tgz#5d36f3f498077f826f2bbe742070574606e673e9"
-  integrity sha512-pwU8QXhUW7IberyHJIQr37IhbB6DPkCG5FhozCiNTq4vFBsFPjm9q8aZh7oX1QHQaiAZa2m2/VjIVE+FHGbvHQ==
+"@polkadot/wasm-crypto-asmjs@7.5.1":
+  version "7.5.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/wasm-crypto-asmjs/-/wasm-crypto-asmjs-7.5.1.tgz#87e07aa340249d5c978cd03eb58b395563066a4c"
+  integrity sha512-jAg7Uusk+xeHQ+QHEH4c/N3b1kEGBqZb51cWe+yM61kKpQwVGZhNdlWetW6U23t/BMyZArIWMsZqmK/Ij0PHog==
   dependencies:
     tslib "^2.7.0"
 
-"@polkadot/wasm-crypto-init@7.4.1":
-  version "7.4.1"
-  resolved "https://registry.yarnpkg.com/@polkadot/wasm-crypto-init/-/wasm-crypto-init-7.4.1.tgz#88bc61c9473a7c39d9fafb27cd631215b053b836"
-  integrity sha512-AVka33+f7MvXEEIGq5U0dhaA2SaXMXnxVCQyhJTaCnJ5bRDj0Xlm3ijwDEQUiaDql7EikbkkRtmlvs95eSUWYQ==
+"@polkadot/wasm-crypto-init@7.5.1":
+  version "7.5.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/wasm-crypto-init/-/wasm-crypto-init-7.5.1.tgz#0434850b7f05619ff312d5cbfd33629a54f9b31a"
+  integrity sha512-Obu4ZEo5jYO6sN31eqCNOXo88rPVkP9TrUOyynuFCnXnXr8V/HlmY/YkAd9F87chZnkTJRlzak17kIWr+i7w3A==
   dependencies:
-    "@polkadot/wasm-bridge" "7.4.1"
-    "@polkadot/wasm-crypto-asmjs" "7.4.1"
-    "@polkadot/wasm-crypto-wasm" "7.4.1"
-    "@polkadot/wasm-util" "7.4.1"
+    "@polkadot/wasm-bridge" "7.5.1"
+    "@polkadot/wasm-crypto-asmjs" "7.5.1"
+    "@polkadot/wasm-crypto-wasm" "7.5.1"
+    "@polkadot/wasm-util" "7.5.1"
     tslib "^2.7.0"
 
-"@polkadot/wasm-crypto-wasm@7.4.1":
-  version "7.4.1"
-  resolved "https://registry.yarnpkg.com/@polkadot/wasm-crypto-wasm/-/wasm-crypto-wasm-7.4.1.tgz#73d08f59aaf51ed70563c0099e7852fdeda03649"
-  integrity sha512-PE1OAoupFR0ZOV2O8tr7D1FEUAwaggzxtfs3Aa5gr+yxlSOaWUKeqsOYe1KdrcjmZVV3iINEAXxgrbzCmiuONg==
+"@polkadot/wasm-crypto-wasm@7.5.1":
+  version "7.5.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/wasm-crypto-wasm/-/wasm-crypto-wasm-7.5.1.tgz#b3996007875db6945d29f94f4d4719fce2b3bb8f"
+  integrity sha512-S2yQSGbOGTcaV6UdipFVyEGanJvG6uD6Tg7XubxpiGbNAblsyYKeFcxyH1qCosk/4qf+GIUwlOL4ydhosZflqg==
   dependencies:
-    "@polkadot/wasm-util" "7.4.1"
+    "@polkadot/wasm-util" "7.5.1"
     tslib "^2.7.0"
 
-"@polkadot/wasm-crypto@^7.4.1":
-  version "7.4.1"
-  resolved "https://registry.yarnpkg.com/@polkadot/wasm-crypto/-/wasm-crypto-7.4.1.tgz#6d5f94d28bf92ef234b94d55b0d1f4299cbbb7b7"
-  integrity sha512-kHN/kF7hYxm1y0WeFLWeWir6oTzvcFmR4N8fJJokR+ajYbdmrafPN+6iLgQVbhZnDdxyv9jWDuRRsDnBx8tPMQ==
+"@polkadot/wasm-crypto@^7.5.1":
+  version "7.5.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/wasm-crypto/-/wasm-crypto-7.5.1.tgz#324ebf9a86a30fd19bf4b02a6582367bdddb62c9"
+  integrity sha512-acjt4VJ3w19v7b/SIPsV/5k9s6JsragHKPnwoZ0KTfBvAFXwzz80jUzVGxA06SKHacfCUe7vBRlz7M5oRby1Pw==
   dependencies:
-    "@polkadot/wasm-bridge" "7.4.1"
-    "@polkadot/wasm-crypto-asmjs" "7.4.1"
-    "@polkadot/wasm-crypto-init" "7.4.1"
-    "@polkadot/wasm-crypto-wasm" "7.4.1"
-    "@polkadot/wasm-util" "7.4.1"
+    "@polkadot/wasm-bridge" "7.5.1"
+    "@polkadot/wasm-crypto-asmjs" "7.5.1"
+    "@polkadot/wasm-crypto-init" "7.5.1"
+    "@polkadot/wasm-crypto-wasm" "7.5.1"
+    "@polkadot/wasm-util" "7.5.1"
     tslib "^2.7.0"
 
-"@polkadot/wasm-util@7.4.1", "@polkadot/wasm-util@^7.4.1":
-  version "7.4.1"
-  resolved "https://registry.yarnpkg.com/@polkadot/wasm-util/-/wasm-util-7.4.1.tgz#e8cea38a3b752efdef55080bb1da795ac71c5136"
-  integrity sha512-RAcxNFf3zzpkr+LX/ItAsvj+QyM56TomJ0xjUMo4wKkHjwsxkz4dWJtx5knIgQz/OthqSDMR59VNEycQeNuXzA==
+"@polkadot/wasm-util@7.5.1", "@polkadot/wasm-util@^7.5.1":
+  version "7.5.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/wasm-util/-/wasm-util-7.5.1.tgz#4568a9bf8d02d2d68fc139f331719865300e5233"
+  integrity sha512-sbvu71isFhPXpvMVX+EkRnUg/+54Tx7Sf9BEMqxxoPj7cG1I/MKeDEwbQz6MaU4gm7xJqvEWCAemLFcXfHQ/2A==
   dependencies:
     tslib "^2.7.0"
 
@@ -907,6 +946,14 @@
   integrity sha512-VKgEAh0LsxTd/Hg517Tt5ZU4CySjBwMpaojbkjgv3fOdg1cN7t4eFEUxpyj7mlO0cp22SzDh7nmy4TO98qhLQA==
   dependencies:
     "@polkadot/x-global" "13.2.3"
+    tslib "^2.8.0"
+
+"@polkadot/x-bigint@13.5.6", "@polkadot/x-bigint@^13.5.6":
+  version "13.5.6"
+  resolved "https://registry.yarnpkg.com/@polkadot/x-bigint/-/x-bigint-13.5.6.tgz#1468aab88e9bc41ea7ca118ab72d111681d7a4be"
+  integrity sha512-HpqZJ9ud94iK/+0Ofacw7QdtvzFp6SucBBml4XwWZTWoLaLOGDsO7FoWE7yCuwPbX8nLgIM6YmQBeUoZmBtVqQ==
+  dependencies:
+    "@polkadot/x-global" "13.5.6"
     tslib "^2.8.0"
 
 "@polkadot/x-fetch@^13.2.2":
@@ -941,20 +988,19 @@
   dependencies:
     tslib "^2.8.0"
 
-"@polkadot/x-randomvalues@13.2.2":
-  version "13.2.2"
-  resolved "https://registry.yarnpkg.com/@polkadot/x-randomvalues/-/x-randomvalues-13.2.2.tgz#e51ed8a15536daea0c1a24811878279248751d02"
-  integrity sha512-1UNImkS5PAaGHeIl2DlMjgt2iN7nlclzwrYhmxd0e9Z11RQqavGqi1a02HGREgnUu+wJ7eHmPMVe6K96+cL+aQ==
+"@polkadot/x-global@13.5.6":
+  version "13.5.6"
+  resolved "https://registry.yarnpkg.com/@polkadot/x-global/-/x-global-13.5.6.tgz#37a52d1cd32fde6d385cb745c0cec534753be1e5"
+  integrity sha512-iw97n0Bnl2284WgAK732LYR4DW6w5+COfBfHzkhiHqs5xwPEwWMgWGrf2hM8WAQqNIz6Ni8w/jagucPyQBur3Q==
   dependencies:
-    "@polkadot/x-global" "13.2.2"
     tslib "^2.8.0"
 
-"@polkadot/x-randomvalues@13.2.3":
-  version "13.2.3"
-  resolved "https://registry.yarnpkg.com/@polkadot/x-randomvalues/-/x-randomvalues-13.2.3.tgz#d6253cfb7691d64a807ca26dc6c70a79d2394a0b"
-  integrity sha512-Zf0GTfLmVk+VzPUmcQSpXjjmFzMTjPhXoLuIoE7xIu73T+vQ+TX9j7DvorN6bIRsnZ9l1SyTZsSf/NTjNZKIZg==
+"@polkadot/x-randomvalues@13.5.6":
+  version "13.5.6"
+  resolved "https://registry.yarnpkg.com/@polkadot/x-randomvalues/-/x-randomvalues-13.5.6.tgz#a05e0e4fb188c99c5a84043668a27ae6f05259bc"
+  integrity sha512-w1F9G7FxrJ7+hGC8bh9/VpPH4KN8xmyzgiQdR7+rVB2V8KsKQBQidG69pj5Kwsh3oODOz0yQYsTG6Rm6TAJbGA==
   dependencies:
-    "@polkadot/x-global" "13.2.3"
+    "@polkadot/x-global" "13.5.6"
     tslib "^2.8.0"
 
 "@polkadot/x-textdecoder@13.2.2":
@@ -973,6 +1019,14 @@
     "@polkadot/x-global" "13.2.3"
     tslib "^2.8.0"
 
+"@polkadot/x-textdecoder@13.5.6":
+  version "13.5.6"
+  resolved "https://registry.yarnpkg.com/@polkadot/x-textdecoder/-/x-textdecoder-13.5.6.tgz#a9c37f1033e41747856674d47ce149f71a0cbb1b"
+  integrity sha512-jTGeYCxFh89KRrP7bNj1CPqKO36Onsi0iA6A+5YtRS5wjdQU+/OFM/EHLTP2nvkvZo/tOkOewMR9sausisUvVQ==
+  dependencies:
+    "@polkadot/x-global" "13.5.6"
+    tslib "^2.8.0"
+
 "@polkadot/x-textencoder@13.2.2":
   version "13.2.2"
   resolved "https://registry.yarnpkg.com/@polkadot/x-textencoder/-/x-textencoder-13.2.2.tgz#c3c697eff1b0d1f0195226c37e5189f84a9bf60a"
@@ -987,6 +1041,14 @@
   integrity sha512-wJI3Bb/dC4zyBXJFm5+ZhyBXWoI5wvP8k8qX0/ZC0PQsgSAqs7LVhiofk4Wd94n0P41W5re58LrGXLyziSAshw==
   dependencies:
     "@polkadot/x-global" "13.2.3"
+    tslib "^2.8.0"
+
+"@polkadot/x-textencoder@13.5.6":
+  version "13.5.6"
+  resolved "https://registry.yarnpkg.com/@polkadot/x-textencoder/-/x-textencoder-13.5.6.tgz#e6468a0a97a0cb9e64363aae35e932baad1abe37"
+  integrity sha512-iVwz9+OrYCEF9QbNfr9M206mmWvY/AhDmGPfAIeTR4fRgKGVYqcP8RIF8iu/x0MVQWqiVO3vlhlUk7MfrmAnoQ==
+  dependencies:
+    "@polkadot/x-global" "13.5.6"
     tslib "^2.8.0"
 
 "@polkadot/x-ws@^13.2.2":
