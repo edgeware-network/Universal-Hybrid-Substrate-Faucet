@@ -13,7 +13,7 @@
 		"@hcaptcha/react-hcaptcha": "^1.12.0",
 		"@hookform/resolvers": "^5.1.1",
 		"@polkadot-api/pjs-signer": "^0.6.9",
-		"@polkadot/api": "^16.2.2",
+		"@polkadot/api": "^16.4.9",
 		"@polkadot/extension-dapp": "^0.60.1",
 		"@polkadot/keyring": "^13.5.2",
 		"@polkadot/types": "^16.2.2",
